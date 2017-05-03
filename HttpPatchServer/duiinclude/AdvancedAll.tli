@@ -1,0 +1,4181 @@
+#pragma once
+inline struct IDUIItemGroup * IDUIScrollFairy_::AddGroup(long  nID, tstring  strName  )
+{
+_bstr_t xxx_strName(strName.c_str());
+	struct IDUIItemGroup * _result;
+	raw_AddGroup(nID, xxx_strName, &_result);
+	return _result;
+}
+
+inline BOOL  IDUIScrollFairy_::RemoveGroupByID(long  nID  )
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_RemoveGroupByID(nID, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUIScrollFairy_::RemoveGroupByName(tstring  strName  )
+{
+_bstr_t xxx_strName(strName.c_str());
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_RemoveGroupByName(xxx_strName, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void IDUIScrollFairy_::RemoveAllGroup()
+{
+
+	raw_RemoveAllGroup();
+}
+
+inline struct IDUIItemGroup * IDUIScrollFairy_::GetGroupByName(tstring  strName  )
+{
+_bstr_t xxx_strName(strName.c_str());
+	struct IDUIItemGroup * _result;
+	raw_GetGroupByName(xxx_strName, &_result);
+	return _result;
+}
+
+inline struct IDUIItemGroup * IDUIScrollFairy_::GetGroupByID(long  nID  )
+{
+	struct IDUIItemGroup * _result;
+	raw_GetGroupByID(nID, &_result);
+	return _result;
+}
+
+inline long  IDUIScrollFairy_::GetCount()
+{
+	long  _result;
+	raw_GetCount(&_result);
+	return _result;
+}
+
+inline void IDUIScrollFairy_::SetFocusGroupByID(long  nID, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetFocusGroupByID(nID, xxx_bRedraw  );
+}
+
+inline void IDUIScrollFairy_::SetFocusGroupByName(tstring  strName, BOOL  bRedraw  )
+{
+	_bstr_t xxx_strName(strName.c_str());
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetFocusGroupByName(xxx_strName, xxx_bRedraw  );
+}
+
+inline struct IDUIItemGroup * IDUIScrollFairy_::GetFocusGroup()
+{
+	struct IDUIItemGroup * _result;
+	raw_GetFocusGroup(&_result);
+	return _result;
+}
+
+inline void IDUIScrollFairy_::SetScrollReCalcRgn(BOOL  bSetRgn  )
+{
+	VARIANT_BOOL xxx_bSetRgn = bSetRgn ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetScrollReCalcRgn(xxx_bSetRgn  );
+}
+
+inline void IDUIScrollFairy_::ScrollOver(BOOL  bEnd  )
+{
+	VARIANT_BOOL xxx_bEnd = bEnd ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_ScrollOver(xxx_bEnd  );
+}
+
+inline struct IDUIItemGroup * IDUIScrollFairy::AddGroup(long  nID, tstring  strName  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIScrollFairy_*)m_pCtrl)->AddGroup(nID, strName);
+}
+
+inline BOOL  IDUIScrollFairy::RemoveGroupByID(long  nID  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIScrollFairy_*)m_pCtrl)->RemoveGroupByID(nID);
+}
+
+inline BOOL  IDUIScrollFairy::RemoveGroupByName(tstring  strName  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIScrollFairy_*)m_pCtrl)->RemoveGroupByName(strName);
+}
+
+inline void  IDUIScrollFairy::RemoveAllGroup()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIScrollFairy_*)m_pCtrl)->RemoveAllGroup();
+}
+
+inline struct IDUIItemGroup * IDUIScrollFairy::GetGroupByName(tstring  strName  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIScrollFairy_*)m_pCtrl)->GetGroupByName(strName);
+}
+
+inline struct IDUIItemGroup * IDUIScrollFairy::GetGroupByID(long  nID  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIScrollFairy_*)m_pCtrl)->GetGroupByID(nID);
+}
+
+inline long  IDUIScrollFairy::GetCount()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIScrollFairy_*)m_pCtrl)->GetCount();
+}
+
+inline void  IDUIScrollFairy::SetFocusGroupByID(long  nID, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIScrollFairy_*)m_pCtrl)->SetFocusGroupByID(nID, bRedraw);
+}
+
+inline void  IDUIScrollFairy::SetFocusGroupByName(tstring  strName, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIScrollFairy_*)m_pCtrl)->SetFocusGroupByName(strName, bRedraw);
+}
+
+inline struct IDUIItemGroup * IDUIScrollFairy::GetFocusGroup()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIScrollFairy_*)m_pCtrl)->GetFocusGroup();
+}
+
+inline void  IDUIScrollFairy::SetScrollReCalcRgn(BOOL  bSetRgn  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIScrollFairy_*)m_pCtrl)->SetScrollReCalcRgn(bSetRgn);
+}
+
+inline void  IDUIScrollFairy::ScrollOver(BOOL  bEnd  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIScrollFairy_*)m_pCtrl)->ScrollOver(bEnd);
+}
+
+inline struct IDUIScrollItem * IDUIItemGroup::InsertItem(short  nIndex, long  nID, tstring  strName  )
+{
+_bstr_t xxx_strName(strName.c_str());
+	struct IDUIScrollItem * _result;
+	raw_InsertItem(nIndex, nID, xxx_strName, &_result);
+	return _result;
+}
+
+inline struct IDUIScrollItem * IDUIItemGroup::AppendItem(long  nID, tstring  strName  )
+{
+_bstr_t xxx_strName(strName.c_str());
+	struct IDUIScrollItem * _result;
+	raw_AppendItem(nID, xxx_strName, &_result);
+	return _result;
+}
+
+inline struct IDUIScrollItem * IDUIItemGroup::InsertItemWithImage(short  nIndex, long  nID, tstring  strName, tstring  strImagePath, short  nFrames, BOOL  bHorz  )
+{
+_bstr_t xxx_strName(strName.c_str());
+_bstr_t xxx_strImagePath(strImagePath.c_str());
+	VARIANT_BOOL xxx_bHorz = bHorz ? VARIANT_TRUE : VARIANT_FALSE;
+	struct IDUIScrollItem * _result;
+	raw_InsertItemWithImage(nIndex, nID, xxx_strName, xxx_strImagePath, nFrames, xxx_bHorz, &_result);
+	return _result;
+}
+
+inline struct IDUIScrollItem * IDUIItemGroup::AppendItemWithImage(long  nID, tstring  strName, tstring  strImagePath, short  nFrames, BOOL  bHorz  )
+{
+_bstr_t xxx_strName(strName.c_str());
+_bstr_t xxx_strImagePath(strImagePath.c_str());
+	VARIANT_BOOL xxx_bHorz = bHorz ? VARIANT_TRUE : VARIANT_FALSE;
+	struct IDUIScrollItem * _result;
+	raw_AppendItemWithImage(nID, xxx_strName, xxx_strImagePath, nFrames, xxx_bHorz, &_result);
+	return _result;
+}
+
+inline BOOL  IDUIItemGroup::RemoveItemByID(long  nID  )
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_RemoveItemByID(nID, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUIItemGroup::RemoveItemByName(tstring  strName  )
+{
+_bstr_t xxx_strName(strName.c_str());
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_RemoveItemByName(xxx_strName, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUIItemGroup::RemoveItem(struct IDUIScrollItem * pItem  )
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_RemoveItem(pItem, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void IDUIItemGroup::RemoveAllItems()
+{
+
+	raw_RemoveAllItems();
+}
+
+inline struct IDUIScrollItem * IDUIItemGroup::GetItemByID(long  nID  )
+{
+	struct IDUIScrollItem * _result;
+	raw_GetItemByID(nID, &_result);
+	return _result;
+}
+
+inline struct IDUIScrollItem * IDUIItemGroup::GetItemByName(tstring  strName  )
+{
+_bstr_t xxx_strName(strName.c_str());
+	struct IDUIScrollItem * _result;
+	raw_GetItemByName(xxx_strName, &_result);
+	return _result;
+}
+
+inline struct IDUIScrollItem * IDUIItemGroup::GetAt(short  nIndex  )
+{
+	struct IDUIScrollItem * _result;
+	raw_GetAt(nIndex, &_result);
+	return _result;
+}
+
+inline long  IDUIItemGroup::GetCount()
+{
+	long  _result;
+	raw_GetCount(&_result);
+	return _result;
+}
+
+inline void IDUIItemGroup::SetText(tstring  strName  )
+{
+	_bstr_t xxx_strName(strName.c_str());
+
+	raw_SetText(xxx_strName  );
+}
+
+inline tstring  IDUIItemGroup::GetText()
+{
+	BSTR _result = NULL;
+	raw_GetText(&_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline void IDUIItemGroup::SetID(long  nID  )
+{
+
+	raw_SetID(nID  );
+}
+
+inline long  IDUIItemGroup::GetID()
+{
+	long  _result;
+	raw_GetID(&_result);
+	return _result;
+}
+
+inline struct IDUISpaceItem * IDUIItemGroup::GetSpaceItem(short  nIndex  )
+{
+	struct IDUISpaceItem * _result;
+	raw_GetSpaceItem(nIndex, &_result);
+	return _result;
+}
+
+inline void IDUIItemGroup::SetSelectedItem(struct IDUIScrollItem * ppResult  )
+{
+
+	raw_SetSelectedItem(ppResult  );
+}
+
+inline void IDUIItemGroup::SetScrollPos(long  nPos  )
+{
+
+	raw_SetScrollPos(nPos  );
+}
+
+inline long  IDUIItemGroup::GetScrollPos()
+{
+	long  _result;
+	raw_GetScrollPos(&_result);
+	return _result;
+}
+
+inline long  IDUIItemGroup::GetTotalLength()
+{
+	long  _result;
+	raw_GetTotalLength(&_result);
+	return _result;
+}
+
+inline void IDUIScrollItem::SetText(tstring  strName, BOOL  bRefresh  )
+{
+	_bstr_t xxx_strName(strName.c_str());
+	VARIANT_BOOL xxx_bRefresh = bRefresh ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetText(xxx_strName, xxx_bRefresh  );
+}
+
+inline tstring  IDUIScrollItem::GetText()
+{
+	BSTR _result = NULL;
+	raw_GetText(&_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline void IDUIScrollItem::SetID(long  nID  )
+{
+
+	raw_SetID(nID  );
+}
+
+inline long  IDUIScrollItem::GetID()
+{
+	long  _result;
+	raw_GetID(&_result);
+	return _result;
+}
+
+inline void IDUIScrollItem::SetState(enum DUISCROLLITEM_STATE  eState, BOOL  bRefresh  )
+{
+	VARIANT_BOOL xxx_bRefresh = bRefresh ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetState(eState, xxx_bRefresh  );
+}
+
+inline enum DUISCROLLITEM_STATE  IDUIScrollItem::GetState()
+{
+	enum DUISCROLLITEM_STATE  _result;
+	raw_GetState(&_result);
+	return _result;
+}
+
+inline void IDUIScrollItem::SetImage(tstring  strImagePath, short  nFrames, BOOL  bHorz  )
+{
+	_bstr_t xxx_strImagePath(strImagePath.c_str());
+	VARIANT_BOOL xxx_bHorz = bHorz ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetImage(xxx_strImagePath, nFrames, xxx_bHorz  );
+}
+
+inline tstring  IDUIScrollItem::GetImagePath()
+{
+	BSTR _result = NULL;
+	raw_GetImagePath(&_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline void IDUIScrollItem::SetBitmap(OLE_HANDLE  hBmp, enum DUISCROLLITEM_STATE  eState  )
+{
+
+	raw_SetBitmap(hBmp, eState  );
+}
+
+inline OLE_HANDLE  IDUIScrollItem::GetBitmap(enum DUISCROLLITEM_STATE  eState  )
+{
+	OLE_HANDLE  _result;
+	raw_GetBitmap(eState, &_result);
+	return _result;
+}
+
+
+ inline IDUIControlBase*  IDUIScrollItem::GetInfoPanel()
+ {
+ 	OLE_HANDLE  _result;
+ 	raw_GetInfoPanel(&_result);
+   return (IDUIControlBase*)GetCtrlBase((void*)_result);
+ }
+ 
+ 
+inline OLE_HANDLE  IDUIScrollItem::GetResObject(tstring  strName  )
+{
+_bstr_t xxx_strName(strName.c_str());
+	OLE_HANDLE  _result;
+	raw_GetResObject(xxx_strName, &_result);
+	return _result;
+}
+
+inline struct SkinRect  IDUIScrollItem::GetRect()
+{
+	struct SkinRect  _result;
+	raw_GetRect(&_result);
+	return _result;
+}
+
+inline long  IDUIScrollItem::GetIndex()
+{
+	long  _result;
+	raw_GetIndex(&_result);
+	return _result;
+}
+
+inline long  IDUISpaceItem::GetIndex()
+{
+	long  _result;
+	raw_GetIndex(&_result);
+	return _result;
+}
+
+inline void IDUISpaceItem::SetImage(OLE_HANDLE  hBitmap  )
+{
+
+	raw_SetImage(hBitmap  );
+}
+
+inline struct SkinRect  IDUISpaceItem::GetRect()
+{
+	struct SkinRect  _result;
+	raw_GetRect(&_result);
+	return _result;
+}
+
+inline void IDUIBasicLine_::InsertXData(long  nIndex, tstring  bstr  )
+{
+	_bstr_t xxx_bstr(bstr.c_str());
+
+	raw_InsertXData(nIndex, xxx_bstr  );
+}
+
+inline void IDUIBasicLine_::InsertYData(double  dYoint  )
+{
+
+	raw_InsertYData(dYoint  );
+}
+
+inline void IDUIBasicLine_::InsertPointData(long  index, double  yPoint  )
+{
+
+	raw_InsertPointData(index, yPoint  );
+}
+
+inline void IDUIBasicLine_::InsertIconData(unsigned long  dR, unsigned long  dG, unsigned long  dB, tstring  bstr  )
+{
+	_bstr_t xxx_bstr(bstr.c_str());
+
+	raw_InsertIconData(dR, dG, dB, xxx_bstr  );
+}
+
+inline void IDUIBasicLine_::SetLeftText(tstring  bstr  )
+{
+	_bstr_t xxx_bstr(bstr.c_str());
+
+	raw_SetLeftText(xxx_bstr  );
+}
+
+inline tstring  IDUIBasicLine_::GetLeftText()
+{
+	BSTR _result = NULL;
+	raw_GetLeftText(&_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline void IDUIBasicLine_::SetTopText(tstring  bstr  )
+{
+	_bstr_t xxx_bstr(bstr.c_str());
+
+	raw_SetTopText(xxx_bstr  );
+}
+
+inline tstring  IDUIBasicLine_::GetTopText()
+{
+	BSTR _result = NULL;
+	raw_GetTopText(&_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline void IDUIBasicLine_::EraseXData(int  index  )
+{
+
+	raw_EraseXData(index  );
+}
+
+inline void IDUIBasicLine_::EraseXAllData()
+{
+
+	raw_EraseXAllData();
+}
+
+inline void IDUIBasicLine_::SetBasePointNdx(int  index  )
+{
+
+	raw_SetBasePointNdx(index  );
+}
+
+inline int  IDUIBasicLine_::GetBasePointNdx()
+{
+	int  _result;
+	raw_GetBasePointNdx(&_result);
+	return _result;
+}
+
+inline void IDUIBasicLine_::SetBasePointNdy(int  index  )
+{
+
+	raw_SetBasePointNdy(index  );
+}
+
+inline int  IDUIBasicLine_::GetBasePointNdy()
+{
+	int  _result;
+	raw_GetBasePointNdy(&_result);
+	return _result;
+}
+
+inline void IDUIBasicLine_::SetRightLineNdx(int  index  )
+{
+
+	raw_SetRightLineNdx(index  );
+}
+
+inline int  IDUIBasicLine_::GetRightLineNdx()
+{
+	int  _result;
+	raw_GetRightLineNdx(&_result);
+	return _result;
+}
+
+inline void IDUIBasicLine_::SetRightLineNdy(int  index  )
+{
+
+	raw_SetRightLineNdy(index  );
+}
+
+inline int  IDUIBasicLine_::GetRightLineNdy()
+{
+	int  _result;
+	raw_GetRightLineNdy(&_result);
+	return _result;
+}
+
+inline void IDUIBasicLine_::SetRightLineLength(int  index  )
+{
+
+	raw_SetRightLineLength(index  );
+}
+
+inline int  IDUIBasicLine_::GetRightLineLength()
+{
+	int  _result;
+	raw_GetRightLineLength(&_result);
+	return _result;
+}
+
+inline void IDUIBasicLine_::SetTextTopHeight(long  index  )
+{
+
+	raw_SetTextTopHeight(index  );
+}
+
+inline long  IDUIBasicLine_::GetTextTopHeight()
+{
+	long  _result;
+	raw_GetTextTopHeight(&_result);
+	return _result;
+}
+
+inline void IDUIBasicLine_::SetTextRightWidth(long  index  )
+{
+
+	raw_SetTextRightWidth(index  );
+}
+
+inline long  IDUIBasicLine_::GetTextRightWidth()
+{
+	long  _result;
+	raw_GetTextRightWidth(&_result);
+	return _result;
+}
+
+inline void IDUIBasicLine_::SetTextLeftWidth(long  index  )
+{
+
+	raw_SetTextLeftWidth(index  );
+}
+
+inline long  IDUIBasicLine_::GetTextLeftWidth()
+{
+	long  _result;
+	raw_GetTextLeftWidth(&_result);
+	return _result;
+}
+
+inline void IDUIBasicLine_::SetYHeight(int  index  )
+{
+
+	raw_SetYHeight(index  );
+}
+
+inline int  IDUIBasicLine_::GetYHeight()
+{
+	int  _result;
+	raw_GetYHeight(&_result);
+	return _result;
+}
+
+inline void IDUIBasicLine_::SetLeftBackColor(unsigned long  dR, unsigned long  dG, unsigned long  dB  )
+{
+
+	raw_SetLeftBackColor(dR, dG, dB  );
+}
+
+inline void IDUIBasicLine_::SetTopBackColor(unsigned long  dR, unsigned long  dG, unsigned long  dB  )
+{
+
+	raw_SetTopBackColor(dR, dG, dB  );
+}
+
+inline void IDUIBasicLine_::SetCenterBackColor(unsigned long  dR, unsigned long  dG, unsigned long  dB  )
+{
+
+	raw_SetCenterBackColor(dR, dG, dB  );
+}
+
+inline void IDUIBasicLine_::SetRightBackColor(unsigned long  dR, unsigned long  dG, unsigned long  dB  )
+{
+
+	raw_SetRightBackColor(dR, dG, dB  );
+}
+
+inline void IDUIBasicLine_::SetMainBackColor(unsigned long  dR, unsigned long  dG, unsigned long  dB  )
+{
+
+	raw_SetMainBackColor(dR, dG, dB  );
+}
+
+inline void IDUIBasicLine_::SetLeftFont(tstring  bstr  )
+{
+	_bstr_t xxx_bstr(bstr.c_str());
+
+	raw_SetLeftFont(xxx_bstr  );
+}
+
+inline tstring  IDUIBasicLine_::GetLeftFont()
+{
+	BSTR _result = NULL;
+	raw_GetLeftFont(&_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline void IDUIBasicLine_::SetTopFont(tstring  bstr  )
+{
+	_bstr_t xxx_bstr(bstr.c_str());
+
+	raw_SetTopFont(xxx_bstr  );
+}
+
+inline tstring  IDUIBasicLine_::GetTopFont()
+{
+	BSTR _result = NULL;
+	raw_GetTopFont(&_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline void IDUIBasicLine_::SetRightFont(tstring  bstr  )
+{
+	_bstr_t xxx_bstr(bstr.c_str());
+
+	raw_SetRightFont(xxx_bstr  );
+}
+
+inline tstring  IDUIBasicLine_::GetRightFont()
+{
+	BSTR _result = NULL;
+	raw_GetRightFont(&_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline void IDUIBasicLine_::SetXFont(tstring  bstr  )
+{
+	_bstr_t xxx_bstr(bstr.c_str());
+
+	raw_SetXFont(xxx_bstr  );
+}
+
+inline tstring  IDUIBasicLine_::GetXFont()
+{
+	BSTR _result = NULL;
+	raw_GetXFont(&_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline void IDUIBasicLine_::SetYFont(tstring  bstr  )
+{
+	_bstr_t xxx_bstr(bstr.c_str());
+
+	raw_SetYFont(xxx_bstr  );
+}
+
+inline tstring  IDUIBasicLine_::GetYFont()
+{
+	BSTR _result = NULL;
+	raw_GetYFont(&_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline void IDUIBasicLine_::SetLeftFontSize(float  fsize  )
+{
+
+	raw_SetLeftFontSize(fsize  );
+}
+
+inline float  IDUIBasicLine_::GetLeftFontSize()
+{
+	float  _result;
+	raw_GetLeftFontSize(&_result);
+	return _result;
+}
+
+inline void IDUIBasicLine_::SetTopFontSize(float  fsize  )
+{
+
+	raw_SetTopFontSize(fsize  );
+}
+
+inline float  IDUIBasicLine_::GetTopFontSize()
+{
+	float  _result;
+	raw_GetTopFontSize(&_result);
+	return _result;
+}
+
+inline void IDUIBasicLine_::SetRightFontSize(float  fsize  )
+{
+
+	raw_SetRightFontSize(fsize  );
+}
+
+inline float  IDUIBasicLine_::GetRightFontSize()
+{
+	float  _result;
+	raw_GetRightFontSize(&_result);
+	return _result;
+}
+
+inline void IDUIBasicLine_::SetRightLineSize(float  fsize  )
+{
+
+	raw_SetRightLineSize(fsize  );
+}
+
+inline float  IDUIBasicLine_::GetRightLineSize()
+{
+	float  _result;
+	raw_GetRightLineSize(&_result);
+	return _result;
+}
+
+inline void IDUIBasicLine_::SetXLineSize(float  fsize  )
+{
+
+	raw_SetXLineSize(fsize  );
+}
+
+inline float  IDUIBasicLine_::GetXLineSize()
+{
+	float  _result;
+	raw_GetXLineSize(&_result);
+	return _result;
+}
+
+inline void IDUIBasicLine_::SetXFontSize(float  fsize  )
+{
+
+	raw_SetXFontSize(fsize  );
+}
+
+inline float  IDUIBasicLine_::GetXFontSize()
+{
+	float  _result;
+	raw_GetXFontSize(&_result);
+	return _result;
+}
+
+inline void IDUIBasicLine_::SetYLineSize(float  fsize  )
+{
+
+	raw_SetYLineSize(fsize  );
+}
+
+inline float  IDUIBasicLine_::GetYLineSize()
+{
+	float  _result;
+	raw_GetYLineSize(&_result);
+	return _result;
+}
+
+inline void IDUIBasicLine_::SetYFontSize(float  fsize  )
+{
+
+	raw_SetYFontSize(fsize  );
+}
+
+inline float  IDUIBasicLine_::GetYFontSize()
+{
+	float  _result;
+	raw_GetYFontSize(&_result);
+	return _result;
+}
+
+inline void IDUIBasicLine_::SetLineDataLineSize(float  fsize  )
+{
+
+	raw_SetLineDataLineSize(fsize  );
+}
+
+inline float  IDUIBasicLine_::GetLineDataLineSize()
+{
+	float  _result;
+	raw_GetLineDataLineSize(&_result);
+	return _result;
+}
+
+inline void IDUIBasicLine_::CreateLine(int  index, unsigned long  dR, unsigned long  dG, unsigned long  dB  )
+{
+
+	raw_CreateLine(index, dR, dG, dB  );
+}
+
+inline void IDUIBasicLine_::InsertLineData(int  indexLine, int  indexXpoint, double  yPoint  )
+{
+
+	raw_InsertLineData(indexLine, indexXpoint, yPoint  );
+}
+
+inline void IDUIBasicLine_::InsertPillarData(int  index, int  xIndex, float  yNum, unsigned long  dR, unsigned long  dG, unsigned long  dB  )
+{
+
+	raw_InsertPillarData(index, xIndex, yNum, dR, dG, dB  );
+}
+
+inline void IDUIBasicLine_::InsertPillarSubData(int  num, int  index, int  xIndex, float  yNum  )
+{
+
+	raw_InsertPillarSubData(num, index, xIndex, yNum  );
+}
+
+inline void IDUIBasicLine_::InsertXSubData(long  nIndex, tstring  bstr  )
+{
+	_bstr_t xxx_bstr(bstr.c_str());
+
+	raw_InsertXSubData(nIndex, xxx_bstr  );
+}
+
+inline void  IDUIBasicLine::InsertXData(long  nIndex, tstring  bstr  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->InsertXData(nIndex, bstr);
+}
+
+inline void  IDUIBasicLine::InsertYData(double  dYoint  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->InsertYData(dYoint);
+}
+
+inline void  IDUIBasicLine::InsertPointData(long  index, double  yPoint  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->InsertPointData(index, yPoint);
+}
+
+inline void  IDUIBasicLine::InsertIconData(unsigned long  dR, unsigned long  dG, unsigned long  dB, tstring  bstr  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->InsertIconData(dR, dG, dB, bstr);
+}
+
+inline void  IDUIBasicLine::SetLeftText(tstring  bstr  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetLeftText(bstr);
+}
+
+inline tstring  IDUIBasicLine::GetLeftText()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->GetLeftText();
+}
+
+inline void  IDUIBasicLine::SetTopText(tstring  bstr  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetTopText(bstr);
+}
+
+inline tstring  IDUIBasicLine::GetTopText()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->GetTopText();
+}
+
+inline void  IDUIBasicLine::EraseXData(int  index  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->EraseXData(index);
+}
+
+inline void  IDUIBasicLine::EraseXAllData()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->EraseXAllData();
+}
+
+inline void  IDUIBasicLine::SetBasePointNdx(int  index  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetBasePointNdx(index);
+}
+
+inline int  IDUIBasicLine::GetBasePointNdx()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->GetBasePointNdx();
+}
+
+inline void  IDUIBasicLine::SetBasePointNdy(int  index  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetBasePointNdy(index);
+}
+
+inline int  IDUIBasicLine::GetBasePointNdy()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->GetBasePointNdy();
+}
+
+inline void  IDUIBasicLine::SetRightLineNdx(int  index  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetRightLineNdx(index);
+}
+
+inline int  IDUIBasicLine::GetRightLineNdx()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->GetRightLineNdx();
+}
+
+inline void  IDUIBasicLine::SetRightLineNdy(int  index  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetRightLineNdy(index);
+}
+
+inline int  IDUIBasicLine::GetRightLineNdy()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->GetRightLineNdy();
+}
+
+inline void  IDUIBasicLine::SetRightLineLength(int  index  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetRightLineLength(index);
+}
+
+inline int  IDUIBasicLine::GetRightLineLength()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->GetRightLineLength();
+}
+
+inline void  IDUIBasicLine::SetTextTopHeight(long  index  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetTextTopHeight(index);
+}
+
+inline long  IDUIBasicLine::GetTextTopHeight()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->GetTextTopHeight();
+}
+
+inline void  IDUIBasicLine::SetTextRightWidth(long  index  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetTextRightWidth(index);
+}
+
+inline long  IDUIBasicLine::GetTextRightWidth()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->GetTextRightWidth();
+}
+
+inline void  IDUIBasicLine::SetTextLeftWidth(long  index  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetTextLeftWidth(index);
+}
+
+inline long  IDUIBasicLine::GetTextLeftWidth()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->GetTextLeftWidth();
+}
+
+inline void  IDUIBasicLine::SetYHeight(int  index  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetYHeight(index);
+}
+
+inline int  IDUIBasicLine::GetYHeight()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->GetYHeight();
+}
+
+inline void  IDUIBasicLine::SetLeftBackColor(unsigned long  dR, unsigned long  dG, unsigned long  dB  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetLeftBackColor(dR, dG, dB);
+}
+
+inline void  IDUIBasicLine::SetTopBackColor(unsigned long  dR, unsigned long  dG, unsigned long  dB  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetTopBackColor(dR, dG, dB);
+}
+
+inline void  IDUIBasicLine::SetCenterBackColor(unsigned long  dR, unsigned long  dG, unsigned long  dB  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetCenterBackColor(dR, dG, dB);
+}
+
+inline void  IDUIBasicLine::SetRightBackColor(unsigned long  dR, unsigned long  dG, unsigned long  dB  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetRightBackColor(dR, dG, dB);
+}
+
+inline void  IDUIBasicLine::SetMainBackColor(unsigned long  dR, unsigned long  dG, unsigned long  dB  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetMainBackColor(dR, dG, dB);
+}
+
+inline void  IDUIBasicLine::SetLeftFont(tstring  bstr  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetLeftFont(bstr);
+}
+
+inline tstring  IDUIBasicLine::GetLeftFont()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->GetLeftFont();
+}
+
+inline void  IDUIBasicLine::SetTopFont(tstring  bstr  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetTopFont(bstr);
+}
+
+inline tstring  IDUIBasicLine::GetTopFont()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->GetTopFont();
+}
+
+inline void  IDUIBasicLine::SetRightFont(tstring  bstr  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetRightFont(bstr);
+}
+
+inline tstring  IDUIBasicLine::GetRightFont()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->GetRightFont();
+}
+
+inline void  IDUIBasicLine::SetXFont(tstring  bstr  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetXFont(bstr);
+}
+
+inline tstring  IDUIBasicLine::GetXFont()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->GetXFont();
+}
+
+inline void  IDUIBasicLine::SetYFont(tstring  bstr  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetYFont(bstr);
+}
+
+inline tstring  IDUIBasicLine::GetYFont()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->GetYFont();
+}
+
+inline void  IDUIBasicLine::SetLeftFontSize(float  fsize  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetLeftFontSize(fsize);
+}
+
+inline float  IDUIBasicLine::GetLeftFontSize()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->GetLeftFontSize();
+}
+
+inline void  IDUIBasicLine::SetTopFontSize(float  fsize  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetTopFontSize(fsize);
+}
+
+inline float  IDUIBasicLine::GetTopFontSize()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->GetTopFontSize();
+}
+
+inline void  IDUIBasicLine::SetRightFontSize(float  fsize  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetRightFontSize(fsize);
+}
+
+inline float  IDUIBasicLine::GetRightFontSize()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->GetRightFontSize();
+}
+
+inline void  IDUIBasicLine::SetRightLineSize(float  fsize  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetRightLineSize(fsize);
+}
+
+inline float  IDUIBasicLine::GetRightLineSize()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->GetRightLineSize();
+}
+
+inline void  IDUIBasicLine::SetXLineSize(float  fsize  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetXLineSize(fsize);
+}
+
+inline float  IDUIBasicLine::GetXLineSize()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->GetXLineSize();
+}
+
+inline void  IDUIBasicLine::SetXFontSize(float  fsize  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetXFontSize(fsize);
+}
+
+inline float  IDUIBasicLine::GetXFontSize()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->GetXFontSize();
+}
+
+inline void  IDUIBasicLine::SetYLineSize(float  fsize  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetYLineSize(fsize);
+}
+
+inline float  IDUIBasicLine::GetYLineSize()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->GetYLineSize();
+}
+
+inline void  IDUIBasicLine::SetYFontSize(float  fsize  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetYFontSize(fsize);
+}
+
+inline float  IDUIBasicLine::GetYFontSize()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->GetYFontSize();
+}
+
+inline void  IDUIBasicLine::SetLineDataLineSize(float  fsize  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->SetLineDataLineSize(fsize);
+}
+
+inline float  IDUIBasicLine::GetLineDataLineSize()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->GetLineDataLineSize();
+}
+
+inline void  IDUIBasicLine::CreateLine(int  index, unsigned long  dR, unsigned long  dG, unsigned long  dB  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->CreateLine(index, dR, dG, dB);
+}
+
+inline void  IDUIBasicLine::InsertLineData(int  indexLine, int  indexXpoint, double  yPoint  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->InsertLineData(indexLine, indexXpoint, yPoint);
+}
+
+inline void  IDUIBasicLine::InsertPillarData(int  index, int  xIndex, float  yNum, unsigned long  dR, unsigned long  dG, unsigned long  dB  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->InsertPillarData(index, xIndex, yNum, dR, dG, dB);
+}
+
+inline void  IDUIBasicLine::InsertPillarSubData(int  num, int  index, int  xIndex, float  yNum  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->InsertPillarSubData(num, index, xIndex, yNum);
+}
+
+inline void  IDUIBasicLine::InsertXSubData(long  nIndex, tstring  bstr  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIBasicLine_*)m_pCtrl)->InsertXSubData(nIndex, bstr);
+}
+
+inline void IDUITimeRuler_::SetBeginTime(struct IDUIDateTime  begTime  )
+{
+
+	raw_SetBeginTime(begTime  );
+}
+
+inline struct IDUIDateTime  IDUITimeRuler_::GetBeginTime()
+{
+	struct IDUIDateTime  _result;
+	raw_GetBeginTime(&_result);
+	return _result;
+}
+
+inline void IDUITimeRuler_::SetEndTime(struct IDUIDateTime  endTime  )
+{
+
+	raw_SetEndTime(endTime  );
+}
+
+inline struct IDUIDateTime  IDUITimeRuler_::GetEndTime()
+{
+	struct IDUIDateTime  _result;
+	raw_GetEndTime(&_result);
+	return _result;
+}
+
+inline void IDUITimeRuler_::SetCurrentTimer(struct IDUIDateTime  time  )
+{
+
+	raw_SetCurrentTimer(time  );
+}
+
+inline struct IDUIDateTime  IDUITimeRuler_::GetCurrentTimer()
+{
+	struct IDUIDateTime  _result;
+	raw_GetCurrentTimer(&_result);
+	return _result;
+}
+
+inline void IDUITimeRuler_::SetRectBlockTime(struct IDUIDateTime  begTime, struct IDUIDateTime  endTime, long * cr  )
+{
+
+	raw_SetRectBlockTime(begTime, endTime, cr  );
+}
+
+inline void IDUITimeRuler_::SetMargin(int  firstMargin, int  lastMargin  )
+{
+
+	raw_SetMargin(firstMargin, lastMargin  );
+}
+
+inline void IDUITimeRuler_::SetDefaultTime(struct IDUIDateTime  time  )
+{
+
+	raw_SetDefaultTime(time  );
+}
+
+inline void IDUITimeRuler_::SetTriangleWithHeight(int  width, int  height  )
+{
+
+	raw_SetTriangleWithHeight(width, height  );
+}
+
+inline void IDUITimeRuler_::SetTriangleBrushColor(long * cr  )
+{
+
+	raw_SetTriangleBrushColor(cr  );
+}
+
+inline void IDUITimeRuler_::SetTrianglePen(long * cr, int  iPen  )
+{
+
+	raw_SetTrianglePen(cr, iPen  );
+}
+
+inline void IDUITimeRuler_::ChangeBlockColor(int  iNum, long * cr  )
+{
+
+	raw_ChangeBlockColor(iNum, cr  );
+}
+
+inline void IDUITimeRuler_::ChangeBlockTime(int  iNum, struct IDUIDateTime  begTime, struct IDUIDateTime  endTime  )
+{
+
+	raw_ChangeBlockTime(iNum, begTime, endTime  );
+}
+
+inline void IDUITimeRuler_::DeleteBlockTime(int  iNum  )
+{
+
+	raw_DeleteBlockTime(iNum  );
+}
+
+inline void IDUITimeRuler_::SetTimePos(int  iPos  )
+{
+
+	raw_SetTimePos(iPos  );
+}
+
+inline int  IDUITimeRuler_::GetTimePos()
+{
+	int  _result;
+	raw_GetTimePos(&_result);
+	return _result;
+}
+
+inline void IDUITimeRuler_::SetCanMove(BOOL  blBtnDown  )
+{
+	VARIANT_BOOL xxx_blBtnDown = blBtnDown ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetCanMove(xxx_blBtnDown  );
+}
+
+inline void IDUITimeRuler_::SetTimeIntervel(int  Hour, int  Min, int  Sec  )
+{
+
+	raw_SetTimeIntervel(Hour, Min, Sec  );
+}
+
+inline void IDUITimeRuler_::SetPointHeight(int  height  )
+{
+
+	raw_SetPointHeight(height  );
+}
+
+inline void IDUITimeRuler_::SetRectBlockTimeByImage(struct IDUIDateTime  begTime, struct IDUIDateTime  endTime, struct IDUIImageBase * pImageBase  )
+{
+
+	raw_SetRectBlockTimeByImage(begTime, endTime, pImageBase  );
+}
+
+inline void  IDUITimeRuler::SetBeginTime(struct IDUIDateTime  begTime  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeRuler_*)m_pCtrl)->SetBeginTime(begTime);
+}
+
+inline struct IDUIDateTime  IDUITimeRuler::GetBeginTime()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeRuler_*)m_pCtrl)->GetBeginTime();
+}
+
+inline void  IDUITimeRuler::SetEndTime(struct IDUIDateTime  endTime  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeRuler_*)m_pCtrl)->SetEndTime(endTime);
+}
+
+inline struct IDUIDateTime  IDUITimeRuler::GetEndTime()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeRuler_*)m_pCtrl)->GetEndTime();
+}
+
+inline void  IDUITimeRuler::SetCurrentTimer(struct IDUIDateTime  time  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeRuler_*)m_pCtrl)->SetCurrentTimer(time);
+}
+
+inline struct IDUIDateTime  IDUITimeRuler::GetCurrentTimer()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeRuler_*)m_pCtrl)->GetCurrentTimer();
+}
+
+inline void  IDUITimeRuler::SetRectBlockTime(struct IDUIDateTime  begTime, struct IDUIDateTime  endTime, long * cr  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeRuler_*)m_pCtrl)->SetRectBlockTime(begTime, endTime, cr);
+}
+
+inline void  IDUITimeRuler::SetMargin(int  firstMargin, int  lastMargin  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeRuler_*)m_pCtrl)->SetMargin(firstMargin, lastMargin);
+}
+
+inline void  IDUITimeRuler::SetDefaultTime(struct IDUIDateTime  time  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeRuler_*)m_pCtrl)->SetDefaultTime(time);
+}
+
+inline void  IDUITimeRuler::SetTriangleWithHeight(int  width, int  height  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeRuler_*)m_pCtrl)->SetTriangleWithHeight(width, height);
+}
+
+inline void  IDUITimeRuler::SetTriangleBrushColor(long * cr  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeRuler_*)m_pCtrl)->SetTriangleBrushColor(cr);
+}
+
+inline void  IDUITimeRuler::SetTrianglePen(long * cr, int  iPen  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeRuler_*)m_pCtrl)->SetTrianglePen(cr, iPen);
+}
+
+inline void  IDUITimeRuler::ChangeBlockColor(int  iNum, long * cr  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeRuler_*)m_pCtrl)->ChangeBlockColor(iNum, cr);
+}
+
+inline void  IDUITimeRuler::ChangeBlockTime(int  iNum, struct IDUIDateTime  begTime, struct IDUIDateTime  endTime  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeRuler_*)m_pCtrl)->ChangeBlockTime(iNum, begTime, endTime);
+}
+
+inline void  IDUITimeRuler::DeleteBlockTime(int  iNum  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeRuler_*)m_pCtrl)->DeleteBlockTime(iNum);
+}
+
+inline void  IDUITimeRuler::SetTimePos(int  iPos  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeRuler_*)m_pCtrl)->SetTimePos(iPos);
+}
+
+inline int  IDUITimeRuler::GetTimePos()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeRuler_*)m_pCtrl)->GetTimePos();
+}
+
+inline void  IDUITimeRuler::SetCanMove(BOOL  blBtnDown  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeRuler_*)m_pCtrl)->SetCanMove(blBtnDown);
+}
+
+inline void  IDUITimeRuler::SetTimeIntervel(int  Hour, int  Min, int  Sec  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeRuler_*)m_pCtrl)->SetTimeIntervel(Hour, Min, Sec);
+}
+
+inline void  IDUITimeRuler::SetPointHeight(int  height  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeRuler_*)m_pCtrl)->SetPointHeight(height);
+}
+
+inline void  IDUITimeRuler::SetRectBlockTimeByImage(struct IDUIDateTime  begTime, struct IDUIDateTime  endTime, struct IDUIImageBase * pImageBase  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeRuler_*)m_pCtrl)->SetRectBlockTimeByImage(begTime, endTime, pImageBase);
+}
+
+inline void IDUICurve_::Clear()
+{
+
+	raw_Clear();
+}
+
+inline void IDUICurve_::SetMaxSize(unsigned int  nMaxPoint  )
+{
+
+	raw_SetMaxSize(nMaxPoint  );
+}
+
+inline void IDUICurve_::InsertLine(unsigned int  nIndex, unsigned int  fXAxisTime, float  fYAxisAmp  )
+{
+
+	raw_InsertLine(nIndex, fXAxisTime, fYAxisAmp  );
+}
+
+inline void IDUICurve_::SetCurXShowScope(float  fStartTime, float  fEndTime  )
+{
+
+	raw_SetCurXShowScope(fStartTime, fEndTime  );
+}
+
+inline void IDUICurve_::GetCurXShowScope(float * nStartTime, float * nEndTime  )
+{
+
+	raw_GetCurXShowScope(nStartTime, nEndTime  );
+}
+
+inline void IDUICurve_::ShowXAxisGradByStep(unsigned int  nStep  )
+{
+
+	raw_ShowXAxisGradByStep(nStep  );
+}
+
+inline void IDUICurve_::ShowXAxisGradByIndex(unsigned int  index  )
+{
+
+	raw_ShowXAxisGradByIndex(index  );
+}
+
+inline void IDUICurve_::SetGridLineVisible(BOOL  isShow  )
+{
+	VARIANT_BOOL xxx_isShow = isShow ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetGridLineVisible(xxx_isShow  );
+}
+
+inline void IDUICurve_::SetXGradTextByIndex(unsigned int  nRulerIndex, tstring  bstrRulerText  )
+{
+	_bstr_t xxx_bstrRulerText(bstrRulerText.c_str());
+
+	raw_SetXGradTextByIndex(nRulerIndex, xxx_bstrRulerText  );
+}
+
+inline void IDUICurve_::SetHeadName(tstring  bstrHeadName, unsigned long  clrText, unsigned int  nTextSize  )
+{
+	_bstr_t xxx_bstrHeadName(bstrHeadName.c_str());
+
+	raw_SetHeadName(xxx_bstrHeadName, clrText, nTextSize  );
+}
+
+inline void IDUICurve_::DrawAssisLine(unsigned int  nIndex, float  fAssisPos, unsigned int  DashStyle, OLE_COLOR  clrAssisLine, unsigned int  nPenSize, BOOL  bDrawAssisText  )
+{
+	VARIANT_BOOL xxx_bDrawAssisText = bDrawAssisText ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_DrawAssisLine(nIndex, fAssisPos, DashStyle, clrAssisLine, nPenSize, xxx_bDrawAssisText  );
+}
+
+inline void IDUICurve_::SetAssisLineVisble(unsigned int  index, BOOL  isVisble  )
+{
+	VARIANT_BOOL xxx_isVisble = isVisble ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetAssisLineVisble(index, xxx_isVisble  );
+}
+
+inline void IDUICurve_::SetLineVisble(unsigned int  index, BOOL  isVisble  )
+{
+	VARIANT_BOOL xxx_isVisble = isVisble ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetLineVisble(index, xxx_isVisble  );
+}
+
+inline void IDUICurve_::SetLineProp(unsigned int  nIndex, unsigned int  DashStyle, unsigned int  nLineLength, OLE_COLOR  ClrLine  )
+{
+
+	raw_SetLineProp(nIndex, DashStyle, nLineLength, ClrLine  );
+}
+
+inline void IDUICurve_::SetAssiLineProp(unsigned int  nIndex, unsigned int  DashStyle, unsigned int  nLineLength, OLE_COLOR  ClrLine, unsigned int  nTextSize  )
+{
+
+	raw_SetAssiLineProp(nIndex, DashStyle, nLineLength, ClrLine, nTextSize  );
+}
+
+inline void IDUICurve_::SetFormName(tstring  bstFormName, unsigned long  clrText, unsigned int  nTextSize  )
+{
+	_bstr_t xxx_bstFormName(bstFormName.c_str());
+
+	raw_SetFormName(xxx_bstFormName, clrText, nTextSize  );
+}
+
+inline void IDUICurve_::SetWhellSpeed(float  nSpeed  )
+{
+
+	raw_SetWhellSpeed(nSpeed  );
+}
+
+inline void IDUICurve_::GetWhellSpeed(float * nSpeed  )
+{
+
+	raw_GetWhellSpeed(nSpeed  );
+}
+
+inline void IDUICurve_::AddState(unsigned int  nIndex, unsigned int  nStartIndex, unsigned int  nEndIndex, unsigned long  clr, tstring  strStateText  )
+{
+	_bstr_t xxx_strStateText(strStateText.c_str());
+
+	raw_AddState(nIndex, nStartIndex, nEndIndex, clr, xxx_strStateText  );
+}
+
+inline void IDUICurve_::SetState(unsigned int  nParentLine, unsigned int  nStartIndex, unsigned int  nEndIndex, unsigned long  clr  )
+{
+
+	raw_SetState(nParentLine, nStartIndex, nEndIndex, clr  );
+}
+
+inline void IDUICurve_::SetXAxisUnit(tstring  bstrRangeUnit, OLE_COLOR  clrUnit  )
+{
+	_bstr_t xxx_bstrRangeUnit(bstrRangeUnit.c_str());
+
+	raw_SetXAxisUnit(xxx_bstrRangeUnit, clrUnit  );
+}
+
+inline void IDUICurve_::SetBkImage(struct IDUIImageBase * pImageBase  )
+{
+
+	raw_SetBkImage(pImageBase  );
+}
+
+inline void IDUICurve_::SetStateHeight(long  nStateHeight  )
+{
+
+	raw_SetStateHeight(nStateHeight  );
+}
+
+inline void IDUICurve_::SetGridMode(unsigned int  nDashStyle, OLE_COLOR  clrGrid, unsigned int  nGridSize  )
+{
+
+	raw_SetGridMode(nDashStyle, clrGrid, nGridSize  );
+}
+
+inline void IDUICurve_::SetYRangeUnit(tstring  bstrRangeUnit, OLE_COLOR  clrUnit  )
+{
+	_bstr_t xxx_bstrRangeUnit(bstrRangeUnit.c_str());
+
+	raw_SetYRangeUnit(xxx_bstrRangeUnit, clrUnit  );
+}
+
+inline void IDUICurve_::SetDataPointValid(unsigned int  index, unsigned int  dataIndex, BOOL  isValid  )
+{
+	VARIANT_BOOL xxx_isValid = isValid ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetDataPointValid(index, dataIndex, xxx_isValid  );
+}
+
+inline void IDUICurve_::SetYAxisRange(float  downVal, float  upVal  )
+{
+
+	raw_SetYAxisRange(downVal, upVal  );
+}
+
+inline void IDUICurve_::ShowYAxisGradByStep(unsigned int  index  )
+{
+
+	raw_ShowYAxisGradByStep(index  );
+}
+
+inline void IDUICurve_::ShowYAxisGradByIndex(int  nIndex  )
+{
+
+	raw_ShowYAxisGradByIndex(nIndex  );
+}
+
+inline void IDUICurve_::ShowYAxisTextByIndex(int  nIndex  )
+{
+
+	raw_ShowYAxisTextByIndex(nIndex  );
+}
+
+inline void IDUICurve_::ShowYAxisGradByVal(float  fValue  )
+{
+
+	raw_ShowYAxisGradByVal(fValue  );
+}
+
+inline void IDUICurve_::ShowYAxisTextByVal(float  fValue  )
+{
+
+	raw_ShowYAxisTextByVal(fValue  );
+}
+
+inline void IDUICurve_::SetFaultPos(unsigned int  index, unsigned int  FaultStartPos, unsigned int  FaultEndPos  )
+{
+
+	raw_SetFaultPos(index, FaultStartPos, FaultEndPos  );
+}
+
+inline void IDUICurve_::SaveToBitmap(tstring  iStep  )
+{
+	_bstr_t xxx_iStep(iStep.c_str());
+
+	raw_SaveToBitmap(xxx_iStep  );
+}
+
+inline void IDUICurve_::GetMaxMinValue(unsigned int  index, float * maxVal, float * minVal  )
+{
+
+	raw_GetMaxMinValue(index, maxVal, minVal  );
+}
+
+inline void IDUICurve_::GetXSpace()
+{
+
+	raw_GetXSpace();
+}
+
+inline void IDUICurve_::SetYSpace(unsigned int  nYSpace  )
+{
+
+	raw_SetYSpace(nYSpace  );
+}
+
+inline void IDUICurve_::GetYSpace()
+{
+
+	raw_GetYSpace();
+}
+
+inline void IDUICurve_::SetSpaceTime(float  fSpaceTime  )
+{
+
+	raw_SetSpaceTime(fSpaceTime  );
+}
+
+inline void IDUICurve_::SetXTime(float  fStartTime, float  fEndTime  )
+{
+
+	raw_SetXTime(fStartTime, fEndTime  );
+}
+
+inline void IDUICurve_::SetStateSpace(long  nStateSpace  )
+{
+
+	raw_SetStateSpace(nStateSpace  );
+}
+
+inline void IDUICurve_::SetPointRadius(int  nPointRadius  )
+{
+
+	raw_SetPointRadius(nPointRadius  );
+}
+
+inline void IDUICurve_::LockDrag(BOOL  bDrag  )
+{
+	VARIANT_BOOL xxx_bDrag = bDrag ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_LockDrag(xxx_bDrag  );
+}
+
+inline void IDUICurve_::LockWheel(BOOL  bCanWheel  )
+{
+	VARIANT_BOOL xxx_bCanWheel = bCanWheel ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_LockWheel(xxx_bCanWheel  );
+}
+
+inline void IDUICurve_::ClearAllXAxisGradVisible()
+{
+
+	raw_ClearAllXAxisGradVisible();
+}
+
+inline void IDUICurve_::ClearXGradText()
+{
+
+	raw_ClearXGradText();
+}
+
+inline void IDUICurve_::ClearAllYAxisGrad()
+{
+
+	raw_ClearAllYAxisGrad();
+}
+
+inline void IDUICurve_::ClearAllYAxisGradValText()
+{
+
+	raw_ClearAllYAxisGradValText();
+}
+
+inline void IDUICurve_::SetBkLineSpace(unsigned int  nBkLineSpace  )
+{
+
+	raw_SetBkLineSpace(nBkLineSpace  );
+}
+
+inline void IDUICurve_::SetXGridProperty(unsigned long  clrGrad, unsigned int  nGridHeight, unsigned int  nGridWidth, int  nDashStyle  )
+{
+
+	raw_SetXGridProperty(clrGrad, nGridHeight, nGridWidth, nDashStyle  );
+}
+
+inline void IDUICurve_::SetYGridProperty(unsigned long  clrGrad, unsigned int  nGridHeight, unsigned int  nGridWidth, int  nDashStyle  )
+{
+
+	raw_SetYGridProperty(clrGrad, nGridHeight, nGridWidth, nDashStyle  );
+}
+
+inline void IDUICurve_::SetMultiMove(unsigned int  nStart, unsigned int  nEnd  )
+{
+
+	raw_SetMultiMove(nStart, nEnd  );
+}
+
+inline void IDUICurve_::SetFrameSelection(unsigned long  clrSel, int  nDashStyle, int  nSelWidth  )
+{
+
+	raw_SetFrameSelection(clrSel, nDashStyle, nSelWidth  );
+}
+
+inline void IDUICurve_::ShowSelection(BOOL  bShowSel  )
+{
+	VARIANT_BOOL xxx_bShowSel = bShowSel ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_ShowSelection(xxx_bShowSel  );
+}
+
+inline void IDUICurve_::IsClone(BOOL  bClone  )
+{
+	VARIANT_BOOL xxx_bClone = bClone ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_IsClone(xxx_bClone  );
+}
+
+inline void IDUICurve_::SetXBottomSpace(int  nBottomSpace  )
+{
+
+	raw_SetXBottomSpace(nBottomSpace  );
+}
+
+inline void  IDUICurve::Clear()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->Clear();
+}
+
+inline void  IDUICurve::SetMaxSize(unsigned int  nMaxPoint  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetMaxSize(nMaxPoint);
+}
+
+inline void  IDUICurve::InsertLine(unsigned int  nIndex, unsigned int  fXAxisTime, float  fYAxisAmp  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->InsertLine(nIndex, fXAxisTime, fYAxisAmp);
+}
+
+inline void  IDUICurve::SetCurXShowScope(float  fStartTime, float  fEndTime  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetCurXShowScope(fStartTime, fEndTime);
+}
+
+inline void  IDUICurve::GetCurXShowScope(float * nStartTime, float * nEndTime  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->GetCurXShowScope(nStartTime, nEndTime);
+}
+
+inline void  IDUICurve::ShowXAxisGradByStep(unsigned int  nStep  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->ShowXAxisGradByStep(nStep);
+}
+
+inline void  IDUICurve::ShowXAxisGradByIndex(unsigned int  index  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->ShowXAxisGradByIndex(index);
+}
+
+inline void  IDUICurve::SetGridLineVisible(BOOL  isShow  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetGridLineVisible(isShow);
+}
+
+inline void  IDUICurve::SetXGradTextByIndex(unsigned int  nRulerIndex, tstring  bstrRulerText  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetXGradTextByIndex(nRulerIndex, bstrRulerText);
+}
+
+inline void  IDUICurve::SetHeadName(tstring  bstrHeadName, unsigned long  clrText, unsigned int  nTextSize  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetHeadName(bstrHeadName, clrText, nTextSize);
+}
+
+inline void  IDUICurve::DrawAssisLine(unsigned int  nIndex, float  fAssisPos, unsigned int  DashStyle, OLE_COLOR  clrAssisLine, unsigned int  nPenSize, BOOL  bDrawAssisText  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->DrawAssisLine(nIndex, fAssisPos, DashStyle, clrAssisLine, nPenSize, bDrawAssisText);
+}
+
+inline void  IDUICurve::SetAssisLineVisble(unsigned int  index, BOOL  isVisble  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetAssisLineVisble(index, isVisble);
+}
+
+inline void  IDUICurve::SetLineVisble(unsigned int  index, BOOL  isVisble  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetLineVisble(index, isVisble);
+}
+
+inline void  IDUICurve::SetLineProp(unsigned int  nIndex, unsigned int  DashStyle, unsigned int  nLineLength, OLE_COLOR  ClrLine  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetLineProp(nIndex, DashStyle, nLineLength, ClrLine);
+}
+
+inline void  IDUICurve::SetAssiLineProp(unsigned int  nIndex, unsigned int  DashStyle, unsigned int  nLineLength, OLE_COLOR  ClrLine, unsigned int  nTextSize  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetAssiLineProp(nIndex, DashStyle, nLineLength, ClrLine, nTextSize);
+}
+
+inline void  IDUICurve::SetFormName(tstring  bstFormName, unsigned long  clrText, unsigned int  nTextSize  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetFormName(bstFormName, clrText, nTextSize);
+}
+
+inline void  IDUICurve::SetWhellSpeed(float  nSpeed  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetWhellSpeed(nSpeed);
+}
+
+inline void  IDUICurve::GetWhellSpeed(float * nSpeed  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->GetWhellSpeed(nSpeed);
+}
+
+inline void  IDUICurve::AddState(unsigned int  nIndex, unsigned int  nStartIndex, unsigned int  nEndIndex, unsigned long  clr, tstring  strStateText  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->AddState(nIndex, nStartIndex, nEndIndex, clr, strStateText);
+}
+
+inline void  IDUICurve::SetState(unsigned int  nParentLine, unsigned int  nStartIndex, unsigned int  nEndIndex, unsigned long  clr  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetState(nParentLine, nStartIndex, nEndIndex, clr);
+}
+
+inline void  IDUICurve::SetXAxisUnit(tstring  bstrRangeUnit, OLE_COLOR  clrUnit  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetXAxisUnit(bstrRangeUnit, clrUnit);
+}
+
+inline void  IDUICurve::SetBkImage(struct IDUIImageBase * pImageBase  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetBkImage(pImageBase);
+}
+
+inline void  IDUICurve::SetStateHeight(long  nStateHeight  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetStateHeight(nStateHeight);
+}
+
+inline void  IDUICurve::SetGridMode(unsigned int  nDashStyle, OLE_COLOR  clrGrid, unsigned int  nGridSize  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetGridMode(nDashStyle, clrGrid, nGridSize);
+}
+
+inline void  IDUICurve::SetYRangeUnit(tstring  bstrRangeUnit, OLE_COLOR  clrUnit  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetYRangeUnit(bstrRangeUnit, clrUnit);
+}
+
+inline void  IDUICurve::SetDataPointValid(unsigned int  index, unsigned int  dataIndex, BOOL  isValid  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetDataPointValid(index, dataIndex, isValid);
+}
+
+inline void  IDUICurve::SetYAxisRange(float  downVal, float  upVal  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetYAxisRange(downVal, upVal);
+}
+
+inline void  IDUICurve::ShowYAxisGradByStep(unsigned int  index  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->ShowYAxisGradByStep(index);
+}
+
+inline void  IDUICurve::ShowYAxisGradByIndex(int  nIndex  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->ShowYAxisGradByIndex(nIndex);
+}
+
+inline void  IDUICurve::ShowYAxisTextByIndex(int  nIndex  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->ShowYAxisTextByIndex(nIndex);
+}
+
+inline void  IDUICurve::ShowYAxisGradByVal(float  fValue  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->ShowYAxisGradByVal(fValue);
+}
+
+inline void  IDUICurve::ShowYAxisTextByVal(float  fValue  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->ShowYAxisTextByVal(fValue);
+}
+
+inline void  IDUICurve::SetFaultPos(unsigned int  index, unsigned int  FaultStartPos, unsigned int  FaultEndPos  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetFaultPos(index, FaultStartPos, FaultEndPos);
+}
+
+inline void  IDUICurve::SaveToBitmap(tstring  iStep  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SaveToBitmap(iStep);
+}
+
+inline void  IDUICurve::GetMaxMinValue(unsigned int  index, float * maxVal, float * minVal  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->GetMaxMinValue(index, maxVal, minVal);
+}
+
+inline void  IDUICurve::GetXSpace()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->GetXSpace();
+}
+
+inline void  IDUICurve::SetYSpace(unsigned int  nYSpace  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetYSpace(nYSpace);
+}
+
+inline void  IDUICurve::GetYSpace()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->GetYSpace();
+}
+
+inline void  IDUICurve::SetSpaceTime(float  fSpaceTime  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetSpaceTime(fSpaceTime);
+}
+
+inline void  IDUICurve::SetXTime(float  fStartTime, float  fEndTime  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetXTime(fStartTime, fEndTime);
+}
+
+inline void  IDUICurve::SetStateSpace(long  nStateSpace  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetStateSpace(nStateSpace);
+}
+
+inline void  IDUICurve::SetPointRadius(int  nPointRadius  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetPointRadius(nPointRadius);
+}
+
+inline void  IDUICurve::LockDrag(BOOL  bDrag  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->LockDrag(bDrag);
+}
+
+inline void  IDUICurve::LockWheel(BOOL  bCanWheel  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->LockWheel(bCanWheel);
+}
+
+inline void  IDUICurve::ClearAllXAxisGradVisible()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->ClearAllXAxisGradVisible();
+}
+
+inline void  IDUICurve::ClearXGradText()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->ClearXGradText();
+}
+
+inline void  IDUICurve::ClearAllYAxisGrad()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->ClearAllYAxisGrad();
+}
+
+inline void  IDUICurve::ClearAllYAxisGradValText()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->ClearAllYAxisGradValText();
+}
+
+inline void  IDUICurve::SetBkLineSpace(unsigned int  nBkLineSpace  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetBkLineSpace(nBkLineSpace);
+}
+
+inline void  IDUICurve::SetXGridProperty(unsigned long  clrGrad, unsigned int  nGridHeight, unsigned int  nGridWidth, int  nDashStyle  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetXGridProperty(clrGrad, nGridHeight, nGridWidth, nDashStyle);
+}
+
+inline void  IDUICurve::SetYGridProperty(unsigned long  clrGrad, unsigned int  nGridHeight, unsigned int  nGridWidth, int  nDashStyle  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetYGridProperty(clrGrad, nGridHeight, nGridWidth, nDashStyle);
+}
+
+inline void  IDUICurve::SetMultiMove(unsigned int  nStart, unsigned int  nEnd  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetMultiMove(nStart, nEnd);
+}
+
+inline void  IDUICurve::SetFrameSelection(unsigned long  clrSel, int  nDashStyle, int  nSelWidth  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetFrameSelection(clrSel, nDashStyle, nSelWidth);
+}
+
+inline void  IDUICurve::ShowSelection(BOOL  bShowSel  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->ShowSelection(bShowSel);
+}
+
+inline void  IDUICurve::IsClone(BOOL  bClone  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->IsClone(bClone);
+}
+
+inline void  IDUICurve::SetXBottomSpace(int  nBottomSpace  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUICurve_*)m_pCtrl)->SetXBottomSpace(nBottomSpace);
+}
+
+inline void IDUIChrome_::SetCurrURL(tstring  strCurURL  )
+{
+	_bstr_t xxx_strCurURL(strCurURL.c_str());
+
+	raw_SetCurrURL(xxx_strCurURL  );
+}
+
+inline void IDUIChrome_::OnShow()
+{
+
+	raw_OnShow();
+}
+
+inline void IDUIChrome_::SetGanT(tstring  strCurURL  )
+{
+	_bstr_t xxx_strCurURL(strCurURL.c_str());
+
+	raw_SetGanT(xxx_strCurURL  );
+}
+
+inline void IDUIChrome_::SendMesToWnd(int  nID, int  nButton  )
+{
+
+	raw_SendMesToWnd(nID, nButton  );
+}
+
+inline void IDUIChrome_::Set3DMenu(tstring  strText  )
+{
+	_bstr_t xxx_strText(strText.c_str());
+
+	raw_Set3DMenu(xxx_strText  );
+}
+
+inline void  IDUIChrome::SetCurrURL(tstring  strCurURL  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIChrome_*)m_pCtrl)->SetCurrURL(strCurURL);
+}
+
+inline void  IDUIChrome::OnShow()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIChrome_*)m_pCtrl)->OnShow();
+}
+
+inline void  IDUIChrome::SetGanT(tstring  strCurURL  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIChrome_*)m_pCtrl)->SetGanT(strCurURL);
+}
+
+inline void  IDUIChrome::SendMesToWnd(int  nID, int  nButton  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIChrome_*)m_pCtrl)->SendMesToWnd(nID, nButton);
+}
+
+inline void  IDUIChrome::Set3DMenu(tstring  strText  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIChrome_*)m_pCtrl)->Set3DMenu(strText);
+}
+
+inline void IDUITimeAxis_::SetStartTime(struct DataTime  tmData  )
+{
+
+	raw_SetStartTime(tmData  );
+}
+
+inline void IDUITimeAxis_::SetEndTime(struct DataTime  tmData  )
+{
+
+	raw_SetEndTime(tmData  );
+}
+
+inline void IDUITimeAxis_::SetTimeTick(long  nTimeTick  )
+{
+
+	raw_SetTimeTick(nTimeTick  );
+}
+
+inline struct IDUITimeChannel * IDUITimeAxis_::AppendTimeChannel(tstring  strText, BOOL  bRedraw  )
+{
+_bstr_t xxx_strText(strText.c_str());
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	struct IDUITimeChannel * _result;
+	raw_AppendTimeChannel(xxx_strText, xxx_bRedraw, &_result);
+	return _result;
+}
+
+inline void IDUITimeAxis_::SetPlayMode(enum PlayMode  nMode  )
+{
+
+	raw_SetPlayMode(nMode  );
+}
+
+inline struct IDUITimerRuler * IDUITimeAxis_::GetTimeRuler()
+{
+	struct IDUITimerRuler * _result;
+	raw_GetTimeRuler(&_result);
+	return _result;
+}
+
+inline void IDUITimeAxis_::SetRectangleSelectMode(BOOL  bRectlange  )
+{
+	VARIANT_BOOL xxx_bRectlange = bRectlange ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetRectangleSelectMode(xxx_bRectlange  );
+}
+
+inline struct IDUITimeChannel * IDUITimeAxis_::GetTimeChannel(long  nIndex  )
+{
+	struct IDUITimeChannel * _result;
+	raw_GetTimeChannel(nIndex, &_result);
+	return _result;
+}
+
+inline long  IDUITimeAxis_::GetChannelCount()
+{
+	long  _result;
+	raw_GetChannelCount(&_result);
+	return _result;
+}
+
+inline void IDUITimeAxis_::SetTickPix(long  nTickPix  )
+{
+
+	raw_SetTickPix(nTickPix  );
+}
+
+inline void IDUITimeAxis_::RemoveTimeChannel(long  nIndex  )
+{
+
+	raw_RemoveTimeChannel(nIndex  );
+}
+
+inline void IDUITimeAxis_::SetMultiSelect(BOOL  bMultiSelect  )
+{
+	VARIANT_BOOL xxx_bMultiSelect = bMultiSelect ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetMultiSelect(xxx_bMultiSelect  );
+}
+
+inline BOOL  IDUITimeAxis_::IsMultiSelect()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_IsMultiSelect(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline struct IDUITimeChannel * IDUITimeAxis_::GetSelChannel()
+{
+	struct IDUITimeChannel * _result;
+	raw_GetSelChannel(&_result);
+	return _result;
+}
+
+inline void IDUITimeAxis_::SetPointerShow(BOOL  bShow  )
+{
+	VARIANT_BOOL xxx_bShow = bShow ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetPointerShow(xxx_bShow  );
+}
+
+inline void IDUITimeAxis_::SetBackColor(struct IFillColor * pFillColor, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetBackColor(pFillColor, xxx_bRedraw  );
+}
+
+inline void IDUITimeAxis_::SetRulerHeight(long  nHeight  )
+{
+
+	raw_SetRulerHeight(nHeight  );
+}
+
+inline void IDUITimeAxis_::SetRulerBackColor(struct IFillColor * pFillColor  )
+{
+
+	raw_SetRulerBackColor(pFillColor  );
+}
+
+inline void IDUITimeAxis_::SetRulerBackImage(struct IDUIImageBase * pImageBase  )
+{
+
+	raw_SetRulerBackImage(pImageBase  );
+}
+
+inline void IDUITimeAxis_::SetRulerOffsetX(long  nOffsetX  )
+{
+
+	raw_SetRulerOffsetX(nOffsetX  );
+}
+
+inline void IDUITimeAxis_::SetChannelHeight(long  nHeight  )
+{
+
+	raw_SetChannelHeight(nHeight  );
+}
+
+inline void IDUITimeAxis_::SetContinueSelectMode(BOOL  bEnable  )
+{
+	VARIANT_BOOL xxx_bEnable = bEnable ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetContinueSelectMode(xxx_bEnable  );
+}
+
+inline void IDUITimeAxis_::SetChannelColor(enum ChannelState  nState, struct IFillColor * pFillColor  )
+{
+
+	raw_SetChannelColor(nState, pFillColor  );
+}
+
+inline void IDUITimeAxis_::SetChannelImage(enum ChannelState  nState, struct IDUIImageBase * pImageBase  )
+{
+
+	raw_SetChannelImage(nState, pImageBase  );
+}
+
+inline void IDUITimeAxis_::SetTimeTipFormat(tstring  strFormat  )
+{
+	_bstr_t xxx_strFormat(strFormat.c_str());
+
+	raw_SetTimeTipFormat(xxx_strFormat  );
+}
+
+inline struct IDUITimeChannel * IDUITimeAxis_::InsertTimeChannel(tstring  strText, long  nIndex, BOOL  bRedraw  )
+{
+_bstr_t xxx_strText(strText.c_str());
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	struct IDUITimeChannel * _result;
+	raw_InsertTimeChannel(xxx_strText, nIndex, xxx_bRedraw, &_result);
+	return _result;
+}
+
+inline struct DataTime  IDUITimeAxis_::GetCursorTime()
+{
+	struct DataTime  _result;
+	raw_GetCursorTime(&_result);
+	return _result;
+}
+
+inline long  IDUITimeAxis_::GetChectedTagId()
+{
+	long  _result;
+	raw_GetChectedTagId(&_result);
+	return _result;
+}
+
+inline void IDUITimeAxis_::SetDragCursor(OLE_HANDLE  hCursor  )
+{
+
+	raw_SetDragCursor(hCursor  );
+}
+
+inline void IDUITimeAxis_::EnableMouseScroll(BOOL  bEnable  )
+{
+	VARIANT_BOOL xxx_bEnable = bEnable ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_EnableMouseScroll(xxx_bEnable  );
+}
+
+inline void IDUITimeAxis_::SetDrawTimeTag(BOOL  bEnable  )
+{
+	VARIANT_BOOL xxx_bEnable = bEnable ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetDrawTimeTag(xxx_bEnable  );
+}
+
+inline BOOL  IDUITimeAxis_::IsDrawTimeTag()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_IsDrawTimeTag(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void IDUITimeAxis_::SetExpandHeight(long  nHeight  )
+{
+
+	raw_SetExpandHeight(nHeight  );
+}
+
+inline void IDUITimeAxis_::ExpandChannel(long  nIndex, BOOL  bExpand  )
+{
+	VARIANT_BOOL xxx_bExpand = bExpand ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_ExpandChannel(nIndex, xxx_bExpand  );
+}
+
+inline struct IDUITimeChannel * IDUITimeAxis_::GetExpandChannel()
+{
+	struct IDUITimeChannel * _result;
+	raw_GetExpandChannel(&_result);
+	return _result;
+}
+
+inline void IDUITimeAxis_::SetDragAllSelMode(BOOL  bEnable  )
+{
+	VARIANT_BOOL xxx_bEnable = bEnable ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetDragAllSelMode(xxx_bEnable  );
+}
+
+inline void  IDUITimeAxis::SetStartTime(struct DataTime  tmData  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->SetStartTime(tmData);
+}
+
+inline void  IDUITimeAxis::SetEndTime(struct DataTime  tmData  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->SetEndTime(tmData);
+}
+
+inline void  IDUITimeAxis::SetTimeTick(long  nTimeTick  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->SetTimeTick(nTimeTick);
+}
+
+inline struct IDUITimeChannel * IDUITimeAxis::AppendTimeChannel(tstring  strText, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->AppendTimeChannel(strText, bRedraw);
+}
+
+inline void  IDUITimeAxis::SetPlayMode(enum PlayMode  nMode  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->SetPlayMode(nMode);
+}
+
+inline struct IDUITimerRuler * IDUITimeAxis::GetTimeRuler()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->GetTimeRuler();
+}
+
+inline void  IDUITimeAxis::SetRectangleSelectMode(BOOL  bRectlange  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->SetRectangleSelectMode(bRectlange);
+}
+
+inline struct IDUITimeChannel * IDUITimeAxis::GetTimeChannel(long  nIndex  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->GetTimeChannel(nIndex);
+}
+
+inline long  IDUITimeAxis::GetChannelCount()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->GetChannelCount();
+}
+
+inline void  IDUITimeAxis::SetTickPix(long  nTickPix  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->SetTickPix(nTickPix);
+}
+
+inline void  IDUITimeAxis::RemoveTimeChannel(long  nIndex  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->RemoveTimeChannel(nIndex);
+}
+
+inline void  IDUITimeAxis::SetMultiSelect(BOOL  bMultiSelect  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->SetMultiSelect(bMultiSelect);
+}
+
+inline BOOL  IDUITimeAxis::IsMultiSelect()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->IsMultiSelect();
+}
+
+inline struct IDUITimeChannel * IDUITimeAxis::GetSelChannel()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->GetSelChannel();
+}
+
+inline void  IDUITimeAxis::SetPointerShow(BOOL  bShow  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->SetPointerShow(bShow);
+}
+
+inline void  IDUITimeAxis::SetBackColor(struct IFillColor * pFillColor, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->SetBackColor(pFillColor, bRedraw);
+}
+
+inline void  IDUITimeAxis::SetRulerHeight(long  nHeight  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->SetRulerHeight(nHeight);
+}
+
+inline void  IDUITimeAxis::SetRulerBackColor(struct IFillColor * pFillColor  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->SetRulerBackColor(pFillColor);
+}
+
+inline void  IDUITimeAxis::SetRulerBackImage(struct IDUIImageBase * pImageBase  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->SetRulerBackImage(pImageBase);
+}
+
+inline void  IDUITimeAxis::SetRulerOffsetX(long  nOffsetX  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->SetRulerOffsetX(nOffsetX);
+}
+
+inline void  IDUITimeAxis::SetChannelHeight(long  nHeight  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->SetChannelHeight(nHeight);
+}
+
+inline void  IDUITimeAxis::SetContinueSelectMode(BOOL  bEnable  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->SetContinueSelectMode(bEnable);
+}
+
+inline void  IDUITimeAxis::SetChannelColor(enum ChannelState  nState, struct IFillColor * pFillColor  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->SetChannelColor(nState, pFillColor);
+}
+
+inline void  IDUITimeAxis::SetChannelImage(enum ChannelState  nState, struct IDUIImageBase * pImageBase  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->SetChannelImage(nState, pImageBase);
+}
+
+inline void  IDUITimeAxis::SetTimeTipFormat(tstring  strFormat  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->SetTimeTipFormat(strFormat);
+}
+
+inline struct IDUITimeChannel * IDUITimeAxis::InsertTimeChannel(tstring  strText, long  nIndex, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->InsertTimeChannel(strText, nIndex, bRedraw);
+}
+
+inline struct DataTime  IDUITimeAxis::GetCursorTime()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->GetCursorTime();
+}
+
+inline long  IDUITimeAxis::GetChectedTagId()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->GetChectedTagId();
+}
+
+inline void  IDUITimeAxis::SetDragCursor(OLE_HANDLE  hCursor  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->SetDragCursor(hCursor);
+}
+
+inline void  IDUITimeAxis::EnableMouseScroll(BOOL  bEnable  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->EnableMouseScroll(bEnable);
+}
+
+inline void  IDUITimeAxis::SetDrawTimeTag(BOOL  bEnable  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->SetDrawTimeTag(bEnable);
+}
+
+inline BOOL  IDUITimeAxis::IsDrawTimeTag()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->IsDrawTimeTag();
+}
+
+inline void  IDUITimeAxis::SetExpandHeight(long  nHeight  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->SetExpandHeight(nHeight);
+}
+
+inline void  IDUITimeAxis::ExpandChannel(long  nIndex, BOOL  bExpand  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->ExpandChannel(nIndex, bExpand);
+}
+
+inline struct IDUITimeChannel * IDUITimeAxis::GetExpandChannel()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->GetExpandChannel();
+}
+
+inline void  IDUITimeAxis::SetDragAllSelMode(BOOL  bEnable  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUITimeAxis_*)m_pCtrl)->SetDragAllSelMode(bEnable);
+}
+
+inline void IDUITimeChannel::SetText(tstring  bStrText  )
+{
+	_bstr_t xxx_bStrText(bStrText.c_str());
+
+	raw_SetText(xxx_bStrText  );
+}
+
+inline struct IDUITimePointer * IDUITimeChannel::GetTimePointer()
+{
+	struct IDUITimePointer * _result;
+	raw_GetTimePointer(&_result);
+	return _result;
+}
+
+inline struct IDUITimeLine * IDUITimeChannel::AppendTimeLine(struct DataTime  tStart, struct DataTime  tEnd, long  nID, struct IFillColor * pFillColor, struct IDUIImageBase * pImageBase, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	struct IDUITimeLine * _result;
+	raw_AppendTimeLine(tStart, tEnd, nID, pFillColor, pImageBase, xxx_bRedraw, &_result);
+	return _result;
+}
+
+inline struct IDUITimeLine * IDUITimeChannel::GetTimeLine(long  nIndex  )
+{
+	struct IDUITimeLine * _result;
+	raw_GetTimeLine(nIndex, &_result);
+	return _result;
+}
+
+inline long  IDUITimeChannel::GetTimeLineCount()
+{
+	long  _result;
+	raw_GetTimeLineCount(&_result);
+	return _result;
+}
+
+inline void IDUITimeChannel::SetPointerPos(struct DataTime  tTime  )
+{
+
+	raw_SetPointerPos(tTime  );
+}
+
+inline void IDUITimeChannel::RemoveAllTimeLine()
+{
+
+	raw_RemoveAllTimeLine();
+}
+
+inline void IDUITimeChannel::RemoveTimeLineById(long  nID  )
+{
+
+	raw_RemoveTimeLineById(nID  );
+}
+
+inline tstring  IDUITimeChannel::GetText()
+{
+	BSTR _result = NULL;
+	raw_GetText(&_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline void IDUITimeChannel::SetState(enum ChannelState  nState  )
+{
+
+	raw_SetState(nState  );
+}
+
+inline BOOL  IDUITimeChannel::IsCheck()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_IsCheck(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void IDUITimeChannel::SetCheck(BOOL  bCheck  )
+{
+	VARIANT_BOOL xxx_bCheck = bCheck ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetCheck(xxx_bCheck  );
+}
+
+inline void IDUITimeChannel::SetBtnText(tstring  strText  )
+{
+	_bstr_t xxx_strText(strText.c_str());
+
+	raw_SetBtnText(xxx_strText  );
+}
+
+inline struct IDUITimeLine * IDUITimeChannel::GetTimeLineById(long  nID  )
+{
+	struct IDUITimeLine * _result;
+	raw_GetTimeLineById(nID, &_result);
+	return _result;
+}
+
+inline void IDUITimeChannel::AppendTimeTag(OLE_HANDLE  hTagBitmap, OLE_HANDLE  hCheckBitmap, struct IDUIImageBase * pImageBase, struct IDUIImageBase * pSelImageBase, struct DataTime  tStartTimeData, struct DataTime  tEndTimeData, long  nID  )
+{
+
+	raw_AppendTimeTag(hTagBitmap, hCheckBitmap, pImageBase, pSelImageBase, tStartTimeData, tEndTimeData, nID  );
+}
+
+inline void IDUITimeChannel::RemoveAllTagTimeTag()
+{
+
+	raw_RemoveAllTagTimeTag();
+}
+
+inline void IDUITimeChannel::RemoveTimeTagById(long  nID  )
+{
+
+	raw_RemoveTimeTagById(nID  );
+}
+
+inline struct SkinRect  IDUITimeChannel::GetTimeTagRectById(long  nID  )
+{
+	struct SkinRect  _result;
+	raw_GetTimeTagRectById(nID, &_result);
+	return _result;
+}
+
+inline struct DataTime  IDUITimeChannel::GetTimeTagStartTimeById(long  nIndex  )
+{
+	struct DataTime  _result;
+	raw_GetTimeTagStartTimeById(nIndex, &_result);
+	return _result;
+}
+
+inline struct DataTime  IDUITimeChannel::GetTimeTagEndTimeById(long  nIndex  )
+{
+	struct DataTime  _result;
+	raw_GetTimeTagEndTimeById(nIndex, &_result);
+	return _result;
+}
+
+inline BOOL  IDUITimeChannel::IsTagCheck(long  nID  )
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_IsTagCheck(nID, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void IDUITimeChannel::SetColor(enum ChannelState  nState, struct IFillColor * pFillColor  )
+{
+
+	raw_SetColor(nState, pFillColor  );
+}
+
+inline void IDUITimeChannel::SetImageBase(enum ChannelState  nState, struct IDUIImageBase * pImageBase  )
+{
+
+	raw_SetImageBase(nState, pImageBase  );
+}
+
+inline void IDUITimeChannel::SetSelPointerCenter()
+{
+
+	raw_SetSelPointerCenter();
+}
+
+inline void IDUITimeChannel::GetSelStartTime(struct DataTime * tmData  )
+{
+
+	raw_GetSelStartTime(tmData  );
+}
+
+inline void IDUITimeChannel::GetSelEndTime(struct DataTime * tmData  )
+{
+
+	raw_GetSelEndTime(tmData  );
+}
+
+inline void IDUITimeChannel::SetSelStartTime(struct DataTime  tmData  )
+{
+
+	raw_SetSelStartTime(tmData  );
+}
+
+inline void IDUITimeChannel::SetSelEndTime(struct DataTime  tmData  )
+{
+
+	raw_SetSelEndTime(tmData  );
+}
+
+inline void IDUITimeChannel::CancelContinueSelect()
+{
+
+	raw_CancelContinueSelect();
+}
+
+inline void IDUITimeChannel::SetPointerShow(BOOL  bShow  )
+{
+	VARIANT_BOOL xxx_bShow = bShow ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetPointerShow(xxx_bShow  );
+}
+
+inline void IDUITimeChannel::AppendChannelTag(OLE_HANDLE  hTagBitmap, OLE_HANDLE  hCheckBitmap, struct IDUIImageBase * pImageBase, struct DataTime  tStartTimeData, struct DataTime  tEndTime  )
+{
+
+	raw_AppendChannelTag(hTagBitmap, hCheckBitmap, pImageBase, tStartTimeData, tEndTime  );
+}
+
+inline void IDUITimeChannel::RemoveChannelTag()
+{
+
+	raw_RemoveChannelTag();
+}
+
+inline long  IDUITimeChannel::GetIndex()
+{
+	long  _result;
+	raw_GetIndex(&_result);
+	return _result;
+}
+
+inline void IDUITimeChannel::SetID(long  nID  )
+{
+
+	raw_SetID(nID  );
+}
+
+inline long  IDUITimeChannel::GetID()
+{
+	long  _result;
+	raw_GetID(&_result);
+	return _result;
+}
+
+inline void IDUITimeChannel::ClearSelections()
+{
+
+	raw_ClearSelections();
+}
+
+inline BOOL  IDUITimeChannel::IsHaveSelections()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_IsHaveSelections(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void IDUITimeChannel::SetTagSpecialHBitmap(OLE_HANDLE  hBitmap, OLE_HANDLE  hCheckBitmap  )
+{
+
+	raw_SetTagSpecialHBitmap(hBitmap, hCheckBitmap  );
+}
+
+inline void IDUITimeChannel::SetDrawTimeTag(BOOL  bDrawTimeTag  )
+{
+	VARIANT_BOOL xxx_bDrawTimeTag = bDrawTimeTag ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetDrawTimeTag(xxx_bDrawTimeTag  );
+}
+
+inline BOOL  IDUITimeChannel::IsDrawTimeTag()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_IsDrawTimeTag(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline struct SkinRect  IDUITimeChannel::GetChannelRc()
+{
+	struct SkinRect  _result;
+	raw_GetChannelRc(&_result);
+	return _result;
+}
+
+inline void IDUITimeChannel::SetTxtRightOffset(long  nOffset  )
+{
+
+	raw_SetTxtRightOffset(nOffset  );
+}
+
+inline long  IDUITimeChannel::GetTxtRightOffset()
+{
+	long  _result;
+	raw_GetTxtRightOffset(&_result);
+	return _result;
+}
+
+inline OLE_HANDLE  IDUITimeChannel::GetCustomForm()
+{
+	OLE_HANDLE  _result;
+	raw_GetCustomForm(&_result);
+	return _result;
+}
+
+inline OLE_HANDLE  IDUITimeChannel::GetExpandForm()
+{
+	OLE_HANDLE  _result;
+	raw_GetExpandForm(&_result);
+	return _result;
+}
+
+inline void IDUITimeChannel::SetHighLightTime(struct DataTime  tStart, struct DataTime  tEnd, BOOL  bShow  )
+{
+	VARIANT_BOOL xxx_bShow = bShow ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetHighLightTime(tStart, tEnd, xxx_bShow  );
+}
+
+inline void IDUITimeChannel::SetHighLightShow(BOOL  bShow  )
+{
+	VARIANT_BOOL xxx_bShow = bShow ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetHighLightShow(xxx_bShow  );
+}
+
+inline void IDUITimeChannel::SetHeight(long  nHeight  )
+{
+
+	raw_SetHeight(nHeight  );
+}
+
+inline long  IDUITimeChannel::GetHeight()
+{
+	long  _result;
+	raw_GetHeight(&_result);
+	return _result;
+}
+
+inline void IDUITimePointer::SetStartTime(struct DataTime  tmData  )
+{
+
+	raw_SetStartTime(tmData  );
+}
+
+inline struct DataTime  IDUITimePointer::GetStartTime()
+{
+	struct DataTime  _result;
+	raw_GetStartTime(&_result);
+	return _result;
+}
+
+inline struct DataTime  IDUITimeLine::GetSelectionStartTime(long  nIndex  )
+{
+	struct DataTime  _result;
+	raw_GetSelectionStartTime(nIndex, &_result);
+	return _result;
+}
+
+inline void IDUITimeLine::Deselect()
+{
+
+	raw_Deselect();
+}
+
+inline struct DataTime  IDUITimeLine::GetStartTime()
+{
+	struct DataTime  _result;
+	raw_GetStartTime(&_result);
+	return _result;
+}
+
+inline struct DataTime  IDUITimeLine::GetEndTime()
+{
+	struct DataTime  _result;
+	raw_GetEndTime(&_result);
+	return _result;
+}
+
+inline struct DataTime  IDUITimeLine::GetSelectionEndTime(long  nIndex  )
+{
+	struct DataTime  _result;
+	raw_GetSelectionEndTime(nIndex, &_result);
+	return _result;
+}
+
+inline long  IDUITimeLine::GetSelectionCount()
+{
+	long  _result;
+	raw_GetSelectionCount(&_result);
+	return _result;
+}
+
+inline void IDUITimeLine::SetSelectionTime(struct DataTime  tmStartData, struct DataTime  tmEndData  )
+{
+
+	raw_SetSelectionTime(tmStartData, tmEndData  );
+}
+
+inline long  IDUITimeLine::GetID()
+{
+	long  _result;
+	raw_GetID(&_result);
+	return _result;
+}
+
+inline long  IDUITimeLine::GetIndex()
+{
+	long  _result;
+	raw_GetIndex(&_result);
+	return _result;
+}
+
+inline struct IDUITimePointer * IDUITimerRuler::GetTimePointer()
+{
+	struct IDUITimePointer * _result;
+	raw_GetTimePointer(&_result);
+	return _result;
+}
+
+inline struct DataTime  IDUITimerRuler::GetStartTime()
+{
+	struct DataTime  _result;
+	raw_GetStartTime(&_result);
+	return _result;
+}
+
+inline void IDUITimerRuler::SetNoDbClickHeight(long  nHeight  )
+{
+
+	raw_SetNoDbClickHeight(nHeight  );
+}
+
+inline void IDUIPie_::SetTitle(tstring  strTitle  )
+{
+	_bstr_t xxx_strTitle(strTitle.c_str());
+
+	raw_SetTitle(xxx_strTitle  );
+}
+
+inline void IDUIPie_::SetSubTitle(tstring  strSubTitle  )
+{
+	_bstr_t xxx_strSubTitle(strSubTitle.c_str());
+
+	raw_SetSubTitle(xxx_strSubTitle  );
+}
+
+inline void IDUIPie_::ClearAllData()
+{
+
+	raw_ClearAllData();
+}
+
+inline void IDUIPie_::ShowPie()
+{
+
+	raw_ShowPie();
+}
+
+inline void IDUIPie_::AddPieData(tstring  strName, tstring  strVal  )
+{
+	_bstr_t xxx_strName(strName.c_str());
+	_bstr_t xxx_strVal(strVal.c_str());
+
+	raw_AddPieData(xxx_strName, xxx_strVal  );
+}
+
+inline void  IDUIPie::SetTitle(tstring  strTitle  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIPie_*)m_pCtrl)->SetTitle(strTitle);
+}
+
+inline void  IDUIPie::SetSubTitle(tstring  strSubTitle  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIPie_*)m_pCtrl)->SetSubTitle(strSubTitle);
+}
+
+inline void  IDUIPie::ClearAllData()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIPie_*)m_pCtrl)->ClearAllData();
+}
+
+inline void  IDUIPie::ShowPie()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIPie_*)m_pCtrl)->ShowPie();
+}
+
+inline void  IDUIPie::AddPieData(tstring  strName, tstring  strVal  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIPie_*)m_pCtrl)->AddPieData(strName, strVal);
+}
+
+inline void IDUIColumn_::SetTitle(tstring  strTitle  )
+{
+	_bstr_t xxx_strTitle(strTitle.c_str());
+
+	raw_SetTitle(xxx_strTitle  );
+}
+
+inline void IDUIColumn_::SetSubTitle(tstring  strSubTitle  )
+{
+	_bstr_t xxx_strSubTitle(strSubTitle.c_str());
+
+	raw_SetSubTitle(xxx_strSubTitle  );
+}
+
+inline void IDUIColumn_::SetYTitle(tstring  strYTitle  )
+{
+	_bstr_t xxx_strYTitle(strYTitle.c_str());
+
+	raw_SetYTitle(xxx_strYTitle  );
+}
+
+inline void IDUIColumn_::ClearAllData()
+{
+
+	raw_ClearAllData();
+}
+
+inline void IDUIColumn_::ShowColumn()
+{
+
+	raw_ShowColumn();
+}
+
+inline void IDUIColumn_::AddData(tstring  strName, tstring  strVal  )
+{
+	_bstr_t xxx_strName(strName.c_str());
+	_bstr_t xxx_strVal(strVal.c_str());
+
+	raw_AddData(xxx_strName, xxx_strVal  );
+}
+
+inline void IDUIColumn_::AddXAxis(tstring  strXAxis  )
+{
+	_bstr_t xxx_strXAxis(strXAxis.c_str());
+
+	raw_AddXAxis(xxx_strXAxis  );
+}
+
+inline void  IDUIColumn::SetTitle(tstring  strTitle  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIColumn_*)m_pCtrl)->SetTitle(strTitle);
+}
+
+inline void  IDUIColumn::SetSubTitle(tstring  strSubTitle  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIColumn_*)m_pCtrl)->SetSubTitle(strSubTitle);
+}
+
+inline void  IDUIColumn::SetYTitle(tstring  strYTitle  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIColumn_*)m_pCtrl)->SetYTitle(strYTitle);
+}
+
+inline void  IDUIColumn::ClearAllData()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIColumn_*)m_pCtrl)->ClearAllData();
+}
+
+inline void  IDUIColumn::ShowColumn()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIColumn_*)m_pCtrl)->ShowColumn();
+}
+
+inline void  IDUIColumn::AddData(tstring  strName, tstring  strVal  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIColumn_*)m_pCtrl)->AddData(strName, strVal);
+}
+
+inline void  IDUIColumn::AddXAxis(tstring  strXAxis  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIColumn_*)m_pCtrl)->AddXAxis(strXAxis);
+}
+
+inline OLE_HANDLE  IDUIGridCtrl_::OnInsertRow(OLE_HANDLE  pParent, tstring  strHeading  )
+{
+_bstr_t xxx_strHeading(strHeading.c_str());
+	OLE_HANDLE  _result;
+	raw_OnInsertRow(pParent, xxx_strHeading, &_result);
+	return _result;
+}
+
+inline void IDUIGridCtrl_::SetHeadRowCount(int  nRow  )
+{
+
+	raw_SetHeadRowCount(nRow  );
+}
+
+inline void IDUIGridCtrl_::SetRowCounts(int  nRowCount  )
+{
+
+	raw_SetRowCounts(nRowCount  );
+}
+
+inline void IDUIGridCtrl_::SetColumnCounts(int  nColCount  )
+{
+
+	raw_SetColumnCounts(nColCount  );
+}
+
+inline void IDUIGridCtrl_::SetCellText(int  nRow, int  nCol, tstring  str, BOOL  bRightOrCenter  )
+{
+	_bstr_t xxx_str(str.c_str());
+	VARIANT_BOOL xxx_bRightOrCenter = bRightOrCenter ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetCellText(nRow, nCol, xxx_str, xxx_bRightOrCenter  );
+}
+
+inline void IDUIGridCtrl_::SetHeadCellText(int  nRow, int  nCol, tstring  str, BOOL  bRightOrCenter  )
+{
+	_bstr_t xxx_str(str.c_str());
+	VARIANT_BOOL xxx_bRightOrCenter = bRightOrCenter ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetHeadCellText(nRow, nCol, xxx_str, xxx_bRightOrCenter  );
+}
+
+inline void IDUIGridCtrl_::SetColWidth(int  nCol, int  nWidth  )
+{
+
+	raw_SetColWidth(nCol, nWidth  );
+}
+
+inline void IDUIGridCtrl_::SetCellReadonly(int  nRow, int  nCol  )
+{
+
+	raw_SetCellReadonly(nRow, nCol  );
+}
+
+inline void IDUIGridCtrl_::DeleteAll()
+{
+
+	raw_DeleteAll();
+}
+
+inline void IDUIGridCtrl_::OnSetCellCombo(int  nRow, int  nCol, tstring  str  )
+{
+	_bstr_t xxx_str(str.c_str());
+
+	raw_OnSetCellCombo(nRow, nCol, xxx_str  );
+}
+
+inline void IDUIGridCtrl_::OnSetCellCheckBox(int  nRow, int  nCol, BOOL  bl  )
+{
+	VARIANT_BOOL xxx_bl = bl ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_OnSetCellCheckBox(nRow, nCol, xxx_bl  );
+}
+
+inline void IDUIGridCtrl_::OnMergeCells(int  nStartRow, int  nStartCol, int  nEndRow, int  nEndCol  )
+{
+
+	raw_OnMergeCells(nStartRow, nStartCol, nEndRow, nEndCol  );
+}
+
+inline void IDUIGridCtrl_::OnUnMergeCells(int  nStartRow, int  nStartCol, int  nEndRow, int  nEndCol  )
+{
+
+	raw_OnUnMergeCells(nStartRow, nStartCol, nEndRow, nEndCol  );
+}
+
+inline void IDUIGridCtrl_::OnDeleteRowByIndex(int  nIndex  )
+{
+
+	raw_OnDeleteRowByIndex(nIndex  );
+}
+
+inline void IDUIGridCtrl_::OnAddComboItem(int  nRow, int  nCol, tstring  strInfo, BOOL  bFirstItem  )
+{
+	_bstr_t xxx_strInfo(strInfo.c_str());
+	VARIANT_BOOL xxx_bFirstItem = bFirstItem ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_OnAddComboItem(nRow, nCol, xxx_strInfo, xxx_bFirstItem  );
+}
+
+inline OLE_HANDLE  IDUIGridCtrl::OnInsertRow(OLE_HANDLE  pParent, tstring  strHeading  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIGridCtrl_*)m_pCtrl)->OnInsertRow(pParent, strHeading);
+}
+
+inline void  IDUIGridCtrl::SetHeadRowCount(int  nRow  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIGridCtrl_*)m_pCtrl)->SetHeadRowCount(nRow);
+}
+
+inline void  IDUIGridCtrl::SetRowCounts(int  nRowCount  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIGridCtrl_*)m_pCtrl)->SetRowCounts(nRowCount);
+}
+
+inline void  IDUIGridCtrl::SetColumnCounts(int  nColCount  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIGridCtrl_*)m_pCtrl)->SetColumnCounts(nColCount);
+}
+
+inline void  IDUIGridCtrl::SetCellText(int  nRow, int  nCol, tstring  str, BOOL  bRightOrCenter  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIGridCtrl_*)m_pCtrl)->SetCellText(nRow, nCol, str, bRightOrCenter);
+}
+
+inline void  IDUIGridCtrl::SetHeadCellText(int  nRow, int  nCol, tstring  str, BOOL  bRightOrCenter  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIGridCtrl_*)m_pCtrl)->SetHeadCellText(nRow, nCol, str, bRightOrCenter);
+}
+
+inline void  IDUIGridCtrl::SetColWidth(int  nCol, int  nWidth  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIGridCtrl_*)m_pCtrl)->SetColWidth(nCol, nWidth);
+}
+
+inline void  IDUIGridCtrl::SetCellReadonly(int  nRow, int  nCol  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIGridCtrl_*)m_pCtrl)->SetCellReadonly(nRow, nCol);
+}
+
+inline void  IDUIGridCtrl::DeleteAll()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIGridCtrl_*)m_pCtrl)->DeleteAll();
+}
+
+inline void  IDUIGridCtrl::OnSetCellCombo(int  nRow, int  nCol, tstring  str  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIGridCtrl_*)m_pCtrl)->OnSetCellCombo(nRow, nCol, str);
+}
+
+inline void  IDUIGridCtrl::OnSetCellCheckBox(int  nRow, int  nCol, BOOL  bl  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIGridCtrl_*)m_pCtrl)->OnSetCellCheckBox(nRow, nCol, bl);
+}
+
+inline void  IDUIGridCtrl::OnMergeCells(int  nStartRow, int  nStartCol, int  nEndRow, int  nEndCol  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIGridCtrl_*)m_pCtrl)->OnMergeCells(nStartRow, nStartCol, nEndRow, nEndCol);
+}
+
+inline void  IDUIGridCtrl::OnUnMergeCells(int  nStartRow, int  nStartCol, int  nEndRow, int  nEndCol  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIGridCtrl_*)m_pCtrl)->OnUnMergeCells(nStartRow, nStartCol, nEndRow, nEndCol);
+}
+
+inline void  IDUIGridCtrl::OnDeleteRowByIndex(int  nIndex  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIGridCtrl_*)m_pCtrl)->OnDeleteRowByIndex(nIndex);
+}
+
+inline void  IDUIGridCtrl::OnAddComboItem(int  nRow, int  nCol, tstring  strInfo, BOOL  bFirstItem  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIGridCtrl_*)m_pCtrl)->OnAddComboItem(nRow, nCol, strInfo, bFirstItem);
+}
+
+inline void IDUIIP_::SetDisable(BOOL  bDisable  )
+{
+	VARIANT_BOOL xxx_bDisable = bDisable ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetDisable(xxx_bDisable  );
+}
+
+inline void IDUIIP_::SetIp(int  nIP1, int  nIP2, int  nIP3, int  nIP4  )
+{
+
+	raw_SetIp(nIP1, nIP2, nIP3, nIP4  );
+}
+
+inline tstring  IDUIIP_::GetIp()
+{
+	BSTR _result = NULL;
+	raw_GetIp(&_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline BOOL  IDUIIP_::GetDisable()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_GetDisable(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void  IDUIIP::SetDisable(BOOL  bDisable  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIIP_*)m_pCtrl)->SetDisable(bDisable);
+}
+
+inline void  IDUIIP::SetIp(int  nIP1, int  nIP2, int  nIP3, int  nIP4  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIIP_*)m_pCtrl)->SetIp(nIP1, nIP2, nIP3, nIP4);
+}
+
+inline tstring  IDUIIP::GetIp()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIIP_*)m_pCtrl)->GetIp();
+}
+
+inline BOOL  IDUIIP::GetDisable()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIIP_*)m_pCtrl)->GetDisable();
+}
+
+inline void IDUIGanT_::ClearAllData()
+{
+
+	raw_ClearAllData();
+}
+
+inline void IDUIGanT_::AddItemInfo(int  nID, tstring  strText, tstring  strStartData, int  nDuration, BOOL  bOpen, int  nParent  )
+{
+	_bstr_t xxx_strText(strText.c_str());
+	_bstr_t xxx_strStartData(strStartData.c_str());
+	VARIANT_BOOL xxx_bOpen = bOpen ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_AddItemInfo(nID, xxx_strText, xxx_strStartData, nDuration, xxx_bOpen, nParent  );
+}
+
+inline void IDUIGanT_::AddTaskIcon(int  nID, tstring  strData, tstring  strAdd  )
+{
+	_bstr_t xxx_strData(strData.c_str());
+	_bstr_t xxx_strAdd(strAdd.c_str());
+
+	raw_AddTaskIcon(nID, xxx_strData, xxx_strAdd  );
+}
+
+inline void IDUIGanT_::AddLink(int  nID, int  nSource, int  nTarget, tstring  strType  )
+{
+	_bstr_t xxx_strType(strType.c_str());
+
+	raw_AddLink(nID, nSource, nTarget, xxx_strType  );
+}
+
+inline void IDUIGanT_::DeleteItem(int  nID  )
+{
+
+	raw_DeleteItem(nID  );
+}
+
+inline void  IDUIGanT::ClearAllData()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIGanT_*)m_pCtrl)->ClearAllData();
+}
+
+inline void  IDUIGanT::AddItemInfo(int  nID, tstring  strText, tstring  strStartData, int  nDuration, BOOL  bOpen, int  nParent  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIGanT_*)m_pCtrl)->AddItemInfo(nID, strText, strStartData, nDuration, bOpen, nParent);
+}
+
+inline void  IDUIGanT::AddTaskIcon(int  nID, tstring  strData, tstring  strAdd  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIGanT_*)m_pCtrl)->AddTaskIcon(nID, strData, strAdd);
+}
+
+inline void  IDUIGanT::AddLink(int  nID, int  nSource, int  nTarget, tstring  strType  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIGanT_*)m_pCtrl)->AddLink(nID, nSource, nTarget, strType);
+}
+
+inline void  IDUIGanT::DeleteItem(int  nID  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIGanT_*)m_pCtrl)->DeleteItem(nID);
+}
+
+inline void IDUI3DControl_::AddItem(tstring  strName, tstring  strText  )
+{
+	_bstr_t xxx_strName(strName.c_str());
+	_bstr_t xxx_strText(strText.c_str());
+
+	raw_AddItem(xxx_strName, xxx_strText  );
+}
+
+inline void IDUI3DControl_::DeleteItem(int  nIndex  )
+{
+
+	raw_DeleteItem(nIndex  );
+}
+
+inline void  IDUI3DControl::AddItem(tstring  strName, tstring  strText  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUI3DControl_*)m_pCtrl)->AddItem(strName, strText);
+}
+
+inline void  IDUI3DControl::DeleteItem(int  nIndex  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUI3DControl_*)m_pCtrl)->DeleteItem(nIndex);
+}
+

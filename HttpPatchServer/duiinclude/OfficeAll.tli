@@ -1,0 +1,3928 @@
+#pragma once
+inline BOOL  IDUISimpleTree_::SetDrawBackColor(BOOL  bDrawColor, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bDrawColor = bDrawColor ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetDrawBackColor(xxx_bDrawColor, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUISimpleTree_::GetDrawBackColor()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_GetDrawBackColor(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUISimpleTree_::SetBackImage(struct IDUIImageBase * pImageBae, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetBackImage(pImageBae, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline struct IDUIImageBase * IDUISimpleTree_::GetBackImage()
+{
+	struct IDUIImageBase * _result;
+	raw_GetBackImage(&_result);
+	return _result;
+}
+
+inline BOOL  IDUISimpleTree_::SetBackColor(struct IFillColor * pFillColor, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetBackColor(pFillColor, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline struct IFillColor * IDUISimpleTree_::GetBackColor()
+{
+	struct IFillColor * _result;
+	raw_GetBackColor(&_result);
+	return _result;
+}
+
+inline BOOL  IDUISimpleTree_::SetDrawItemColor(BOOL  bDrawColor, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bDrawColor = bDrawColor ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetDrawItemColor(xxx_bDrawColor, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUISimpleTree_::GetDrawItemColor()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_GetDrawItemColor(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUISimpleTree_::SetItemImage(enum DUISIMPLETREE_STATE  eState, struct IDUIImageBase * pImageBase, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetItemImage(eState, pImageBase, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline struct IDUIImageBase * IDUISimpleTree_::GetItemImage(enum DUISIMPLETREE_STATE  eState  )
+{
+	struct IDUIImageBase * _result;
+	raw_GetItemImage(eState, &_result);
+	return _result;
+}
+
+inline BOOL  IDUISimpleTree_::SetItemColor(enum DUISIMPLETREE_STATE  eState, struct IFillColor * pFillColor, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetItemColor(eState, pFillColor, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline struct IFillColor * IDUISimpleTree_::GetItemColor(enum DUISIMPLETREE_STATE  eState  )
+{
+	struct IFillColor * _result;
+	raw_GetItemColor(eState, &_result);
+	return _result;
+}
+
+inline BOOL  IDUISimpleTree_::SetTextStyle(enum DUISIMPLETREE_STATE  eState, struct IDUITextStyle * pTextStyle, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetTextStyle(eState, pTextStyle, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline struct IDUITextStyle * IDUISimpleTree_::GetTextStyle(enum DUISIMPLETREE_STATE  eState  )
+{
+	struct IDUITextStyle * _result;
+	raw_GetTextStyle(eState, &_result);
+	return _result;
+}
+
+inline BOOL  IDUISimpleTree_::SetButtonImage(enum DUISIMPLETREE_STATE  eState, BOOL  bChecked, struct IDUIImageBase * pImageBase, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bChecked = bChecked ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetButtonImage(eState, xxx_bChecked, pImageBase, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline struct IDUIImageBase * IDUISimpleTree_::GetButtonImage(enum DUISIMPLETREE_STATE  eState, BOOL  bChecked  )
+{
+	VARIANT_BOOL xxx_bChecked = bChecked ? VARIANT_TRUE : VARIANT_FALSE;
+	struct IDUIImageBase * _result;
+	raw_GetButtonImage(eState, xxx_bChecked, &_result);
+	return _result;
+}
+
+inline BOOL  IDUISimpleTree_::SetHasLines(BOOL  bHasLines, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bHasLines = bHasLines ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetHasLines(xxx_bHasLines, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUISimpleTree_::IsHasLines()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_IsHasLines(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUISimpleTree_::SetHasButtons(BOOL  bHasButtons, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bHasButtons = bHasButtons ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetHasButtons(xxx_bHasButtons, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUISimpleTree_::IsHasButtons()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_IsHasButtons(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUISimpleTree_::SetLineOnRoot(BOOL  bLineOnRoot, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bLineOnRoot = bLineOnRoot ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetLineOnRoot(xxx_bLineOnRoot, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUISimpleTree_::IsLineOnRoot()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_IsLineOnRoot(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUISimpleTree_::SetLineColor(OLE_COLOR  clrLine, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetLineColor(clrLine, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline OLE_COLOR  IDUISimpleTree_::GetLineColor()
+{
+	OLE_COLOR  _result;
+	raw_GetLineColor(&_result);
+	return _result;
+}
+
+inline BOOL  IDUISimpleTree_::SetLineSize(short  nSize, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetLineSize(nSize, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline short  IDUISimpleTree_::GetLineSize()
+{
+	short  _result;
+	raw_GetLineSize(&_result);
+	return _result;
+}
+
+inline BOOL  IDUISimpleTree_::SetIndent(short  nIndent, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetIndent(nIndent, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline short  IDUISimpleTree_::GetIndent()
+{
+	short  _result;
+	raw_GetIndent(&_result);
+	return _result;
+}
+
+inline BOOL  IDUISimpleTree_::SetItemHeight(short  nHeight, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetItemHeight(nHeight, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline short  IDUISimpleTree_::GetItemHeight()
+{
+	short  _result;
+	raw_GetItemHeight(&_result);
+	return _result;
+}
+
+inline OLE_HANDLE  IDUISimpleTree_::InsertChild(OLE_HANDLE  hParent, OLE_HANDLE  hInsertAfter, tstring  strText, BOOL  bRedraw  )
+{
+_bstr_t xxx_strText(strText.c_str());
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	OLE_HANDLE  _result;
+	raw_InsertChild(hParent, hInsertAfter, xxx_strText, xxx_bRedraw, &_result);
+	return _result;
+}
+
+inline OLE_HANDLE  IDUISimpleTree_::InsertSibling(OLE_HANDLE  hpInsertAfter, tstring  strText, BOOL  bRedraw  )
+{
+_bstr_t xxx_strText(strText.c_str());
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	OLE_HANDLE  _result;
+	raw_InsertSibling(hpInsertAfter, xxx_strText, xxx_bRedraw, &_result);
+	return _result;
+}
+
+inline OLE_HANDLE  IDUISimpleTree_::GetChildItem(OLE_HANDLE  hParent  )
+{
+	OLE_HANDLE  _result;
+	raw_GetChildItem(hParent, &_result);
+	return _result;
+}
+
+inline BOOL  IDUISimpleTree_::ItemHasChildren(OLE_HANDLE  hParent  )
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_ItemHasChildren(hParent, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline OLE_HANDLE  IDUISimpleTree_::GetParentItem(OLE_HANDLE  hItem  )
+{
+	OLE_HANDLE  _result;
+	raw_GetParentItem(hItem, &_result);
+	return _result;
+}
+
+inline OLE_HANDLE  IDUISimpleTree_::GetRootItem(OLE_HANDLE  hItem  )
+{
+	OLE_HANDLE  _result;
+	raw_GetRootItem(hItem, &_result);
+	return _result;
+}
+
+inline BOOL  IDUISimpleTree_::DeleteItem(OLE_HANDLE  hItem, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_DeleteItem(hItem, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUISimpleTree_::Expand(OLE_HANDLE  hItem, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_Expand(hItem, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUISimpleTree_::SelectItem(OLE_HANDLE  hItem, BOOL  bChangePos  )
+{
+	VARIANT_BOOL xxx_bChangePos = bChangePos ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SelectItem(hItem, xxx_bChangePos, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline OLE_HANDLE  IDUISimpleTree_::GetSelectedItem()
+{
+	OLE_HANDLE  _result;
+	raw_GetSelectedItem(&_result);
+	return _result;
+}
+
+inline BOOL  IDUISimpleTree_::SetItemText(OLE_HANDLE  hItem, tstring  strText, BOOL  bRedraw  )
+{
+_bstr_t xxx_strText(strText.c_str());
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetItemText(hItem, xxx_strText, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline tstring  IDUISimpleTree_::GetItemText(OLE_HANDLE  hItem  )
+{
+	BSTR _result = NULL;
+	raw_GetItemText(hItem, &_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline OLE_HANDLE  IDUISimpleTree_::HitTest(long  nX, long  nY  )
+{
+	OLE_HANDLE  _result;
+	raw_HitTest(nX, nY, &_result);
+	return _result;
+}
+
+inline struct SkinRect  IDUISimpleTree_::GetItemRect(OLE_HANDLE  hItem  )
+{
+	struct SkinRect  _result;
+	raw_GetItemRect(hItem, &_result);
+	return _result;
+}
+
+inline void IDUISimpleTree_::SetScrollSize(long  nSize  )
+{
+
+	raw_SetScrollSize(nSize  );
+}
+
+inline long  IDUISimpleTree_::GetScrollSize()
+{
+	long  _result;
+	raw_GetScrollSize(&_result);
+	return _result;
+}
+
+inline void IDUISimpleTree_::SetLeftScroll(BOOL  bLeftScroll  )
+{
+	VARIANT_BOOL xxx_bLeftScroll = bLeftScroll ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetLeftScroll(xxx_bLeftScroll  );
+}
+
+inline BOOL  IDUISimpleTree_::IsLeftScroll()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_IsLeftScroll(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline OLE_HANDLE  IDUISimpleTree_::AppendChild(OLE_HANDLE  hParent, tstring  strText, BOOL  bRedraw  )
+{
+_bstr_t xxx_strText(strText.c_str());
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	OLE_HANDLE  _result;
+	raw_AppendChild(hParent, xxx_strText, xxx_bRedraw, &_result);
+	return _result;
+}
+
+inline BOOL  IDUISimpleTree_::SetItemIconByPath(OLE_HANDLE  hItem, tstring  strPath, tstring  strSelPath, OLE_COLOR  clrTrans  )
+{
+_bstr_t xxx_strPath(strPath.c_str());
+_bstr_t xxx_strSelPath(strSelPath.c_str());
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetItemIconByPath(hItem, xxx_strPath, xxx_strSelPath, clrTrans, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void IDUISimpleTree_::SetIconOffset(short  nOffsetX, short  nOffsetY  )
+{
+
+	raw_SetIconOffset(nOffsetX, nOffsetY  );
+}
+
+inline void IDUISimpleTree_::GetIconOffset(short * pnOffsetX, short * pnOffsetY  )
+{
+
+	raw_GetIconOffset(pnOffsetX, pnOffsetY  );
+}
+
+inline void IDUISimpleTree_::SetShowIcon(BOOL  bShowIcon  )
+{
+	VARIANT_BOOL xxx_bShowIcon = bShowIcon ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetShowIcon(xxx_bShowIcon  );
+}
+
+inline BOOL  IDUISimpleTree_::IsShowIcon()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_IsShowIcon(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUISimpleTree_::SetItemIconByImgBase(OLE_HANDLE  hItem, struct IDUIImageBase * pImageBase, struct IDUIImageBase * pSelImageBase  )
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetItemIconByImgBase(hItem, pImageBase, pSelImageBase, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUISimpleTree_::SetItemIconByIcon(OLE_HANDLE  hItem, OLE_HANDLE  hIcon, OLE_HANDLE  hSelIcon  )
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetItemIconByIcon(hItem, hIcon, hSelIcon, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUISimpleTree_::SetItemImageIndex(OLE_HANDLE  hItem, long  nImage, long  nSelImage  )
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetItemImageIndex(hItem, nImage, nSelImage, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUISimpleTree_::SetImageList(OLE_HANDLE  hImageList  )
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetImageList(hImageList, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUISimpleTree_::SetItemData(OLE_HANDLE  hItem, OLE_HANDLE  hData  )
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetItemData(hItem, hData, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline OLE_HANDLE  IDUISimpleTree_::GetItemData(OLE_HANDLE  hItem  )
+{
+	OLE_HANDLE  _result;
+	raw_GetItemData(hItem, &_result);
+	return _result;
+}
+
+inline OLE_HANDLE  IDUISimpleTree_::GetNextSiblingItem(OLE_HANDLE  hItem  )
+{
+	OLE_HANDLE  _result;
+	raw_GetNextSiblingItem(hItem, &_result);
+	return _result;
+}
+
+inline OLE_HANDLE  IDUISimpleTree_::GetPrevSiblingItem(OLE_HANDLE  hItem  )
+{
+	OLE_HANDLE  _result;
+	raw_GetPrevSiblingItem(hItem, &_result);
+	return _result;
+}
+
+inline BOOL  IDUISimpleTree_::SetItemTextStyle(OLE_HANDLE  hItem, enum DUISIMPLETREE_STATE  eState, struct IDUITextStyle * pTextStyle, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetItemTextStyle(hItem, eState, pTextStyle, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline struct IDUITextStyle * IDUISimpleTree_::GetItemTextStyle(OLE_HANDLE  hItem, enum DUISIMPLETREE_STATE  eState  )
+{
+	struct IDUITextStyle * _result;
+	raw_GetItemTextStyle(hItem, eState, &_result);
+	return _result;
+}
+
+inline short  IDUISimpleTree_::GetItemCount()
+{
+	short  _result;
+	raw_GetItemCount(&_result);
+	return _result;
+}
+
+inline short  IDUISimpleTree_::GetChildItemCount(OLE_HANDLE  hItem  )
+{
+	short  _result;
+	raw_GetChildItemCount(hItem, &_result);
+	return _result;
+}
+
+inline void IDUISimpleTree_::SetStateOffset(short  nOffsetX, short  nOffsetY  )
+{
+
+	raw_SetStateOffset(nOffsetX, nOffsetY  );
+}
+
+inline void IDUISimpleTree_::GetStateOffset(short * pnOffsetX, short * pnOffsetY  )
+{
+
+	raw_GetStateOffset(pnOffsetX, pnOffsetY  );
+}
+
+inline void IDUISimpleTree_::SetShowState(BOOL  bShowIcon  )
+{
+	VARIANT_BOOL xxx_bShowIcon = bShowIcon ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetShowState(xxx_bShowIcon  );
+}
+
+inline BOOL  IDUISimpleTree_::IsShowState()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_IsShowState(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUISimpleTree_::SetStateImage(enum DUISIMPLETREE_STATE  eState, struct IDUIImageBase * pImageBase, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetStateImage(eState, pImageBase, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline struct IDUIImageBase * IDUISimpleTree_::GetStateImage(enum DUISIMPLETREE_STATE  eState  )
+{
+	struct IDUIImageBase * _result;
+	raw_GetStateImage(eState, &_result);
+	return _result;
+}
+
+inline BOOL  IDUISimpleTree_::SetStateItem(OLE_HANDLE  hItem  )
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetStateItem(hItem, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline OLE_HANDLE  IDUISimpleTree_::GetStateItem()
+{
+	OLE_HANDLE  _result;
+	raw_GetStateItem(&_result);
+	return _result;
+}
+
+inline void IDUISimpleTree_::SetChildList(OLE_HANDLE  pItem, BOOL  bIsChildList  )
+{
+	VARIANT_BOOL xxx_bIsChildList = bIsChildList ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetChildList(pItem, xxx_bIsChildList  );
+}
+
+inline BOOL  IDUISimpleTree_::IsChildList(OLE_HANDLE  pItem  )
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_IsChildList(pItem, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void IDUISimpleTree_::SetNodeItemText(OLE_HANDLE  pItem, long  nCols, tstring  strText, BOOL  bRedraw  )
+{
+	_bstr_t xxx_strText(strText.c_str());
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetNodeItemText(pItem, nCols, xxx_strText, xxx_bRedraw  );
+}
+
+inline tstring  IDUISimpleTree_::GetNodeItemText(OLE_HANDLE  pItem, long  nCols  )
+{
+	BSTR _result = NULL;
+	raw_GetNodeItemText(pItem, nCols, &_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline void IDUISimpleTree_::SetColsWidth(long  nWidth, long  nCols  )
+{
+
+	raw_SetColsWidth(nWidth, nCols  );
+}
+
+inline void IDUISimpleTree_::GetColsWidth(long  nCols, long * nResult  )
+{
+
+	raw_GetColsWidth(nCols, nResult  );
+}
+
+inline void IDUISimpleTree_::SetColsTextStyle(long  nCols, enum DUISIMPLETREE_STATE  eState, struct IDUITextStyle * pTextStyle  )
+{
+
+	raw_SetColsTextStyle(nCols, eState, pTextStyle  );
+}
+
+inline struct IDUITextStyle * IDUISimpleTree_::GetColsTextStyle(long  nCols, enum DUISIMPLETREE_STATE  eState  )
+{
+	struct IDUITextStyle * _result;
+	raw_GetColsTextStyle(nCols, eState, &_result);
+	return _result;
+}
+
+inline short  IDUISimpleTree_::InsertCols(short  nCols, tstring  strText, short  nWidth  )
+{
+_bstr_t xxx_strText(strText.c_str());
+	short  _result;
+	raw_InsertCols(nCols, xxx_strText, nWidth, &_result);
+	return _result;
+}
+
+inline void IDUISimpleTree_::Sort(OLE_HANDLE  pCallBackFunc, OLE_HANDLE  pParentNode  )
+{
+
+	raw_Sort(pCallBackFunc, pParentNode  );
+}
+
+inline struct IDUIImageBase * IDUISimpleTree_::GetItemIconImgBase(OLE_HANDLE  hItem  )
+{
+	struct IDUIImageBase * _result;
+	raw_GetItemIconImgBase(hItem, &_result);
+	return _result;
+}
+
+inline BOOL  IDUISimpleTree_::DeleteChildren(OLE_HANDLE  hItem, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_DeleteChildren(hItem, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void IDUISimpleTree_::SetChildNeedIndent(BOOL  bNeedIndent  )
+{
+	VARIANT_BOOL xxx_bNeedIndent = bNeedIndent ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetChildNeedIndent(xxx_bNeedIndent  );
+}
+
+inline BOOL  IDUISimpleTree_::GetChildNeedIndent()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_GetChildNeedIndent(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void IDUISimpleTree_::RefreshItem(OLE_HANDLE  hItem  )
+{
+
+	raw_RefreshItem(hItem  );
+}
+
+inline struct IDUITreeToolBar * IDUISimpleTree_::GetItemToolBar(OLE_HANDLE  hItem  )
+{
+	struct IDUITreeToolBar * _result;
+	raw_GetItemToolBar(hItem, &_result);
+	return _result;
+}
+
+inline void IDUISimpleTree_::SetCheckBoxStyle(BOOL  bHasCheckBox, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bHasCheckBox = bHasCheckBox ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetCheckBoxStyle(xxx_bHasCheckBox, xxx_bRedraw  );
+}
+
+inline BOOL  IDUISimpleTree_::GetCheckBoxStyle()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_GetCheckBoxStyle(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void IDUISimpleTree_::SetSupportMultiSel(BOOL  bMutilSel  )
+{
+	VARIANT_BOOL xxx_bMutilSel = bMutilSel ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetSupportMultiSel(xxx_bMutilSel  );
+}
+
+inline BOOL  IDUISimpleTree_::IsSupportMultiSel()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_IsSupportMultiSel(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline short  IDUISimpleTree_::GetCheckItemCount()
+{
+	short  _result;
+	raw_GetCheckItemCount(&_result);
+	return _result;
+}
+
+inline struct IDUITreeItem * IDUISimpleTree_::GetFirstCheckItem()
+{
+	struct IDUITreeItem * _result;
+	raw_GetFirstCheckItem(&_result);
+	return _result;
+}
+
+inline struct IDUITreeItem * IDUISimpleTree_::GetNextCheckItem(struct IDUITreeItem * pItem  )
+{
+	struct IDUITreeItem * _result;
+	raw_GetNextCheckItem(pItem, &_result);
+	return _result;
+}
+
+inline void IDUISimpleTree_::GetSelectedItemCount(short * pnResult  )
+{
+
+	raw_GetSelectedItemCount(pnResult  );
+}
+
+inline struct IDUITreeItem * IDUISimpleTree_::GetFirstSelectedItem()
+{
+	struct IDUITreeItem * _result;
+	raw_GetFirstSelectedItem(&_result);
+	return _result;
+}
+
+inline struct IDUITreeItem * IDUISimpleTree_::GetNextSelectedItem(struct IDUITreeItem * pItem  )
+{
+	struct IDUITreeItem * _result;
+	raw_GetNextSelectedItem(pItem, &_result);
+	return _result;
+}
+
+inline void IDUISimpleTree_::SetSupportToolBar(BOOL  bSupport  )
+{
+	VARIANT_BOOL xxx_bSupport = bSupport ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetSupportToolBar(xxx_bSupport  );
+}
+
+inline BOOL  IDUISimpleTree_::IsSupportToolBar()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_IsSupportToolBar(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void IDUISimpleTree_::SetToolBarOffset(short  nOffset  )
+{
+
+	raw_SetToolBarOffset(nOffset  );
+}
+
+inline short  IDUISimpleTree_::GetToolBarOffset()
+{
+	short  _result;
+	raw_GetToolBarOffset(&_result);
+	return _result;
+}
+
+inline void IDUISimpleTree_::SetToolMinSpaceWithText(short  nSpace  )
+{
+
+	raw_SetToolMinSpaceWithText(nSpace  );
+}
+
+inline short  IDUISimpleTree_::GetToolMinSpaceWithText()
+{
+	short  _result;
+	raw_GetToolMinSpaceWithText(&_result);
+	return _result;
+}
+
+inline BOOL  IDUISimpleTree_::IsNodeExpand(OLE_HANDLE  hItem  )
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_IsNodeExpand(hItem, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void IDUISimpleTree_::SortSingleNode(OLE_HANDLE  pCallBackFunc, OLE_HANDLE  pParentNode, OLE_HANDLE  pSingleNode  )
+{
+
+	raw_SortSingleNode(pCallBackFunc, pParentNode, pSingleNode  );
+}
+
+inline void IDUISimpleTree_::SwapNode(OLE_HANDLE  pNode1, OLE_HANDLE  pNode2  )
+{
+
+	raw_SwapNode(pNode1, pNode2  );
+}
+
+inline BOOL  IDUISimpleTree_::SetItmeHBitmap(OLE_HANDLE  hItem, OLE_HANDLE  hBitmap, OLE_HANDLE  hSelBitmap  )
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetItmeHBitmap(hItem, hBitmap, hSelBitmap, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline OLE_HANDLE  IDUISimpleTree_::GetItemHBitmap(OLE_HANDLE  hItem  )
+{
+	OLE_HANDLE  _result;
+	raw_GetItemHBitmap(hItem, &_result);
+	return _result;
+}
+
+inline OLE_HANDLE  IDUISimpleTree_::GetItemByIndex(short  nIndex, OLE_HANDLE  hParent  )
+{
+	OLE_HANDLE  _result;
+	raw_GetItemByIndex(nIndex, hParent, &_result);
+	return _result;
+}
+
+inline void IDUISimpleTree_::SetScrollTop()
+{
+
+	raw_SetScrollTop();
+}
+
+inline void IDUISimpleTree_::SetScrollBottom()
+{
+
+	raw_SetScrollBottom();
+}
+
+inline void IDUISimpleTree_::CheckItem(OLE_HANDLE  hItem, BOOL  bCheck  )
+{
+	VARIANT_BOOL xxx_bCheck = bCheck ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_CheckItem(hItem, xxx_bCheck  );
+}
+
+inline BOOL  IDUISimpleTree_::IsCheckItem(OLE_HANDLE  hItem  )
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_IsCheckItem(hItem, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline struct SkinRect  IDUISimpleTree_::GetItemNodeRect(OLE_HANDLE  hItem  )
+{
+	struct SkinRect  _result;
+	raw_GetItemNodeRect(hItem, &_result);
+	return _result;
+}
+
+inline void IDUISimpleTree_::SetItemHasCheckBox(OLE_HANDLE  hItem, BOOL  bHasCheck  )
+{
+	VARIANT_BOOL xxx_bHasCheck = bHasCheck ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetItemHasCheckBox(hItem, xxx_bHasCheck  );
+}
+
+inline void IDUISimpleTree_::SetItemState(OLE_HANDLE  hItem, enum ItemState  nState  )
+{
+
+	raw_SetItemState(hItem, nState  );
+}
+
+inline OLE_HANDLE  IDUISimpleTree_::GetItemModel(OLE_HANDLE  hItem  )
+{
+	OLE_HANDLE  _result;
+	raw_GetItemModel(hItem, &_result);
+	return _result;
+}
+
+inline BOOL  IDUISimpleTree_::SetDragSupport(BOOL  bDragSupport, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bDragSupport = bDragSupport ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetDragSupport(xxx_bDragSupport, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUISimpleTree_::SetItemWidth(short  nWidth, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetItemWidth(nWidth, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline short  IDUISimpleTree_::GetItemWidth()
+{
+	short  _result;
+	raw_GetItemWidth(&_result);
+	return _result;
+}
+
+inline BOOL  IDUISimpleTree_::UnSelectItem(OLE_HANDLE  hItem, BOOL  bChangePos  )
+{
+	VARIANT_BOOL xxx_bChangePos = bChangePos ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_UnSelectItem(hItem, xxx_bChangePos, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUISimpleTree_::ClearAllSelectItems()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_ClearAllSelectItems(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void IDUISimpleTree_::SetItemModel(IDispatch * pModelForm  )
+{
+
+	raw_SetItemModel(pModelForm  );
+}
+
+inline void IDUISimpleTree_::DeleteAllItem()
+{
+
+	raw_DeleteAllItem();
+}
+
+inline BOOL  IDUISimpleTree_::GetIsAutoCheck()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_GetIsAutoCheck(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void IDUISimpleTree_::SetAutoCheck(BOOL  bAutoCheck  )
+{
+	VARIANT_BOOL xxx_bAutoCheck = bAutoCheck ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetAutoCheck(xxx_bAutoCheck  );
+}
+
+inline enum ItemState  IDUISimpleTree_::GetItemState(OLE_HANDLE  hItem  )
+{
+	enum ItemState  _result;
+	raw_GetItemState(hItem, &_result);
+	return _result;
+}
+
+inline void IDUISimpleTree_::RefreshVirtual()
+{
+
+	raw_RefreshVirtual();
+}
+
+inline BOOL  IDUISimpleTree::SetDrawBackColor(BOOL  bDrawColor, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetDrawBackColor(bDrawColor, bRedraw);
+}
+
+inline BOOL  IDUISimpleTree::GetDrawBackColor()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetDrawBackColor();
+}
+
+inline BOOL  IDUISimpleTree::SetBackImage(struct IDUIImageBase * pImageBae, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetBackImage(pImageBae, bRedraw);
+}
+
+inline struct IDUIImageBase * IDUISimpleTree::GetBackImage()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetBackImage();
+}
+
+inline BOOL  IDUISimpleTree::SetBackColor(struct IFillColor * pFillColor, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetBackColor(pFillColor, bRedraw);
+}
+
+inline struct IFillColor * IDUISimpleTree::GetBackColor()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetBackColor();
+}
+
+inline BOOL  IDUISimpleTree::SetDrawItemColor(BOOL  bDrawColor, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetDrawItemColor(bDrawColor, bRedraw);
+}
+
+inline BOOL  IDUISimpleTree::GetDrawItemColor()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetDrawItemColor();
+}
+
+inline BOOL  IDUISimpleTree::SetItemImage(enum DUISIMPLETREE_STATE  eState, struct IDUIImageBase * pImageBase, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetItemImage(eState, pImageBase, bRedraw);
+}
+
+inline struct IDUIImageBase * IDUISimpleTree::GetItemImage(enum DUISIMPLETREE_STATE  eState  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetItemImage(eState);
+}
+
+inline BOOL  IDUISimpleTree::SetItemColor(enum DUISIMPLETREE_STATE  eState, struct IFillColor * pFillColor, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetItemColor(eState, pFillColor, bRedraw);
+}
+
+inline struct IFillColor * IDUISimpleTree::GetItemColor(enum DUISIMPLETREE_STATE  eState  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetItemColor(eState);
+}
+
+inline BOOL  IDUISimpleTree::SetTextStyle(enum DUISIMPLETREE_STATE  eState, struct IDUITextStyle * pTextStyle, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetTextStyle(eState, pTextStyle, bRedraw);
+}
+
+inline struct IDUITextStyle * IDUISimpleTree::GetTextStyle(enum DUISIMPLETREE_STATE  eState  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetTextStyle(eState);
+}
+
+inline BOOL  IDUISimpleTree::SetButtonImage(enum DUISIMPLETREE_STATE  eState, BOOL  bChecked, struct IDUIImageBase * pImageBase, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetButtonImage(eState, bChecked, pImageBase, bRedraw);
+}
+
+inline struct IDUIImageBase * IDUISimpleTree::GetButtonImage(enum DUISIMPLETREE_STATE  eState, BOOL  bChecked  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetButtonImage(eState, bChecked);
+}
+
+inline BOOL  IDUISimpleTree::SetHasLines(BOOL  bHasLines, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetHasLines(bHasLines, bRedraw);
+}
+
+inline BOOL  IDUISimpleTree::IsHasLines()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->IsHasLines();
+}
+
+inline BOOL  IDUISimpleTree::SetHasButtons(BOOL  bHasButtons, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetHasButtons(bHasButtons, bRedraw);
+}
+
+inline BOOL  IDUISimpleTree::IsHasButtons()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->IsHasButtons();
+}
+
+inline BOOL  IDUISimpleTree::SetLineOnRoot(BOOL  bLineOnRoot, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetLineOnRoot(bLineOnRoot, bRedraw);
+}
+
+inline BOOL  IDUISimpleTree::IsLineOnRoot()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->IsLineOnRoot();
+}
+
+inline BOOL  IDUISimpleTree::SetLineColor(OLE_COLOR  clrLine, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetLineColor(clrLine, bRedraw);
+}
+
+inline OLE_COLOR  IDUISimpleTree::GetLineColor()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetLineColor();
+}
+
+inline BOOL  IDUISimpleTree::SetLineSize(short  nSize, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetLineSize(nSize, bRedraw);
+}
+
+inline short  IDUISimpleTree::GetLineSize()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetLineSize();
+}
+
+inline BOOL  IDUISimpleTree::SetIndent(short  nIndent, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetIndent(nIndent, bRedraw);
+}
+
+inline short  IDUISimpleTree::GetIndent()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetIndent();
+}
+
+inline BOOL  IDUISimpleTree::SetItemHeight(short  nHeight, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetItemHeight(nHeight, bRedraw);
+}
+
+inline short  IDUISimpleTree::GetItemHeight()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetItemHeight();
+}
+
+inline OLE_HANDLE  IDUISimpleTree::InsertChild(OLE_HANDLE  hParent, OLE_HANDLE  hInsertAfter, tstring  strText, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->InsertChild(hParent, hInsertAfter, strText, bRedraw);
+}
+
+inline OLE_HANDLE  IDUISimpleTree::InsertSibling(OLE_HANDLE  hpInsertAfter, tstring  strText, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->InsertSibling(hpInsertAfter, strText, bRedraw);
+}
+
+inline OLE_HANDLE  IDUISimpleTree::GetChildItem(OLE_HANDLE  hParent  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetChildItem(hParent);
+}
+
+inline BOOL  IDUISimpleTree::ItemHasChildren(OLE_HANDLE  hParent  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->ItemHasChildren(hParent);
+}
+
+inline OLE_HANDLE  IDUISimpleTree::GetParentItem(OLE_HANDLE  hItem  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetParentItem(hItem);
+}
+
+inline OLE_HANDLE  IDUISimpleTree::GetRootItem(OLE_HANDLE  hItem  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetRootItem(hItem);
+}
+
+inline BOOL  IDUISimpleTree::DeleteItem(OLE_HANDLE  hItem, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->DeleteItem(hItem, bRedraw);
+}
+
+inline BOOL  IDUISimpleTree::Expand(OLE_HANDLE  hItem, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->Expand(hItem, bRedraw);
+}
+
+inline BOOL  IDUISimpleTree::SelectItem(OLE_HANDLE  hItem, BOOL  bChangePos  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SelectItem(hItem, bChangePos);
+}
+
+inline OLE_HANDLE  IDUISimpleTree::GetSelectedItem()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetSelectedItem();
+}
+
+inline BOOL  IDUISimpleTree::SetItemText(OLE_HANDLE  hItem, tstring  strText, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetItemText(hItem, strText, bRedraw);
+}
+
+inline tstring  IDUISimpleTree::GetItemText(OLE_HANDLE  hItem  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetItemText(hItem);
+}
+
+inline OLE_HANDLE  IDUISimpleTree::HitTest(long  nX, long  nY  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->HitTest(nX, nY);
+}
+
+inline struct SkinRect  IDUISimpleTree::GetItemRect(OLE_HANDLE  hItem  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetItemRect(hItem);
+}
+
+inline void  IDUISimpleTree::SetScrollSize(long  nSize  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetScrollSize(nSize);
+}
+
+inline long  IDUISimpleTree::GetScrollSize()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetScrollSize();
+}
+
+inline void  IDUISimpleTree::SetLeftScroll(BOOL  bLeftScroll  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetLeftScroll(bLeftScroll);
+}
+
+inline BOOL  IDUISimpleTree::IsLeftScroll()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->IsLeftScroll();
+}
+
+inline OLE_HANDLE  IDUISimpleTree::AppendChild(OLE_HANDLE  hParent, tstring  strText, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->AppendChild(hParent, strText, bRedraw);
+}
+
+inline BOOL  IDUISimpleTree::SetItemIconByPath(OLE_HANDLE  hItem, tstring  strPath, tstring  strSelPath, OLE_COLOR  clrTrans  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetItemIconByPath(hItem, strPath, strSelPath, clrTrans);
+}
+
+inline void  IDUISimpleTree::SetIconOffset(short  nOffsetX, short  nOffsetY  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetIconOffset(nOffsetX, nOffsetY);
+}
+
+inline void  IDUISimpleTree::GetIconOffset(short * pnOffsetX, short * pnOffsetY  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetIconOffset(pnOffsetX, pnOffsetY);
+}
+
+inline void  IDUISimpleTree::SetShowIcon(BOOL  bShowIcon  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetShowIcon(bShowIcon);
+}
+
+inline BOOL  IDUISimpleTree::IsShowIcon()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->IsShowIcon();
+}
+
+inline BOOL  IDUISimpleTree::SetItemIconByImgBase(OLE_HANDLE  hItem, struct IDUIImageBase * pImageBase, struct IDUIImageBase * pSelImageBase  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetItemIconByImgBase(hItem, pImageBase, pSelImageBase);
+}
+
+inline BOOL  IDUISimpleTree::SetItemIconByIcon(OLE_HANDLE  hItem, OLE_HANDLE  hIcon, OLE_HANDLE  hSelIcon  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetItemIconByIcon(hItem, hIcon, hSelIcon);
+}
+
+inline BOOL  IDUISimpleTree::SetItemImageIndex(OLE_HANDLE  hItem, long  nImage, long  nSelImage  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetItemImageIndex(hItem, nImage, nSelImage);
+}
+
+inline BOOL  IDUISimpleTree::SetImageList(OLE_HANDLE  hImageList  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetImageList(hImageList);
+}
+
+inline BOOL  IDUISimpleTree::SetItemData(OLE_HANDLE  hItem, OLE_HANDLE  hData  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetItemData(hItem, hData);
+}
+
+inline OLE_HANDLE  IDUISimpleTree::GetItemData(OLE_HANDLE  hItem  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetItemData(hItem);
+}
+
+inline OLE_HANDLE  IDUISimpleTree::GetNextSiblingItem(OLE_HANDLE  hItem  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetNextSiblingItem(hItem);
+}
+
+inline OLE_HANDLE  IDUISimpleTree::GetPrevSiblingItem(OLE_HANDLE  hItem  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetPrevSiblingItem(hItem);
+}
+
+inline BOOL  IDUISimpleTree::SetItemTextStyle(OLE_HANDLE  hItem, enum DUISIMPLETREE_STATE  eState, struct IDUITextStyle * pTextStyle, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetItemTextStyle(hItem, eState, pTextStyle, bRedraw);
+}
+
+inline struct IDUITextStyle * IDUISimpleTree::GetItemTextStyle(OLE_HANDLE  hItem, enum DUISIMPLETREE_STATE  eState  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetItemTextStyle(hItem, eState);
+}
+
+inline short  IDUISimpleTree::GetItemCount()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetItemCount();
+}
+
+inline short  IDUISimpleTree::GetChildItemCount(OLE_HANDLE  hItem  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetChildItemCount(hItem);
+}
+
+inline void  IDUISimpleTree::SetStateOffset(short  nOffsetX, short  nOffsetY  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetStateOffset(nOffsetX, nOffsetY);
+}
+
+inline void  IDUISimpleTree::GetStateOffset(short * pnOffsetX, short * pnOffsetY  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetStateOffset(pnOffsetX, pnOffsetY);
+}
+
+inline void  IDUISimpleTree::SetShowState(BOOL  bShowIcon  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetShowState(bShowIcon);
+}
+
+inline BOOL  IDUISimpleTree::IsShowState()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->IsShowState();
+}
+
+inline BOOL  IDUISimpleTree::SetStateImage(enum DUISIMPLETREE_STATE  eState, struct IDUIImageBase * pImageBase, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetStateImage(eState, pImageBase, bRedraw);
+}
+
+inline struct IDUIImageBase * IDUISimpleTree::GetStateImage(enum DUISIMPLETREE_STATE  eState  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetStateImage(eState);
+}
+
+inline BOOL  IDUISimpleTree::SetStateItem(OLE_HANDLE  hItem  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetStateItem(hItem);
+}
+
+inline OLE_HANDLE  IDUISimpleTree::GetStateItem()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetStateItem();
+}
+
+inline void  IDUISimpleTree::SetChildList(OLE_HANDLE  pItem, BOOL  bIsChildList  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetChildList(pItem, bIsChildList);
+}
+
+inline BOOL  IDUISimpleTree::IsChildList(OLE_HANDLE  pItem  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->IsChildList(pItem);
+}
+
+inline void  IDUISimpleTree::SetNodeItemText(OLE_HANDLE  pItem, long  nCols, tstring  strText, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetNodeItemText(pItem, nCols, strText, bRedraw);
+}
+
+inline tstring  IDUISimpleTree::GetNodeItemText(OLE_HANDLE  pItem, long  nCols  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetNodeItemText(pItem, nCols);
+}
+
+inline void  IDUISimpleTree::SetColsWidth(long  nWidth, long  nCols  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetColsWidth(nWidth, nCols);
+}
+
+inline void  IDUISimpleTree::GetColsWidth(long  nCols, long * nResult  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetColsWidth(nCols, nResult);
+}
+
+inline void  IDUISimpleTree::SetColsTextStyle(long  nCols, enum DUISIMPLETREE_STATE  eState, struct IDUITextStyle * pTextStyle  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetColsTextStyle(nCols, eState, pTextStyle);
+}
+
+inline struct IDUITextStyle * IDUISimpleTree::GetColsTextStyle(long  nCols, enum DUISIMPLETREE_STATE  eState  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetColsTextStyle(nCols, eState);
+}
+
+inline short  IDUISimpleTree::InsertCols(short  nCols, tstring  strText, short  nWidth  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->InsertCols(nCols, strText, nWidth);
+}
+
+inline void  IDUISimpleTree::Sort(OLE_HANDLE  pCallBackFunc, OLE_HANDLE  pParentNode  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->Sort(pCallBackFunc, pParentNode);
+}
+
+inline struct IDUIImageBase * IDUISimpleTree::GetItemIconImgBase(OLE_HANDLE  hItem  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetItemIconImgBase(hItem);
+}
+
+inline BOOL  IDUISimpleTree::DeleteChildren(OLE_HANDLE  hItem, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->DeleteChildren(hItem, bRedraw);
+}
+
+inline void  IDUISimpleTree::SetChildNeedIndent(BOOL  bNeedIndent  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetChildNeedIndent(bNeedIndent);
+}
+
+inline BOOL  IDUISimpleTree::GetChildNeedIndent()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetChildNeedIndent();
+}
+
+inline void  IDUISimpleTree::RefreshItem(OLE_HANDLE  hItem  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->RefreshItem(hItem);
+}
+
+inline struct IDUITreeToolBar * IDUISimpleTree::GetItemToolBar(OLE_HANDLE  hItem  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetItemToolBar(hItem);
+}
+
+inline void  IDUISimpleTree::SetCheckBoxStyle(BOOL  bHasCheckBox, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetCheckBoxStyle(bHasCheckBox, bRedraw);
+}
+
+inline BOOL  IDUISimpleTree::GetCheckBoxStyle()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetCheckBoxStyle();
+}
+
+inline void  IDUISimpleTree::SetSupportMultiSel(BOOL  bMutilSel  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetSupportMultiSel(bMutilSel);
+}
+
+inline BOOL  IDUISimpleTree::IsSupportMultiSel()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->IsSupportMultiSel();
+}
+
+inline short  IDUISimpleTree::GetCheckItemCount()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetCheckItemCount();
+}
+
+inline struct IDUITreeItem * IDUISimpleTree::GetFirstCheckItem()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetFirstCheckItem();
+}
+
+inline struct IDUITreeItem * IDUISimpleTree::GetNextCheckItem(struct IDUITreeItem * pItem  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetNextCheckItem(pItem);
+}
+
+inline void  IDUISimpleTree::GetSelectedItemCount(short * pnResult  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetSelectedItemCount(pnResult);
+}
+
+inline struct IDUITreeItem * IDUISimpleTree::GetFirstSelectedItem()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetFirstSelectedItem();
+}
+
+inline struct IDUITreeItem * IDUISimpleTree::GetNextSelectedItem(struct IDUITreeItem * pItem  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetNextSelectedItem(pItem);
+}
+
+inline void  IDUISimpleTree::SetSupportToolBar(BOOL  bSupport  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetSupportToolBar(bSupport);
+}
+
+inline BOOL  IDUISimpleTree::IsSupportToolBar()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->IsSupportToolBar();
+}
+
+inline void  IDUISimpleTree::SetToolBarOffset(short  nOffset  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetToolBarOffset(nOffset);
+}
+
+inline short  IDUISimpleTree::GetToolBarOffset()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetToolBarOffset();
+}
+
+inline void  IDUISimpleTree::SetToolMinSpaceWithText(short  nSpace  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetToolMinSpaceWithText(nSpace);
+}
+
+inline short  IDUISimpleTree::GetToolMinSpaceWithText()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetToolMinSpaceWithText();
+}
+
+inline BOOL  IDUISimpleTree::IsNodeExpand(OLE_HANDLE  hItem  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->IsNodeExpand(hItem);
+}
+
+inline void  IDUISimpleTree::SortSingleNode(OLE_HANDLE  pCallBackFunc, OLE_HANDLE  pParentNode, OLE_HANDLE  pSingleNode  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SortSingleNode(pCallBackFunc, pParentNode, pSingleNode);
+}
+
+inline void  IDUISimpleTree::SwapNode(OLE_HANDLE  pNode1, OLE_HANDLE  pNode2  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SwapNode(pNode1, pNode2);
+}
+
+inline BOOL  IDUISimpleTree::SetItmeHBitmap(OLE_HANDLE  hItem, OLE_HANDLE  hBitmap, OLE_HANDLE  hSelBitmap  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetItmeHBitmap(hItem, hBitmap, hSelBitmap);
+}
+
+inline OLE_HANDLE  IDUISimpleTree::GetItemHBitmap(OLE_HANDLE  hItem  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetItemHBitmap(hItem);
+}
+
+inline OLE_HANDLE  IDUISimpleTree::GetItemByIndex(short  nIndex, OLE_HANDLE  hParent  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetItemByIndex(nIndex, hParent);
+}
+
+inline void  IDUISimpleTree::SetScrollTop()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetScrollTop();
+}
+
+inline void  IDUISimpleTree::SetScrollBottom()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetScrollBottom();
+}
+
+inline void  IDUISimpleTree::CheckItem(OLE_HANDLE  hItem, BOOL  bCheck  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->CheckItem(hItem, bCheck);
+}
+
+inline BOOL  IDUISimpleTree::IsCheckItem(OLE_HANDLE  hItem  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->IsCheckItem(hItem);
+}
+
+inline struct SkinRect  IDUISimpleTree::GetItemNodeRect(OLE_HANDLE  hItem  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetItemNodeRect(hItem);
+}
+
+inline void  IDUISimpleTree::SetItemHasCheckBox(OLE_HANDLE  hItem, BOOL  bHasCheck  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetItemHasCheckBox(hItem, bHasCheck);
+}
+
+inline void  IDUISimpleTree::SetItemState(OLE_HANDLE  hItem, enum ItemState  nState  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetItemState(hItem, nState);
+}
+
+inline OLE_HANDLE  IDUISimpleTree::GetItemModel(OLE_HANDLE  hItem  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetItemModel(hItem);
+}
+
+inline BOOL  IDUISimpleTree::SetDragSupport(BOOL  bDragSupport, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetDragSupport(bDragSupport, bRedraw);
+}
+
+inline BOOL  IDUISimpleTree::SetItemWidth(short  nWidth, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetItemWidth(nWidth, bRedraw);
+}
+
+inline short  IDUISimpleTree::GetItemWidth()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetItemWidth();
+}
+
+inline BOOL  IDUISimpleTree::UnSelectItem(OLE_HANDLE  hItem, BOOL  bChangePos  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->UnSelectItem(hItem, bChangePos);
+}
+
+inline BOOL  IDUISimpleTree::ClearAllSelectItems()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->ClearAllSelectItems();
+}
+
+inline void  IDUISimpleTree::SetItemModel(IDispatch * pModelForm  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetItemModel(pModelForm);
+}
+
+inline void  IDUISimpleTree::DeleteAllItem()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->DeleteAllItem();
+}
+
+inline BOOL  IDUISimpleTree::GetIsAutoCheck()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetIsAutoCheck();
+}
+
+inline void  IDUISimpleTree::SetAutoCheck(BOOL  bAutoCheck  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->SetAutoCheck(bAutoCheck);
+}
+
+inline enum ItemState  IDUISimpleTree::GetItemState(OLE_HANDLE  hItem  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->GetItemState(hItem);
+}
+
+inline void  IDUISimpleTree::RefreshVirtual()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUISimpleTree_*)m_pCtrl)->RefreshVirtual();
+}
+
+inline struct IDUITreeToolItemBase * IDUITreeToolBar::AppendItem(long  nID, tstring  strName, short  nWidth, enum DUI_TREETOOL_STYLE  eStyle  )
+{
+_bstr_t xxx_strName(strName.c_str());
+	struct IDUITreeToolItemBase * _result;
+	raw_AppendItem(nID, xxx_strName, nWidth, eStyle, &_result);
+	return _result;
+}
+
+inline struct IDUITreeToolItemBase * IDUITreeToolBar::InsertItem(short  nIndex, long  nID, tstring  strName, short  nWidth, enum DUI_TREETOOL_STYLE  eStyle  )
+{
+_bstr_t xxx_strName(strName.c_str());
+	struct IDUITreeToolItemBase * _result;
+	raw_InsertItem(nIndex, nID, xxx_strName, nWidth, eStyle, &_result);
+	return _result;
+}
+
+inline void IDUITreeToolBar::RemoveItem(long  nItem  )
+{
+
+	raw_RemoveItem(nItem  );
+}
+
+inline struct IDUITreeToolItemBase * IDUITreeToolBar::GetItem(long  nID  )
+{
+	struct IDUITreeToolItemBase * _result;
+	raw_GetItem(nID, &_result);
+	return _result;
+}
+
+inline struct IDUITreeToolItemBase * IDUITreeToolBar::GetItemByName(tstring  strName  )
+{
+_bstr_t xxx_strName(strName.c_str());
+	struct IDUITreeToolItemBase * _result;
+	raw_GetItemByName(xxx_strName, &_result);
+	return _result;
+}
+
+inline struct IDUITreeToolItemBase * IDUITreeToolBar::GetAt(short  nIndex  )
+{
+	struct IDUITreeToolItemBase * _result;
+	raw_GetAt(nIndex, &_result);
+	return _result;
+}
+
+inline short  IDUITreeToolBar::GetItemCount()
+{
+	short  _result;
+	raw_GetItemCount(&_result);
+	return _result;
+}
+
+inline void IDUITreeToolBar::RemoveAllItems()
+{
+
+	raw_RemoveAllItems();
+}
+
+inline void IDUITreeToolItemBase::SetObjPtr(OLE_HANDLE  pObjPtr  )
+{
+
+	raw_SetObjPtr(pObjPtr  );
+}
+
+inline void IDUITreeToolItemBase::SetID(long  nID  )
+{
+
+	raw_SetID(nID  );
+}
+
+inline long  IDUITreeToolItemBase::GetID()
+{
+	long  _result;
+	raw_GetID(&_result);
+	return _result;
+}
+
+inline void IDUITreeToolItemBase::SetName(tstring  strName  )
+{
+	_bstr_t xxx_strName(strName.c_str());
+
+	raw_SetName(xxx_strName  );
+}
+
+inline tstring  IDUITreeToolItemBase::GetName()
+{
+	BSTR _result = NULL;
+	raw_GetName(&_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline void IDUITreeToolItemBase::SetToolTip(tstring  strToolTip  )
+{
+	_bstr_t xxx_strToolTip(strToolTip.c_str());
+
+	raw_SetToolTip(xxx_strToolTip  );
+}
+
+inline tstring  IDUITreeToolItemBase::GetToolTip()
+{
+	BSTR _result = NULL;
+	raw_GetToolTip(&_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline void IDUITreeToolItemBase::SetWidth(short  nWidth  )
+{
+
+	raw_SetWidth(nWidth  );
+}
+
+inline short  IDUITreeToolItemBase::GetWidth()
+{
+	short  _result;
+	raw_GetWidth(&_result);
+	return _result;
+}
+
+inline enum DUI_TREETOOL_STYLE  IDUITreeToolItemBase::GetStyle()
+{
+	enum DUI_TREETOOL_STYLE  _result;
+	raw_GetStyle(&_result);
+	return _result;
+}
+
+inline void IDUITreeToolItemBase::SetImage(OLE_HANDLE  hBmp  )
+{
+
+	raw_SetImage(hBmp  );
+}
+
+inline OLE_HANDLE  IDUITreeToolItemBase::GetImage()
+{
+	OLE_HANDLE  _result;
+	raw_GetImage(&_result);
+	return _result;
+}
+
+inline void IDUITreeToolItemBase::SetImageFile(tstring  strImage  )
+{
+	_bstr_t xxx_strImage(strImage.c_str());
+
+	raw_SetImageFile(xxx_strImage  );
+}
+
+inline tstring  IDUITreeToolItemBase::GetImageFile()
+{
+	BSTR _result = NULL;
+	raw_GetImageFile(&_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline OLE_HANDLE  IDUITreeItem::GetTreeNode()
+{
+	OLE_HANDLE  _result;
+	raw_GetTreeNode(&_result);
+	return _result;
+}
+
+inline void IDUITreeItem::SetTreeNode(OLE_HANDLE  pTreeNode  )
+{
+
+	raw_SetTreeNode(pTreeNode  );
+}
+
+inline void IDUITreeItem::SetHasCheckBox(BOOL  bHasCheck  )
+{
+	VARIANT_BOOL xxx_bHasCheck = bHasCheck ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetHasCheckBox(xxx_bHasCheck  );
+}
+
+inline struct IDUIControlBase * IDUITreeItem::GetModel()
+{
+	struct IDUIControlBase * _result;
+	raw_GetModel(&_result);
+	return _result;
+}
+
+inline void IDUITreeToolCheck::SetCheck(BOOL  bCheck  )
+{
+	VARIANT_BOOL xxx_bCheck = bCheck ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetCheck(xxx_bCheck  );
+}
+
+inline BOOL  IDUITreeToolCheck::GetCheck()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_GetCheck(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void IDUITreeToolCheck::SetCheckImage(OLE_HANDLE  hBmp  )
+{
+
+	raw_SetCheckImage(hBmp  );
+}
+
+inline OLE_HANDLE  IDUITreeToolCheck::GetCheckImage()
+{
+	OLE_HANDLE  _result;
+	raw_GetCheckImage(&_result);
+	return _result;
+}
+
+inline void IDUITreeToolCheck::SetCheckImageFile(tstring  strImage  )
+{
+	_bstr_t xxx_strImage(strImage.c_str());
+
+	raw_SetCheckImageFile(xxx_strImage  );
+}
+
+inline tstring  IDUITreeToolCheck::GetCheckImageFile()
+{
+	BSTR _result = NULL;
+	raw_GetCheckImageFile(&_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline void IDUITreeToolRadio::SetRadio()
+{
+
+	raw_SetRadio();
+}
+
+inline BOOL  IDUITreeToolRadio::GetValue()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_GetValue(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void IDUITreeToolRadio::SetCheckImage(OLE_HANDLE  hBmp  )
+{
+
+	raw_SetCheckImage(hBmp  );
+}
+
+inline OLE_HANDLE  IDUITreeToolRadio::GetCheckImage()
+{
+	OLE_HANDLE  _result;
+	raw_GetCheckImage(&_result);
+	return _result;
+}
+
+inline void IDUITreeToolRadio::SetCheckImageFile(tstring  strImage  )
+{
+	_bstr_t xxx_strImage(strImage.c_str());
+
+	raw_SetCheckImageFile(xxx_strImage  );
+}
+
+inline tstring  IDUITreeToolRadio::GetCheckImageFile()
+{
+	BSTR _result = NULL;
+	raw_GetCheckImageFile(&_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline BOOL  IDUIOutLookBar_::SetDrawBackColor(BOOL  bDrawColor, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bDrawColor = bDrawColor ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetDrawBackColor(xxx_bDrawColor, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUIOutLookBar_::GetDrawBackColor()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_GetDrawBackColor(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUIOutLookBar_::SetBackImage(struct IDUIImageBase * pImageBae, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetBackImage(pImageBae, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline struct IDUIImageBase * IDUIOutLookBar_::GetBackImage()
+{
+	struct IDUIImageBase * _result;
+	raw_GetBackImage(&_result);
+	return _result;
+}
+
+inline BOOL  IDUIOutLookBar_::SetBackColor(struct IFillColor * pFillColor, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetBackColor(pFillColor, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline struct IFillColor * IDUIOutLookBar_::GetBackColor()
+{
+	struct IFillColor * _result;
+	raw_GetBackColor(&_result);
+	return _result;
+}
+
+inline BOOL  IDUIOutLookBar_::SetDrawFolderColor(BOOL  bDrawColor, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bDrawColor = bDrawColor ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetDrawFolderColor(xxx_bDrawColor, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUIOutLookBar_::GetDrawFolderColor()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_GetDrawFolderColor(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline short  IDUIOutLookBar_::GetFolderBorderSize()
+{
+	short  _result;
+	raw_GetFolderBorderSize(&_result);
+	return _result;
+}
+
+inline BOOL  IDUIOutLookBar_::SetFolderBorderSize(short  nSize, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetFolderBorderSize(nSize, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline short  IDUIOutLookBar_::GetFolderHeight()
+{
+	short  _result;
+	raw_GetFolderHeight(&_result);
+	return _result;
+}
+
+inline BOOL  IDUIOutLookBar_::SetFolderHeight(short  nHeight, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetFolderHeight(nHeight, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUIOutLookBar_::SetFolderImage(enum DUIOUTLOOKBAR_STATE  eState, struct IDUIImageBase * pImageBae, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetFolderImage(eState, pImageBae, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline struct IDUIImageBase * IDUIOutLookBar_::GetFolderImage(enum DUIOUTLOOKBAR_STATE  eState  )
+{
+	struct IDUIImageBase * _result;
+	raw_GetFolderImage(eState, &_result);
+	return _result;
+}
+
+inline BOOL  IDUIOutLookBar_::SetFolderBorderColor(enum DUIOUTLOOKBAR_STATE  eState, struct IFillColor * pFillColor, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetFolderBorderColor(eState, pFillColor, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline struct IFillColor * IDUIOutLookBar_::GetFolderBorderColor(enum DUIOUTLOOKBAR_STATE  eState  )
+{
+	struct IFillColor * _result;
+	raw_GetFolderBorderColor(eState, &_result);
+	return _result;
+}
+
+inline BOOL  IDUIOutLookBar_::SetFolderBackColor(enum DUIOUTLOOKBAR_STATE  eState, struct IFillColor * pFillColor, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetFolderBackColor(eState, pFillColor, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline struct IFillColor * IDUIOutLookBar_::GetFolderBackColor(enum DUIOUTLOOKBAR_STATE  eState  )
+{
+	struct IFillColor * _result;
+	raw_GetFolderBackColor(eState, &_result);
+	return _result;
+}
+
+inline BOOL  IDUIOutLookBar_::SetFolderTextStyle(enum DUIOUTLOOKBAR_STATE  eState, struct IDUITextStyle * pTextStyle, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetFolderTextStyle(eState, pTextStyle, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline struct IDUITextStyle * IDUIOutLookBar_::GetFolderTextStyle(enum DUIOUTLOOKBAR_STATE  eState  )
+{
+	struct IDUITextStyle * _result;
+	raw_GetFolderTextStyle(eState, &_result);
+	return _result;
+}
+
+inline BOOL  IDUIOutLookBar_::SetAnimationTickCount(short  nCount, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetAnimationTickCount(nCount, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline short  IDUIOutLookBar_::GetAnimationTickCount()
+{
+	short  _result;
+	raw_GetAnimationTickCount(&_result);
+	return _result;
+}
+
+inline BOOL  IDUIOutLookBar_::SetFolderSelected(OLE_HANDLE  hFolder, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetFolderSelected(hFolder, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline OLE_HANDLE  IDUIOutLookBar_::GetFolderSelected()
+{
+	OLE_HANDLE  _result;
+	raw_GetFolderSelected(&_result);
+	return _result;
+}
+
+inline OLE_HANDLE  IDUIOutLookBar_::AddFolderBar(tstring  strText, OLE_HANDLE  hChild, long  exData, BOOL  bRedraw  )
+{
+_bstr_t xxx_strText(strText.c_str());
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	OLE_HANDLE  _result;
+	raw_AddFolderBar(xxx_strText, hChild, exData, xxx_bRedraw, &_result);
+	return _result;
+}
+
+inline OLE_HANDLE  IDUIOutLookBar_::AddFolder(tstring  strText, long  exData, BOOL  bRedraw  )
+{
+_bstr_t xxx_strText(strText.c_str());
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	OLE_HANDLE  _result;
+	raw_AddFolder(xxx_strText, exData, xxx_bRedraw, &_result);
+	return _result;
+}
+
+inline BOOL  IDUIOutLookBar_::DelFolderBar(OLE_HANDLE  hFolderBar, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_DelFolderBar(hFolderBar, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUIOutLookBar_::SetFolderGraphics(enum DUIOUTLOOKBAR_STATE  eState, struct IDUIImageBase * pImageBae, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetFolderGraphics(eState, pImageBae, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline struct IDUIImageBase * IDUIOutLookBar_::GetFolderGraphics(enum DUIOUTLOOKBAR_STATE  eState, BOOL  bExpand  )
+{
+	VARIANT_BOOL xxx_bExpand = bExpand ? VARIANT_TRUE : VARIANT_FALSE;
+	struct IDUIImageBase * _result;
+	raw_GetFolderGraphics(eState, xxx_bExpand, &_result);
+	return _result;
+}
+
+inline BOOL  IDUIOutLookBar_::SetUpDownMode(BOOL  bUpDownMode, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bUpDownMode = bUpDownMode ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetUpDownMode(xxx_bUpDownMode, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUIOutLookBar_::IsUpDownMode()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_IsUpDownMode(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUIOutLookBar_::SetGraphicOffset(short  nOffsetX, short  nOffsetY, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetGraphicOffset(nOffsetX, nOffsetY, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void IDUIOutLookBar_::GetGraphicOffset(short * pnOffsetX, short * pnOffsetY  )
+{
+
+	raw_GetGraphicOffset(pnOffsetX, pnOffsetY  );
+}
+
+inline BOOL  IDUIOutLookBar_::SetGraphicsX(short  nOffsetX, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetGraphicsX(nOffsetX, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline short  IDUIOutLookBar_::GetGraphicsX()
+{
+	short  _result;
+	raw_GetGraphicsX(&_result);
+	return _result;
+}
+
+inline BOOL  IDUIOutLookBar_::SetGraphicsY(short  nOffsetY, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetGraphicsY(nOffsetY, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline short  IDUIOutLookBar_::GetGraphicsY()
+{
+	short  _result;
+	raw_GetGraphicsY(&_result);
+	return _result;
+}
+
+inline short  IDUIOutLookBar_::GetFolderCount()
+{
+	short  _result;
+	raw_GetFolderCount(&_result);
+	return _result;
+}
+
+inline BOOL  IDUIOutLookBar_::SetFolderText(OLE_HANDLE  hFolder, tstring  bstrText  )
+{
+_bstr_t xxx_bstrText(bstrText.c_str());
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetFolderText(hFolder, xxx_bstrText, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline tstring  IDUIOutLookBar_::GetFolderText(OLE_HANDLE  hFolder  )
+{
+	BSTR _result = NULL;
+	raw_GetFolderText(hFolder, &_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline OLE_HANDLE  IDUIOutLookBar_::GetFolderChild(OLE_HANDLE  hFolder  )
+{
+	OLE_HANDLE  _result;
+	raw_GetFolderChild(hFolder, &_result);
+	return _result;
+}
+
+inline long  IDUIOutLookBar_::GetFolderData(OLE_HANDLE  hFolder  )
+{
+	long  _result;
+	raw_GetFolderData(hFolder, &_result);
+	return _result;
+}
+
+inline void IDUIOutLookBar_::SetFolderChild(OLE_HANDLE  hFolder, OLE_HANDLE  hChild  )
+{
+
+	raw_SetFolderChild(hFolder, hChild  );
+}
+
+inline void IDUIOutLookBar_::SetFolderData(OLE_HANDLE  hFolder, long  dwData  )
+{
+
+	raw_SetFolderData(hFolder, dwData  );
+}
+
+inline OLE_HANDLE  IDUIOutLookBar_::AddItem(OLE_HANDLE  hFolder, tstring  strText, tstring  strImagePath, short  nImageCount, BOOL  bHorz, long  exData  )
+{
+_bstr_t xxx_strText(strText.c_str());
+_bstr_t xxx_strImagePath(strImagePath.c_str());
+	VARIANT_BOOL xxx_bHorz = bHorz ? VARIANT_TRUE : VARIANT_FALSE;
+	OLE_HANDLE  _result;
+	raw_AddItem(hFolder, xxx_strText, xxx_strImagePath, nImageCount, xxx_bHorz, exData, &_result);
+	return _result;
+}
+
+inline BOOL  IDUIOutLookBar_::SetDrawItemColor(BOOL  bDrawColor, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bDrawColor = bDrawColor ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetDrawItemColor(xxx_bDrawColor, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUIOutLookBar_::GetDrawItemColor()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_GetDrawItemColor(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUIOutLookBar_::SetItemHeight(short  nHeight, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetItemHeight(nHeight, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline short  IDUIOutLookBar_::GetItemHeight()
+{
+	short  _result;
+	raw_GetItemHeight(&_result);
+	return _result;
+}
+
+inline BOOL  IDUIOutLookBar_::SetItemSpace(short  nSpace, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetItemSpace(nSpace, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline short  IDUIOutLookBar_::GetItemSpace()
+{
+	short  _result;
+	raw_GetItemSpace(&_result);
+	return _result;
+}
+
+inline BOOL  IDUIOutLookBar_::SetItemBackImage(enum DUIOUTLOOKBAR_STATE  eState, struct IDUIImageBase * pImageBase, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetItemBackImage(eState, pImageBase, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline struct IDUIImageBase * IDUIOutLookBar_::GetItemBackImage(enum DUIOUTLOOKBAR_STATE  eState  )
+{
+	struct IDUIImageBase * _result;
+	raw_GetItemBackImage(eState, &_result);
+	return _result;
+}
+
+inline BOOL  IDUIOutLookBar_::SetItemBackColor(enum DUIOUTLOOKBAR_STATE  eState, struct IFillColor * pFillColor, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetItemBackColor(eState, pFillColor, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline struct IFillColor * IDUIOutLookBar_::GetItemBackColor(enum DUIOUTLOOKBAR_STATE  eState  )
+{
+	struct IFillColor * _result;
+	raw_GetItemBackColor(eState, &_result);
+	return _result;
+}
+
+inline BOOL  IDUIOutLookBar_::SetItemTextStyle(enum DUIOUTLOOKBAR_STATE  eState, struct IDUITextStyle * pTextStyle, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetItemTextStyle(eState, pTextStyle, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline struct IDUITextStyle * IDUIOutLookBar_::GetItemTextStyle(enum DUIOUTLOOKBAR_STATE  eState  )
+{
+	struct IDUITextStyle * _result;
+	raw_GetItemTextStyle(eState, &_result);
+	return _result;
+}
+
+inline BOOL  IDUIOutLookBar_::SetUpArrowImage(enum DUIOUTLOOKBAR_STATE  eState, struct IDUIImageBase * pImageBae, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetUpArrowImage(eState, pImageBae, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline struct IDUIImageBase * IDUIOutLookBar_::GetUpArrowImage(enum DUIOUTLOOKBAR_STATE  eState  )
+{
+	struct IDUIImageBase * _result;
+	raw_GetUpArrowImage(eState, &_result);
+	return _result;
+}
+
+inline BOOL  IDUIOutLookBar_::SetDownArrowImage(enum DUIOUTLOOKBAR_STATE  eState, struct IDUIImageBase * pImageBae, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetDownArrowImage(eState, pImageBae, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline struct IDUIImageBase * IDUIOutLookBar_::GetDownArrowImage(enum DUIOUTLOOKBAR_STATE  eState  )
+{
+	struct IDUIImageBase * _result;
+	raw_GetDownArrowImage(eState, &_result);
+	return _result;
+}
+
+inline BOOL  IDUIOutLookBar_::SetArrowSpace(short  nOffsetX, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetArrowSpace(nOffsetX, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline short  IDUIOutLookBar_::GetArrowSpace()
+{
+	short  _result;
+	raw_GetArrowSpace(&_result);
+	return _result;
+}
+
+inline BOOL  IDUIOutLookBar_::RemoveItem(OLE_HANDLE  hFolder, OLE_HANDLE  hItem, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_RemoveItem(hFolder, hItem, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline tstring  IDUIOutLookBar_::GetItemText(OLE_HANDLE  hFolder, OLE_HANDLE  hItem  )
+{
+	BSTR _result = NULL;
+	raw_GetItemText(hFolder, hItem, &_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline BOOL  IDUIOutLookBar_::SetItemText(OLE_HANDLE  hFolder, OLE_HANDLE  hItem, tstring  text  )
+{
+_bstr_t xxx_text(text.c_str());
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetItemText(hFolder, hItem, xxx_text, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline short  IDUIOutLookBar_::GetItemCount(OLE_HANDLE  hFolder  )
+{
+	short  _result;
+	raw_GetItemCount(hFolder, &_result);
+	return _result;
+}
+
+inline OLE_HANDLE  IDUIOutLookBar_::AddItemByText(OLE_HANDLE  hFolder, tstring  strText  )
+{
+_bstr_t xxx_strText(strText.c_str());
+	OLE_HANDLE  _result;
+	raw_AddItemByText(hFolder, xxx_strText, &_result);
+	return _result;
+}
+
+inline BOOL  IDUIOutLookBar_::SetItemImage(OLE_HANDLE  hFolder, OLE_HANDLE  hItem, tstring  imagePath, short  nImageCount, BOOL  bIsHorz  )
+{
+_bstr_t xxx_imagePath(imagePath.c_str());
+	VARIANT_BOOL xxx_bIsHorz = bIsHorz ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetItemImage(hFolder, hItem, xxx_imagePath, nImageCount, xxx_bIsHorz, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline short  IDUIOutLookBar_::GetBackBorderSize()
+{
+	short  _result;
+	raw_GetBackBorderSize(&_result);
+	return _result;
+}
+
+inline BOOL  IDUIOutLookBar_::SetBackBorderSize(short  nSize, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetBackBorderSize(nSize, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void IDUIOutLookBar_::SetItemData(OLE_HANDLE  hFolder, OLE_HANDLE  hItem, long  dwData  )
+{
+
+	raw_SetItemData(hFolder, hItem, dwData  );
+}
+
+inline long  IDUIOutLookBar_::GetItemData(OLE_HANDLE  hFolder, OLE_HANDLE  hItem  )
+{
+	long  _result;
+	raw_GetItemData(hFolder, hItem, &_result);
+	return _result;
+}
+
+inline BOOL  IDUIOutLookBar_::RemoveAllItems(OLE_HANDLE  hFolder  )
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_RemoveAllItems(hFolder, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline BOOL  IDUIOutLookBar_::RemoveAllFolders()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_RemoveAllFolders(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void IDUIOutLookBar_::SetSelectedItem(OLE_HANDLE  hItem  )
+{
+
+	raw_SetSelectedItem(hItem  );
+}
+
+inline void IDUIOutLookBar_::GetSelectedItem(OLE_HANDLE * phResult  )
+{
+
+	raw_GetSelectedItem(phResult  );
+}
+
+inline void IDUIOutLookBar_::SetSmallIconView(BOOL  bSmallIcon  )
+{
+	VARIANT_BOOL xxx_bSmallIcon = bSmallIcon ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetSmallIconView(xxx_bSmallIcon  );
+}
+
+inline void IDUIOutLookBar_::IsSmallIconView(VARIANT_BOOL * pbResult  )
+{
+
+	raw_IsSmallIconView(pbResult  );
+}
+
+inline void IDUIOutLookBar_::SetItemIconOffset(short  nOffset, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetItemIconOffset(nOffset, xxx_bRedraw  );
+}
+
+inline BOOL  IDUIOutLookBar::SetDrawBackColor(BOOL  bDrawColor, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetDrawBackColor(bDrawColor, bRedraw);
+}
+
+inline BOOL  IDUIOutLookBar::GetDrawBackColor()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetDrawBackColor();
+}
+
+inline BOOL  IDUIOutLookBar::SetBackImage(struct IDUIImageBase * pImageBae, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetBackImage(pImageBae, bRedraw);
+}
+
+inline struct IDUIImageBase * IDUIOutLookBar::GetBackImage()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetBackImage();
+}
+
+inline BOOL  IDUIOutLookBar::SetBackColor(struct IFillColor * pFillColor, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetBackColor(pFillColor, bRedraw);
+}
+
+inline struct IFillColor * IDUIOutLookBar::GetBackColor()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetBackColor();
+}
+
+inline BOOL  IDUIOutLookBar::SetDrawFolderColor(BOOL  bDrawColor, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetDrawFolderColor(bDrawColor, bRedraw);
+}
+
+inline BOOL  IDUIOutLookBar::GetDrawFolderColor()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetDrawFolderColor();
+}
+
+inline short  IDUIOutLookBar::GetFolderBorderSize()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetFolderBorderSize();
+}
+
+inline BOOL  IDUIOutLookBar::SetFolderBorderSize(short  nSize, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetFolderBorderSize(nSize, bRedraw);
+}
+
+inline short  IDUIOutLookBar::GetFolderHeight()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetFolderHeight();
+}
+
+inline BOOL  IDUIOutLookBar::SetFolderHeight(short  nHeight, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetFolderHeight(nHeight, bRedraw);
+}
+
+inline BOOL  IDUIOutLookBar::SetFolderImage(enum DUIOUTLOOKBAR_STATE  eState, struct IDUIImageBase * pImageBae, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetFolderImage(eState, pImageBae, bRedraw);
+}
+
+inline struct IDUIImageBase * IDUIOutLookBar::GetFolderImage(enum DUIOUTLOOKBAR_STATE  eState  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetFolderImage(eState);
+}
+
+inline BOOL  IDUIOutLookBar::SetFolderBorderColor(enum DUIOUTLOOKBAR_STATE  eState, struct IFillColor * pFillColor, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetFolderBorderColor(eState, pFillColor, bRedraw);
+}
+
+inline struct IFillColor * IDUIOutLookBar::GetFolderBorderColor(enum DUIOUTLOOKBAR_STATE  eState  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetFolderBorderColor(eState);
+}
+
+inline BOOL  IDUIOutLookBar::SetFolderBackColor(enum DUIOUTLOOKBAR_STATE  eState, struct IFillColor * pFillColor, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetFolderBackColor(eState, pFillColor, bRedraw);
+}
+
+inline struct IFillColor * IDUIOutLookBar::GetFolderBackColor(enum DUIOUTLOOKBAR_STATE  eState  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetFolderBackColor(eState);
+}
+
+inline BOOL  IDUIOutLookBar::SetFolderTextStyle(enum DUIOUTLOOKBAR_STATE  eState, struct IDUITextStyle * pTextStyle, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetFolderTextStyle(eState, pTextStyle, bRedraw);
+}
+
+inline struct IDUITextStyle * IDUIOutLookBar::GetFolderTextStyle(enum DUIOUTLOOKBAR_STATE  eState  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetFolderTextStyle(eState);
+}
+
+inline BOOL  IDUIOutLookBar::SetAnimationTickCount(short  nCount, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetAnimationTickCount(nCount, bRedraw);
+}
+
+inline short  IDUIOutLookBar::GetAnimationTickCount()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetAnimationTickCount();
+}
+
+inline BOOL  IDUIOutLookBar::SetFolderSelected(OLE_HANDLE  hFolder, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetFolderSelected(hFolder, bRedraw);
+}
+
+inline OLE_HANDLE  IDUIOutLookBar::GetFolderSelected()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetFolderSelected();
+}
+
+inline OLE_HANDLE  IDUIOutLookBar::AddFolderBar(tstring  strText, OLE_HANDLE  hChild, long  exData, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->AddFolderBar(strText, hChild, exData, bRedraw);
+}
+
+inline OLE_HANDLE  IDUIOutLookBar::AddFolder(tstring  strText, long  exData, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->AddFolder(strText, exData, bRedraw);
+}
+
+inline BOOL  IDUIOutLookBar::DelFolderBar(OLE_HANDLE  hFolderBar, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->DelFolderBar(hFolderBar, bRedraw);
+}
+
+inline BOOL  IDUIOutLookBar::SetFolderGraphics(enum DUIOUTLOOKBAR_STATE  eState, struct IDUIImageBase * pImageBae, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetFolderGraphics(eState, pImageBae, bRedraw);
+}
+
+inline struct IDUIImageBase * IDUIOutLookBar::GetFolderGraphics(enum DUIOUTLOOKBAR_STATE  eState, BOOL  bExpand  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetFolderGraphics(eState, bExpand);
+}
+
+inline BOOL  IDUIOutLookBar::SetUpDownMode(BOOL  bUpDownMode, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetUpDownMode(bUpDownMode, bRedraw);
+}
+
+inline BOOL  IDUIOutLookBar::IsUpDownMode()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->IsUpDownMode();
+}
+
+inline BOOL  IDUIOutLookBar::SetGraphicOffset(short  nOffsetX, short  nOffsetY, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetGraphicOffset(nOffsetX, nOffsetY, bRedraw);
+}
+
+inline void  IDUIOutLookBar::GetGraphicOffset(short * pnOffsetX, short * pnOffsetY  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetGraphicOffset(pnOffsetX, pnOffsetY);
+}
+
+inline BOOL  IDUIOutLookBar::SetGraphicsX(short  nOffsetX, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetGraphicsX(nOffsetX, bRedraw);
+}
+
+inline short  IDUIOutLookBar::GetGraphicsX()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetGraphicsX();
+}
+
+inline BOOL  IDUIOutLookBar::SetGraphicsY(short  nOffsetY, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetGraphicsY(nOffsetY, bRedraw);
+}
+
+inline short  IDUIOutLookBar::GetGraphicsY()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetGraphicsY();
+}
+
+inline short  IDUIOutLookBar::GetFolderCount()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetFolderCount();
+}
+
+inline BOOL  IDUIOutLookBar::SetFolderText(OLE_HANDLE  hFolder, tstring  bstrText  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetFolderText(hFolder, bstrText);
+}
+
+inline tstring  IDUIOutLookBar::GetFolderText(OLE_HANDLE  hFolder  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetFolderText(hFolder);
+}
+
+inline OLE_HANDLE  IDUIOutLookBar::GetFolderChild(OLE_HANDLE  hFolder  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetFolderChild(hFolder);
+}
+
+inline long  IDUIOutLookBar::GetFolderData(OLE_HANDLE  hFolder  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetFolderData(hFolder);
+}
+
+inline void  IDUIOutLookBar::SetFolderChild(OLE_HANDLE  hFolder, OLE_HANDLE  hChild  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetFolderChild(hFolder, hChild);
+}
+
+inline void  IDUIOutLookBar::SetFolderData(OLE_HANDLE  hFolder, long  dwData  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetFolderData(hFolder, dwData);
+}
+
+inline OLE_HANDLE  IDUIOutLookBar::AddItem(OLE_HANDLE  hFolder, tstring  strText, tstring  strImagePath, short  nImageCount, BOOL  bHorz, long  exData  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->AddItem(hFolder, strText, strImagePath, nImageCount, bHorz, exData);
+}
+
+inline BOOL  IDUIOutLookBar::SetDrawItemColor(BOOL  bDrawColor, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetDrawItemColor(bDrawColor, bRedraw);
+}
+
+inline BOOL  IDUIOutLookBar::GetDrawItemColor()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetDrawItemColor();
+}
+
+inline BOOL  IDUIOutLookBar::SetItemHeight(short  nHeight, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetItemHeight(nHeight, bRedraw);
+}
+
+inline short  IDUIOutLookBar::GetItemHeight()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetItemHeight();
+}
+
+inline BOOL  IDUIOutLookBar::SetItemSpace(short  nSpace, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetItemSpace(nSpace, bRedraw);
+}
+
+inline short  IDUIOutLookBar::GetItemSpace()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetItemSpace();
+}
+
+inline BOOL  IDUIOutLookBar::SetItemBackImage(enum DUIOUTLOOKBAR_STATE  eState, struct IDUIImageBase * pImageBase, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetItemBackImage(eState, pImageBase, bRedraw);
+}
+
+inline struct IDUIImageBase * IDUIOutLookBar::GetItemBackImage(enum DUIOUTLOOKBAR_STATE  eState  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetItemBackImage(eState);
+}
+
+inline BOOL  IDUIOutLookBar::SetItemBackColor(enum DUIOUTLOOKBAR_STATE  eState, struct IFillColor * pFillColor, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetItemBackColor(eState, pFillColor, bRedraw);
+}
+
+inline struct IFillColor * IDUIOutLookBar::GetItemBackColor(enum DUIOUTLOOKBAR_STATE  eState  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetItemBackColor(eState);
+}
+
+inline BOOL  IDUIOutLookBar::SetItemTextStyle(enum DUIOUTLOOKBAR_STATE  eState, struct IDUITextStyle * pTextStyle, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetItemTextStyle(eState, pTextStyle, bRedraw);
+}
+
+inline struct IDUITextStyle * IDUIOutLookBar::GetItemTextStyle(enum DUIOUTLOOKBAR_STATE  eState  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetItemTextStyle(eState);
+}
+
+inline BOOL  IDUIOutLookBar::SetUpArrowImage(enum DUIOUTLOOKBAR_STATE  eState, struct IDUIImageBase * pImageBae, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetUpArrowImage(eState, pImageBae, bRedraw);
+}
+
+inline struct IDUIImageBase * IDUIOutLookBar::GetUpArrowImage(enum DUIOUTLOOKBAR_STATE  eState  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetUpArrowImage(eState);
+}
+
+inline BOOL  IDUIOutLookBar::SetDownArrowImage(enum DUIOUTLOOKBAR_STATE  eState, struct IDUIImageBase * pImageBae, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetDownArrowImage(eState, pImageBae, bRedraw);
+}
+
+inline struct IDUIImageBase * IDUIOutLookBar::GetDownArrowImage(enum DUIOUTLOOKBAR_STATE  eState  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetDownArrowImage(eState);
+}
+
+inline BOOL  IDUIOutLookBar::SetArrowSpace(short  nOffsetX, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetArrowSpace(nOffsetX, bRedraw);
+}
+
+inline short  IDUIOutLookBar::GetArrowSpace()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetArrowSpace();
+}
+
+inline BOOL  IDUIOutLookBar::RemoveItem(OLE_HANDLE  hFolder, OLE_HANDLE  hItem, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->RemoveItem(hFolder, hItem, bRedraw);
+}
+
+inline tstring  IDUIOutLookBar::GetItemText(OLE_HANDLE  hFolder, OLE_HANDLE  hItem  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetItemText(hFolder, hItem);
+}
+
+inline BOOL  IDUIOutLookBar::SetItemText(OLE_HANDLE  hFolder, OLE_HANDLE  hItem, tstring  text  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetItemText(hFolder, hItem, text);
+}
+
+inline short  IDUIOutLookBar::GetItemCount(OLE_HANDLE  hFolder  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetItemCount(hFolder);
+}
+
+inline OLE_HANDLE  IDUIOutLookBar::AddItemByText(OLE_HANDLE  hFolder, tstring  strText  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->AddItemByText(hFolder, strText);
+}
+
+inline BOOL  IDUIOutLookBar::SetItemImage(OLE_HANDLE  hFolder, OLE_HANDLE  hItem, tstring  imagePath, short  nImageCount, BOOL  bIsHorz  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetItemImage(hFolder, hItem, imagePath, nImageCount, bIsHorz);
+}
+
+inline short  IDUIOutLookBar::GetBackBorderSize()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetBackBorderSize();
+}
+
+inline BOOL  IDUIOutLookBar::SetBackBorderSize(short  nSize, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetBackBorderSize(nSize, bRedraw);
+}
+
+inline void  IDUIOutLookBar::SetItemData(OLE_HANDLE  hFolder, OLE_HANDLE  hItem, long  dwData  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetItemData(hFolder, hItem, dwData);
+}
+
+inline long  IDUIOutLookBar::GetItemData(OLE_HANDLE  hFolder, OLE_HANDLE  hItem  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetItemData(hFolder, hItem);
+}
+
+inline BOOL  IDUIOutLookBar::RemoveAllItems(OLE_HANDLE  hFolder  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->RemoveAllItems(hFolder);
+}
+
+inline BOOL  IDUIOutLookBar::RemoveAllFolders()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->RemoveAllFolders();
+}
+
+inline void  IDUIOutLookBar::SetSelectedItem(OLE_HANDLE  hItem  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetSelectedItem(hItem);
+}
+
+inline void  IDUIOutLookBar::GetSelectedItem(OLE_HANDLE * phResult  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->GetSelectedItem(phResult);
+}
+
+inline void  IDUIOutLookBar::SetSmallIconView(BOOL  bSmallIcon  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetSmallIconView(bSmallIcon);
+}
+
+inline void  IDUIOutLookBar::IsSmallIconView(VARIANT_BOOL * pbResult  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->IsSmallIconView(pbResult);
+}
+
+inline void  IDUIOutLookBar::SetItemIconOffset(short  nOffset, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIOutLookBar_*)m_pCtrl)->SetItemIconOffset(nOffset, bRedraw);
+}
+
+inline void IDUIWebKit_::SetURL(tstring  strText  )
+{
+	_bstr_t xxx_strText(strText.c_str());
+
+	raw_SetURL(xxx_strText  );
+}
+
+inline void  IDUIWebKit::SetURL(tstring  strText  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIWebKit_*)m_pCtrl)->SetURL(strText);
+}
+
+inline void ICDuiPicker_::SetEditBorder(struct SkinRect * rcEditBorder  )
+{
+
+	raw_SetEditBorder(rcEditBorder  );
+}
+
+inline void ICDuiPicker_::StartTimer()
+{
+
+	raw_StartTimer();
+}
+
+inline void ICDuiPicker_::StopTimer()
+{
+
+	raw_StopTimer();
+}
+
+inline void ICDuiPicker_::SetPickerBackImage(struct IDUIImageBase * pImagePickerBack  )
+{
+
+	raw_SetPickerBackImage(pImagePickerBack  );
+}
+
+inline void ICDuiPicker_::SetHour(int  nHour  )
+{
+
+	raw_SetHour(nHour  );
+}
+
+inline int  ICDuiPicker_::GetHour()
+{
+	int  _result;
+	raw_GetHour(&_result);
+	return _result;
+}
+
+inline void ICDuiPicker_::SetMin(int  nMin  )
+{
+
+	raw_SetMin(nMin  );
+}
+
+inline int  ICDuiPicker_::GetMin()
+{
+	int  _result;
+	raw_GetMin(&_result);
+	return _result;
+}
+
+inline void ICDuiPicker_::SetSec(int  nSec  )
+{
+
+	raw_SetSec(nSec  );
+}
+
+inline int  ICDuiPicker_::GetSec()
+{
+	int  _result;
+	raw_GetSec(&_result);
+	return _result;
+}
+
+inline void ICDuiPicker_::IsShowYMD(BOOL  bShowYMD  )
+{
+	VARIANT_BOOL xxx_bShowYMD = bShowYMD ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_IsShowYMD(xxx_bShowYMD  );
+}
+
+inline void ICDuiPicker_::IsShowSec(BOOL  bShowSec  )
+{
+	VARIANT_BOOL xxx_bShowSec = bShowSec ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_IsShowSec(xxx_bShowSec  );
+}
+
+inline void ICDuiPicker_::IsShowHMS(BOOL  bShowHMS  )
+{
+	VARIANT_BOOL xxx_bShowHMS = bShowHMS ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_IsShowHMS(xxx_bShowHMS  );
+}
+
+inline void ICDuiPicker_::SetYear(int  nYear  )
+{
+
+	raw_SetYear(nYear  );
+}
+
+inline int  ICDuiPicker_::GetYear()
+{
+	int  _result;
+	raw_GetYear(&_result);
+	return _result;
+}
+
+inline void ICDuiPicker_::SetMonth(int  nMonth  )
+{
+
+	raw_SetMonth(nMonth  );
+}
+
+inline int  ICDuiPicker_::GetMonth()
+{
+	int  _result;
+	raw_GetMonth(&_result);
+	return _result;
+}
+
+inline void ICDuiPicker_::SetDay(int  nDay  )
+{
+
+	raw_SetDay(nDay  );
+}
+
+inline int  ICDuiPicker_::GetDay()
+{
+	int  _result;
+	raw_GetDay(&_result);
+	return _result;
+}
+
+inline void  ICDuiPicker::SetEditBorder(struct SkinRect * rcEditBorder  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((ICDuiPicker_*)m_pCtrl)->SetEditBorder(rcEditBorder);
+}
+
+inline void  ICDuiPicker::StartTimer()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((ICDuiPicker_*)m_pCtrl)->StartTimer();
+}
+
+inline void  ICDuiPicker::StopTimer()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((ICDuiPicker_*)m_pCtrl)->StopTimer();
+}
+
+inline void  ICDuiPicker::SetPickerBackImage(struct IDUIImageBase * pImagePickerBack  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((ICDuiPicker_*)m_pCtrl)->SetPickerBackImage(pImagePickerBack);
+}
+
+inline void  ICDuiPicker::SetHour(int  nHour  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((ICDuiPicker_*)m_pCtrl)->SetHour(nHour);
+}
+
+inline int  ICDuiPicker::GetHour()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((ICDuiPicker_*)m_pCtrl)->GetHour();
+}
+
+inline void  ICDuiPicker::SetMin(int  nMin  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((ICDuiPicker_*)m_pCtrl)->SetMin(nMin);
+}
+
+inline int  ICDuiPicker::GetMin()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((ICDuiPicker_*)m_pCtrl)->GetMin();
+}
+
+inline void  ICDuiPicker::SetSec(int  nSec  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((ICDuiPicker_*)m_pCtrl)->SetSec(nSec);
+}
+
+inline int  ICDuiPicker::GetSec()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((ICDuiPicker_*)m_pCtrl)->GetSec();
+}
+
+inline void  ICDuiPicker::IsShowYMD(BOOL  bShowYMD  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((ICDuiPicker_*)m_pCtrl)->IsShowYMD(bShowYMD);
+}
+
+inline void  ICDuiPicker::IsShowSec(BOOL  bShowSec  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((ICDuiPicker_*)m_pCtrl)->IsShowSec(bShowSec);
+}
+
+inline void  ICDuiPicker::IsShowHMS(BOOL  bShowHMS  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((ICDuiPicker_*)m_pCtrl)->IsShowHMS(bShowHMS);
+}
+
+inline void  ICDuiPicker::SetYear(int  nYear  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((ICDuiPicker_*)m_pCtrl)->SetYear(nYear);
+}
+
+inline int  ICDuiPicker::GetYear()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((ICDuiPicker_*)m_pCtrl)->GetYear();
+}
+
+inline void  ICDuiPicker::SetMonth(int  nMonth  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((ICDuiPicker_*)m_pCtrl)->SetMonth(nMonth);
+}
+
+inline int  ICDuiPicker::GetMonth()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((ICDuiPicker_*)m_pCtrl)->GetMonth();
+}
+
+inline void  ICDuiPicker::SetDay(int  nDay  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((ICDuiPicker_*)m_pCtrl)->SetDay(nDay);
+}
+
+inline int  ICDuiPicker::GetDay()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((ICDuiPicker_*)m_pCtrl)->GetDay();
+}
+
+inline void IDUI3DRotateMenu_::StartAnimate(BOOL  bStart  )
+{
+	VARIANT_BOOL xxx_bStart = bStart ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_StartAnimate(xxx_bStart  );
+}
+
+inline void IDUI3DRotateMenu_::ShowDXHwnd(BOOL  bShow  )
+{
+	VARIANT_BOOL xxx_bShow = bShow ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_ShowDXHwnd(xxx_bShow  );
+}
+
+inline void IDUI3DRotateMenu_::RotateStarPic()
+{
+
+	raw_RotateStarPic();
+}
+
+inline void IDUI3DRotateMenu_::SetMode(enum DUI_ROTATEMENU_TYPE  eType  )
+{
+
+	raw_SetMode(eType  );
+}
+
+inline void IDUI3DRotateMenu_::SetBackImageBase(struct IDUIImageBase * pImageBase  )
+{
+
+	raw_SetBackImageBase(pImageBase  );
+}
+
+inline void IDUI3DRotateMenu_::SetImagePath(tstring  bstrPath  )
+{
+	_bstr_t xxx_bstrPath(bstrPath.c_str());
+
+	raw_SetImagePath(xxx_bstrPath  );
+}
+
+inline void  IDUI3DRotateMenu::StartAnimate(BOOL  bStart  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUI3DRotateMenu_*)m_pCtrl)->StartAnimate(bStart);
+}
+
+inline void  IDUI3DRotateMenu::ShowDXHwnd(BOOL  bShow  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUI3DRotateMenu_*)m_pCtrl)->ShowDXHwnd(bShow);
+}
+
+inline void  IDUI3DRotateMenu::RotateStarPic()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUI3DRotateMenu_*)m_pCtrl)->RotateStarPic();
+}
+
+inline void  IDUI3DRotateMenu::SetMode(enum DUI_ROTATEMENU_TYPE  eType  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUI3DRotateMenu_*)m_pCtrl)->SetMode(eType);
+}
+
+inline void  IDUI3DRotateMenu::SetBackImageBase(struct IDUIImageBase * pImageBase  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUI3DRotateMenu_*)m_pCtrl)->SetBackImageBase(pImageBase);
+}
+
+inline void  IDUI3DRotateMenu::SetImagePath(tstring  bstrPath  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUI3DRotateMenu_*)m_pCtrl)->SetImagePath(bstrPath);
+}
+

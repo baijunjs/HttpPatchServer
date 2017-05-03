@@ -82,7 +82,7 @@ bool Clibcurl::setwritefun(pfn_write_callback writefun, void* param)
 	return true;
 }
 
-bool Clibcurl::setproxy(std::string szip, std::string szport, std::string szuser, std::string szpwd)
+bool Clibcurl::setproxy(std::string& szip, std::string& szport, std::string& szuser, std::string& szpwd)
 {
 	if (!szip.empty())
 	{
@@ -152,7 +152,7 @@ bool Clibcurl::getfilesize(std::string& szurl, size_t& size)
 }
 
 
-bool Clibcurl::downloadfile(std::string szurl, std::string szsavepath)
+bool Clibcurl::downloadfile(std::string& szurl, std::string& szsavepath)
 {
 	int loop = 0;
 	st = DOWNLOAD_START_PENDING;
@@ -217,7 +217,7 @@ _ERROR_:
 _STOP_:
 	st = DOWNLOAD_STOPPED;
 	curl_easy_getinfo(m_pCURL, CURLINFO_RESPONSE_CODE, &nGetResPonse);
-	return true;
+	return false;
 }
 
 

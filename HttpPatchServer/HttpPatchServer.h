@@ -25,8 +25,22 @@ public:
 	virtual BOOL InitInstance();
 
 // й╣ож
+	BOOL GetAppRootPath();
+	BOOL InitDUI();
+	virtual int ExitInstance();
+	void Initlog();
+	BOOL InitAppConfig();
+
+
+public:
+	std::string m_szPath;
+	IDUIRes *m_pDuiRes;
 
 	DECLARE_MESSAGE_MAP()
+
 };
 
+
 extern CHttpPatchServerApp theApp;
+IDUIRes *AfxGetDuiRes();
+LPCSTR AfxGetAppTitle();

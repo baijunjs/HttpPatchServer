@@ -57,13 +57,37 @@
     <ClInclude Include="curl\curl.h">
       <Filter>curl</Filter>
     </ClInclude>
-    <ClInclude Include="RcfClient.h">
+    <ClInclude Include="FileTransforRequest.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="RcfPatchService.h">
+    <ClInclude Include="PatchFile.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="RcfPatchServer.h">
+    <ClInclude Include="PatchView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PathDownloadListView.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AppConfig.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PatchViewStatics.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PatchViewError.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PatchViewSetting.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PatchNetSetting.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PatchSetting.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PatchCascade.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -89,7 +113,31 @@
     <ClCompile Include="Clibcurl.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="RcfClient.cpp">
+    <ClCompile Include="PatchFile.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PathDownloadListView.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchViewStatics.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchViewError.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchViewSetting.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchNetSetting.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchSetting.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PatchCascade.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -105,6 +153,12 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\HttpPatchServer.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\Icon.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="res\Main.ico">
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>

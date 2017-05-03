@@ -33,13 +33,21 @@
 
 #include <afxcontrolbars.h>     // 功能区和控件条的 MFC 支持
 
+#include <thread>
 #include "curl.h"
 #include "EDPPatchBase.h"
 #include "IDownload.h"
+#include "PackInterface.h"
+#include "directuiinc.h"
+#include "AppConfig.h"
+#include "log.hpp"
 
-
-
-
+enum  CUSTOM_MESSAGE
+{
+	UM_CUSTOM_TRAY = (WM_USER + 1),
+	UM_CUSTOM_DOWNCENTER,
+	UM_CUSTOM_SETTING,
+};
 
 
 #ifdef _UNICODE

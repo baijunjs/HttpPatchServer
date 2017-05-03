@@ -15,16 +15,6 @@ namespace vrv
 		{
 		}
 
-		template <typename D>
-		bool CPatchIndex::download_sub_index(D & downloader)
-		{
-			//TODO:
-			//downloader.setprocessfun();
-			//downloader.setwritefun();
-			return true;
-		}
-
-
 		bool CPatchIndex::analyze_sub_index(ILoadIndex *loadindex)
 		{
 			if (loadindex == nullptr)

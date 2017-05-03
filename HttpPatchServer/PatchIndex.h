@@ -2,7 +2,6 @@
 #include <string>
 #include <memory>
 
-
 namespace vrv
 {
 	namespace patch
@@ -14,10 +13,13 @@ namespace vrv
 		public:
 			CPatchIndex();
 			~CPatchIndex();
-			template <typename D=IDownload>
-			bool download_sub_index(D &);
+			template <typename D>
+			bool download_sub_index(D& down)
+			{
+				return true;
+			}
 			bool analyze_sub_index(ILoadIndex *loadindex);
-
+		public:
 		private:
 			std::string m_szIndexName;
 			std::string m_szIndexPath;

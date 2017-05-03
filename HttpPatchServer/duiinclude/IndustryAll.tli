@@ -1,0 +1,2147 @@
+#pragma once
+inline void IDUIDialCtrl_::GetRange(short * pnMin, short * pnMax  )
+{
+
+	raw_GetRange(pnMin, pnMax  );
+}
+
+inline BOOL  IDUIDialCtrl_::SetRange(short  nMin, short  nMax, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetRange(nMin, nMax, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void IDUIDialCtrl_::SetPos(float  nPos  )
+{
+
+	raw_SetPos(nPos  );
+}
+
+inline float  IDUIDialCtrl_::GetPos()
+{
+	float  _result;
+	raw_GetPos(&_result);
+	return _result;
+}
+
+inline void IDUIDialCtrl_::SetCriticalVal(short  nValue  )
+{
+
+	raw_SetCriticalVal(nValue  );
+}
+
+inline short  IDUIDialCtrl_::GetCriticalVal()
+{
+	short  _result;
+	raw_GetCriticalVal(&_result);
+	return _result;
+}
+
+inline void IDUIDialCtrl_::SetBigFrequency(long  nFre  )
+{
+
+	raw_SetBigFrequency(nFre  );
+}
+
+inline long  IDUIDialCtrl_::GetBigFrequency()
+{
+	long  _result;
+	raw_GetBigFrequency(&_result);
+	return _result;
+}
+
+inline void IDUIDialCtrl_::SetSmallFrequency(long  nFre  )
+{
+
+	raw_SetSmallFrequency(nFre  );
+}
+
+inline long  IDUIDialCtrl_::GetSmallFrequency()
+{
+	long  _result;
+	raw_GetSmallFrequency(&_result);
+	return _result;
+}
+
+inline void IDUIDialCtrl_::SetPointPath(tstring  strPath  )
+{
+	_bstr_t xxx_strPath(strPath.c_str());
+
+	raw_SetPointPath(xxx_strPath  );
+}
+
+inline tstring  IDUIDialCtrl_::GetPointPath()
+{
+	BSTR _result = NULL;
+	raw_GetPointPath(&_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline BOOL  IDUIDialCtrl_::AddKeyString(short  nValue, tstring  strKeyString  )
+{
+_bstr_t xxx_strKeyString(strKeyString.c_str());
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_AddKeyString(nValue, xxx_strKeyString, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void IDUIDialCtrl_::RemoveKeyString(short  nValue  )
+{
+
+	raw_RemoveKeyString(nValue  );
+}
+
+inline void IDUIDialCtrl_::DrawKeyString(BOOL  bDraw  )
+{
+	VARIANT_BOOL xxx_bDraw = bDraw ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_DrawKeyString(xxx_bDraw  );
+}
+
+inline BOOL  IDUIDialCtrl_::IsDrawKeyString()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_IsDrawKeyString(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void  IDUIDialCtrl::GetRange(short * pnMin, short * pnMax  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIDialCtrl_*)m_pCtrl)->GetRange(pnMin, pnMax);
+}
+
+inline BOOL  IDUIDialCtrl::SetRange(short  nMin, short  nMax, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIDialCtrl_*)m_pCtrl)->SetRange(nMin, nMax, bRedraw);
+}
+
+inline void  IDUIDialCtrl::SetPos(float  nPos  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIDialCtrl_*)m_pCtrl)->SetPos(nPos);
+}
+
+inline float  IDUIDialCtrl::GetPos()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIDialCtrl_*)m_pCtrl)->GetPos();
+}
+
+inline void  IDUIDialCtrl::SetCriticalVal(short  nValue  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIDialCtrl_*)m_pCtrl)->SetCriticalVal(nValue);
+}
+
+inline short  IDUIDialCtrl::GetCriticalVal()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIDialCtrl_*)m_pCtrl)->GetCriticalVal();
+}
+
+inline void  IDUIDialCtrl::SetBigFrequency(long  nFre  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIDialCtrl_*)m_pCtrl)->SetBigFrequency(nFre);
+}
+
+inline long  IDUIDialCtrl::GetBigFrequency()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIDialCtrl_*)m_pCtrl)->GetBigFrequency();
+}
+
+inline void  IDUIDialCtrl::SetSmallFrequency(long  nFre  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIDialCtrl_*)m_pCtrl)->SetSmallFrequency(nFre);
+}
+
+inline long  IDUIDialCtrl::GetSmallFrequency()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIDialCtrl_*)m_pCtrl)->GetSmallFrequency();
+}
+
+inline void  IDUIDialCtrl::SetPointPath(tstring  strPath  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIDialCtrl_*)m_pCtrl)->SetPointPath(strPath);
+}
+
+inline tstring  IDUIDialCtrl::GetPointPath()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIDialCtrl_*)m_pCtrl)->GetPointPath();
+}
+
+inline BOOL  IDUIDialCtrl::AddKeyString(short  nValue, tstring  strKeyString  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIDialCtrl_*)m_pCtrl)->AddKeyString(nValue, strKeyString);
+}
+
+inline void  IDUIDialCtrl::RemoveKeyString(short  nValue  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIDialCtrl_*)m_pCtrl)->RemoveKeyString(nValue);
+}
+
+inline void  IDUIDialCtrl::DrawKeyString(BOOL  bDraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIDialCtrl_*)m_pCtrl)->DrawKeyString(bDraw);
+}
+
+inline BOOL  IDUIDialCtrl::IsDrawKeyString()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIDialCtrl_*)m_pCtrl)->IsDrawKeyString();
+}
+
+inline void IDUIIndicatorCtrl_::SetState(enum DUIINDICATORCTRL_STATE  eState  )
+{
+
+	raw_SetState(eState  );
+}
+
+inline enum DUIINDICATORCTRL_STATE  IDUIIndicatorCtrl_::GetState()
+{
+	enum DUIINDICATORCTRL_STATE  _result;
+	raw_GetState(&_result);
+	return _result;
+}
+
+inline void IDUIIndicatorCtrl_::SetBlink(BOOL  bBlink  )
+{
+	VARIANT_BOOL xxx_bBlink = bBlink ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetBlink(xxx_bBlink  );
+}
+
+inline BOOL  IDUIIndicatorCtrl_::IsBlink()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_IsBlink(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void IDUIIndicatorCtrl_::SetBlinkState(enum DUIINDICATORCTRL_STATE  eState1, enum DUIINDICATORCTRL_STATE  eState2  )
+{
+
+	raw_SetBlinkState(eState1, eState2  );
+}
+
+inline void IDUIIndicatorCtrl_::SetBlinkSpace(long  lSpace  )
+{
+
+	raw_SetBlinkSpace(lSpace  );
+}
+
+inline long  IDUIIndicatorCtrl_::GetBlinkSpace()
+{
+	long  _result;
+	raw_GetBlinkSpace(&_result);
+	return _result;
+}
+
+inline void IDUIIndicatorCtrl_::ShowText(BOOL  bShow  )
+{
+	VARIANT_BOOL xxx_bShow = bShow ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_ShowText(xxx_bShow  );
+}
+
+inline BOOL  IDUIIndicatorCtrl_::IsShowText()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_IsShowText(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void IDUIIndicatorCtrl_::SetText(tstring  strText  )
+{
+	_bstr_t xxx_strText(strText.c_str());
+
+	raw_SetText(xxx_strText  );
+}
+
+inline tstring  IDUIIndicatorCtrl_::GetText()
+{
+	BSTR _result = NULL;
+	raw_GetText(&_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline void IDUIIndicatorCtrl_::SetBackImage(tstring  strPath, enum DUIINDICATORCTRL_STATE  eState1  )
+{
+	_bstr_t xxx_strPath(strPath.c_str());
+
+	raw_SetBackImage(xxx_strPath, eState1  );
+}
+
+inline OLE_COLOR  IDUIIndicatorCtrl_::GetTextColor()
+{
+	OLE_COLOR  _result;
+	raw_GetTextColor(&_result);
+	return _result;
+}
+
+inline void IDUIIndicatorCtrl_::SetTextColor(OLE_COLOR  color  )
+{
+
+	raw_SetTextColor(color  );
+}
+
+inline void  IDUIIndicatorCtrl::SetState(enum DUIINDICATORCTRL_STATE  eState  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIIndicatorCtrl_*)m_pCtrl)->SetState(eState);
+}
+
+inline enum DUIINDICATORCTRL_STATE  IDUIIndicatorCtrl::GetState()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIIndicatorCtrl_*)m_pCtrl)->GetState();
+}
+
+inline void  IDUIIndicatorCtrl::SetBlink(BOOL  bBlink  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIIndicatorCtrl_*)m_pCtrl)->SetBlink(bBlink);
+}
+
+inline BOOL  IDUIIndicatorCtrl::IsBlink()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIIndicatorCtrl_*)m_pCtrl)->IsBlink();
+}
+
+inline void  IDUIIndicatorCtrl::SetBlinkState(enum DUIINDICATORCTRL_STATE  eState1, enum DUIINDICATORCTRL_STATE  eState2  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIIndicatorCtrl_*)m_pCtrl)->SetBlinkState(eState1, eState2);
+}
+
+inline void  IDUIIndicatorCtrl::SetBlinkSpace(long  lSpace  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIIndicatorCtrl_*)m_pCtrl)->SetBlinkSpace(lSpace);
+}
+
+inline long  IDUIIndicatorCtrl::GetBlinkSpace()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIIndicatorCtrl_*)m_pCtrl)->GetBlinkSpace();
+}
+
+inline void  IDUIIndicatorCtrl::ShowText(BOOL  bShow  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIIndicatorCtrl_*)m_pCtrl)->ShowText(bShow);
+}
+
+inline BOOL  IDUIIndicatorCtrl::IsShowText()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIIndicatorCtrl_*)m_pCtrl)->IsShowText();
+}
+
+inline void  IDUIIndicatorCtrl::SetText(tstring  strText  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIIndicatorCtrl_*)m_pCtrl)->SetText(strText);
+}
+
+inline tstring  IDUIIndicatorCtrl::GetText()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIIndicatorCtrl_*)m_pCtrl)->GetText();
+}
+
+inline void  IDUIIndicatorCtrl::SetBackImage(tstring  strPath, enum DUIINDICATORCTRL_STATE  eState1  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIIndicatorCtrl_*)m_pCtrl)->SetBackImage(strPath, eState1);
+}
+
+inline OLE_COLOR  IDUIIndicatorCtrl::GetTextColor()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIIndicatorCtrl_*)m_pCtrl)->GetTextColor();
+}
+
+inline void  IDUIIndicatorCtrl::SetTextColor(OLE_COLOR  color  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIIndicatorCtrl_*)m_pCtrl)->SetTextColor(color);
+}
+
+inline BOOL  IDUIKnobCtrl_::GetCycle()
+{
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_GetCycle(&_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void IDUIKnobCtrl_::SetCycle(BOOL  bCycle  )
+{
+	VARIANT_BOOL xxx_bCycle = bCycle ? VARIANT_TRUE : VARIANT_FALSE;
+
+	raw_SetCycle(xxx_bCycle  );
+}
+
+inline long  IDUIKnobCtrl_::GetValue()
+{
+	long  _result;
+	raw_GetValue(&_result);
+	return _result;
+}
+
+inline void IDUIKnobCtrl_::SetValue(long  lValue  )
+{
+
+	raw_SetValue(lValue  );
+}
+
+inline long  IDUIKnobCtrl_::GetMinValue()
+{
+	long  _result;
+	raw_GetMinValue(&_result);
+	return _result;
+}
+
+inline void IDUIKnobCtrl_::SetMinValue(long  lMinValue  )
+{
+
+	raw_SetMinValue(lMinValue  );
+}
+
+inline long  IDUIKnobCtrl_::GetMaxValue()
+{
+	long  _result;
+	raw_GetMaxValue(&_result);
+	return _result;
+}
+
+inline void IDUIKnobCtrl_::SetMaxValue(long  lMaxValue  )
+{
+
+	raw_SetMaxValue(lMaxValue  );
+}
+
+inline void IDUIKnobCtrl_::SetForePath(tstring  strPath  )
+{
+	_bstr_t xxx_strPath(strPath.c_str());
+
+	raw_SetForePath(xxx_strPath  );
+}
+
+inline tstring  IDUIKnobCtrl_::GetForePath()
+{
+	BSTR _result = NULL;
+	raw_GetForePath(&_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline BOOL  IDUIKnobCtrl::GetCycle()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIKnobCtrl_*)m_pCtrl)->GetCycle();
+}
+
+inline void  IDUIKnobCtrl::SetCycle(BOOL  bCycle  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIKnobCtrl_*)m_pCtrl)->SetCycle(bCycle);
+}
+
+inline long  IDUIKnobCtrl::GetValue()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIKnobCtrl_*)m_pCtrl)->GetValue();
+}
+
+inline void  IDUIKnobCtrl::SetValue(long  lValue  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIKnobCtrl_*)m_pCtrl)->SetValue(lValue);
+}
+
+inline long  IDUIKnobCtrl::GetMinValue()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIKnobCtrl_*)m_pCtrl)->GetMinValue();
+}
+
+inline void  IDUIKnobCtrl::SetMinValue(long  lMinValue  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIKnobCtrl_*)m_pCtrl)->SetMinValue(lMinValue);
+}
+
+inline long  IDUIKnobCtrl::GetMaxValue()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIKnobCtrl_*)m_pCtrl)->GetMaxValue();
+}
+
+inline void  IDUIKnobCtrl::SetMaxValue(long  lMaxValue  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIKnobCtrl_*)m_pCtrl)->SetMaxValue(lMaxValue);
+}
+
+inline void  IDUIKnobCtrl::SetForePath(tstring  strPath  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIKnobCtrl_*)m_pCtrl)->SetForePath(strPath);
+}
+
+inline tstring  IDUIKnobCtrl::GetForePath()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIKnobCtrl_*)m_pCtrl)->GetForePath();
+}
+
+inline void IDUILedCtrl_::GetValue(BSTR * pResult  )
+{
+
+	raw_GetValue(pResult  );
+}
+
+inline void IDUILedCtrl_::SetValue(tstring  strValue  )
+{
+	_bstr_t xxx_strValue(strValue.c_str());
+
+	raw_SetValue(xxx_strValue  );
+}
+
+inline void  IDUILedCtrl::GetValue(BSTR * pResult  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUILedCtrl_*)m_pCtrl)->GetValue(pResult);
+}
+
+inline void  IDUILedCtrl::SetValue(tstring  strValue  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUILedCtrl_*)m_pCtrl)->SetValue(strValue);
+}
+
+inline void IDUIThermometer_::GetRange(short * pnMin, short * pnMax  )
+{
+
+	raw_GetRange(pnMin, pnMax  );
+}
+
+inline BOOL  IDUIThermometer_::SetRange(short  nMin, short  nMax, BOOL  bRedraw  )
+{
+	VARIANT_BOOL xxx_bRedraw = bRedraw ? VARIANT_TRUE : VARIANT_FALSE;
+	VARIANT_BOOL _result = VARIANT_FALSE;
+	raw_SetRange(nMin, nMax, xxx_bRedraw, &_result);
+	return _result ? TRUE : FALSE;
+}
+
+inline void IDUIThermometer_::SetPos(short  nPos  )
+{
+
+	raw_SetPos(nPos  );
+}
+
+inline short  IDUIThermometer_::GetPos()
+{
+	short  _result;
+	raw_GetPos(&_result);
+	return _result;
+}
+
+inline void IDUIThermometer_::SetBigFrequency(long  nFre  )
+{
+
+	raw_SetBigFrequency(nFre  );
+}
+
+inline long  IDUIThermometer_::GetBigFrequency()
+{
+	long  _result;
+	raw_GetBigFrequency(&_result);
+	return _result;
+}
+
+inline void IDUIThermometer_::SetSmallFrequency(long  nFre  )
+{
+
+	raw_SetSmallFrequency(nFre  );
+}
+
+inline long  IDUIThermometer_::GetSmallFrequency()
+{
+	long  _result;
+	raw_GetSmallFrequency(&_result);
+	return _result;
+}
+
+inline void IDUIThermometer_::SetUnitString(tstring  strUnit  )
+{
+	_bstr_t xxx_strUnit(strUnit.c_str());
+
+	raw_SetUnitString(xxx_strUnit  );
+}
+
+inline tstring  IDUIThermometer_::GetUnitString()
+{
+	BSTR _result = NULL;
+	raw_GetUnitString(&_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline void IDUIThermometer_::SetTickColor(struct IFillColor * pColor  )
+{
+
+	raw_SetTickColor(pColor  );
+}
+
+inline void IDUIThermometer_::SetBackColor(struct IFillColor * pColor  )
+{
+
+	raw_SetBackColor(pColor  );
+}
+
+inline struct IFillColor * IDUIThermometer_::GetTickColor()
+{
+	struct IFillColor * _result;
+	raw_GetTickColor(&_result);
+	return _result;
+}
+
+inline struct IFillColor * IDUIThermometer_::GetBackColor()
+{
+	struct IFillColor * _result;
+	raw_GetBackColor(&_result);
+	return _result;
+}
+
+inline void  IDUIThermometer::GetRange(short * pnMin, short * pnMax  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIThermometer_*)m_pCtrl)->GetRange(pnMin, pnMax);
+}
+
+inline BOOL  IDUIThermometer::SetRange(short  nMin, short  nMax, BOOL  bRedraw  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIThermometer_*)m_pCtrl)->SetRange(nMin, nMax, bRedraw);
+}
+
+inline void  IDUIThermometer::SetPos(short  nPos  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIThermometer_*)m_pCtrl)->SetPos(nPos);
+}
+
+inline short  IDUIThermometer::GetPos()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIThermometer_*)m_pCtrl)->GetPos();
+}
+
+inline void  IDUIThermometer::SetBigFrequency(long  nFre  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIThermometer_*)m_pCtrl)->SetBigFrequency(nFre);
+}
+
+inline long  IDUIThermometer::GetBigFrequency()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIThermometer_*)m_pCtrl)->GetBigFrequency();
+}
+
+inline void  IDUIThermometer::SetSmallFrequency(long  nFre  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIThermometer_*)m_pCtrl)->SetSmallFrequency(nFre);
+}
+
+inline long  IDUIThermometer::GetSmallFrequency()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIThermometer_*)m_pCtrl)->GetSmallFrequency();
+}
+
+inline void  IDUIThermometer::SetUnitString(tstring  strUnit  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIThermometer_*)m_pCtrl)->SetUnitString(strUnit);
+}
+
+inline tstring  IDUIThermometer::GetUnitString()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIThermometer_*)m_pCtrl)->GetUnitString();
+}
+
+inline void  IDUIThermometer::SetTickColor(struct IFillColor * pColor  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIThermometer_*)m_pCtrl)->SetTickColor(pColor);
+}
+
+inline void  IDUIThermometer::SetBackColor(struct IFillColor * pColor  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIThermometer_*)m_pCtrl)->SetBackColor(pColor);
+}
+
+inline struct IFillColor * IDUIThermometer::GetTickColor()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIThermometer_*)m_pCtrl)->GetTickColor();
+}
+
+inline struct IFillColor * IDUIThermometer::GetBackColor()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIThermometer_*)m_pCtrl)->GetBackColor();
+}
+
+inline void IDUIGraphicLine_::PushValue(float  fValue  )
+{
+
+	raw_PushValue(fValue  );
+}
+
+inline void IDUIGraphicLine_::Clear()
+{
+
+	raw_Clear();
+}
+
+inline void  IDUIGraphicLine::PushValue(float  fValue  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIGraphicLine_*)m_pCtrl)->PushValue(fValue);
+}
+
+inline void  IDUIGraphicLine::Clear()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IDUIGraphicLine_*)m_pCtrl)->Clear();
+}
+
+inline struct IDUIImageBase * IMeter_::GetMeterBack()
+{
+	struct IDUIImageBase * _result;
+	raw_GetMeterBack(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetMeterBack(OLE_HANDLE  hBitmap, tstring  bstrPath, struct IDUIImageBase * pImageBase, enum enumCHANGE_IMAGE_FROM  enumFrom  )
+{
+	_bstr_t xxx_bstrPath(bstrPath.c_str());
+
+	raw_SetMeterBack(hBitmap, xxx_bstrPath, pImageBase, enumFrom  );
+}
+
+inline struct IDUIImageBase * IMeter_::GetMeterFrontPointer()
+{
+	struct IDUIImageBase * _result;
+	raw_GetMeterFrontPointer(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetMeterFrontPointer(OLE_HANDLE  hBitmap, tstring  bstrPath, struct IDUIImageBase * pImageBase, enum enumCHANGE_IMAGE_FROM  enumFrom  )
+{
+	_bstr_t xxx_bstrPath(bstrPath.c_str());
+
+	raw_SetMeterFrontPointer(hBitmap, xxx_bstrPath, pImageBase, enumFrom  );
+}
+
+inline struct IDUIImageBase * IMeter_::GetMeterAfterPointer()
+{
+	struct IDUIImageBase * _result;
+	raw_GetMeterAfterPointer(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetMeterAfterPointer(OLE_HANDLE  hBitmap, tstring  bstrPath, struct IDUIImageBase * pImageBase, enum enumCHANGE_IMAGE_FROM  enumFrom  )
+{
+	_bstr_t xxx_bstrPath(bstrPath.c_str());
+
+	raw_SetMeterAfterPointer(hBitmap, xxx_bstrPath, pImageBase, enumFrom  );
+}
+
+inline long  IMeter_::GetMeterLowerRuler()
+{
+	long  _result;
+	raw_GetMeterLowerRuler(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetMeterLowerRuler(long  lowerRuler  )
+{
+
+	raw_SetMeterLowerRuler(lowerRuler  );
+}
+
+inline long  IMeter_::GetMeterHighRuler()
+{
+	long  _result;
+	raw_GetMeterHighRuler(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetMeterHighRuler(long  highRuler  )
+{
+
+	raw_SetMeterHighRuler(highRuler  );
+}
+
+inline long  IMeter_::GetMeterSpaceRuler()
+{
+	long  _result;
+	raw_GetMeterSpaceRuler(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetMeterSpaceRuler(long  spaceRuler  )
+{
+
+	raw_SetMeterSpaceRuler(spaceRuler  );
+}
+
+inline long  IMeter_::GetMeterFrontPointerRuler()
+{
+	long  _result;
+	raw_GetMeterFrontPointerRuler(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetMeterFrontPointerRuler(long  pointerRuler  )
+{
+
+	raw_SetMeterFrontPointerRuler(pointerRuler  );
+}
+
+inline long  IMeter_::GetMeterAfterPointerRuler()
+{
+	long  _result;
+	raw_GetMeterAfterPointerRuler(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetMeterAfterPointerRuler(long  pointerRuler  )
+{
+
+	raw_SetMeterAfterPointerRuler(pointerRuler  );
+}
+
+inline struct IDUIImageBase * IMeter_::GetMotorCarPenelBack()
+{
+	struct IDUIImageBase * _result;
+	raw_GetMotorCarPenelBack(&_result);
+	return _result;
+}
+
+inline struct IDUITextStyle * IMeter_::GetMotorCarPenelTextStyle()
+{
+	struct IDUITextStyle * _result;
+	raw_GetMotorCarPenelTextStyle(&_result);
+	return _result;
+}
+
+inline tstring  IMeter_::GetMotorCarPenelText()
+{
+	BSTR _result = NULL;
+	raw_GetMotorCarPenelText(&_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline void IMeter_::SetMotorCarPenelBack(OLE_HANDLE  hBitmap, tstring  bstrPath, struct IDUIImageBase * pImageBase, enum enumCHANGE_IMAGE_FROM  enumFrom  )
+{
+	_bstr_t xxx_bstrPath(bstrPath.c_str());
+
+	raw_SetMotorCarPenelBack(hBitmap, xxx_bstrPath, pImageBase, enumFrom  );
+}
+
+inline void IMeter_::SetMotorCarPenelTextStyle(struct IDUITextStyle * pTextStyle  )
+{
+
+	raw_SetMotorCarPenelTextStyle(pTextStyle  );
+}
+
+inline void IMeter_::SetMotorCarPenelText(tstring  text  )
+{
+	_bstr_t xxx_text(text.c_str());
+
+	raw_SetMotorCarPenelText(xxx_text  );
+}
+
+inline struct IDUIImageBase * IMeter_::GetMotorCarDataBack()
+{
+	struct IDUIImageBase * _result;
+	raw_GetMotorCarDataBack(&_result);
+	return _result;
+}
+
+inline struct IDUITextStyle * IMeter_::GetMotorCarDataTextStyle()
+{
+	struct IDUITextStyle * _result;
+	raw_GetMotorCarDataTextStyle(&_result);
+	return _result;
+}
+
+inline tstring  IMeter_::GetMotorCarDataText()
+{
+	BSTR _result = NULL;
+	raw_GetMotorCarDataText(&_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline void IMeter_::SetMotorCarDataBack(OLE_HANDLE  hBitmap, tstring  bstrPath, struct IDUIImageBase * pImageBase, enum enumCHANGE_IMAGE_FROM  enumFrom  )
+{
+	_bstr_t xxx_bstrPath(bstrPath.c_str());
+
+	raw_SetMotorCarDataBack(hBitmap, xxx_bstrPath, pImageBase, enumFrom  );
+}
+
+inline void IMeter_::SetMotorCarDataTextStyle(struct IDUITextStyle * pTextStyle  )
+{
+
+	raw_SetMotorCarDataTextStyle(pTextStyle  );
+}
+
+inline void IMeter_::SetMotorCarDataText(tstring  text  )
+{
+	_bstr_t xxx_text(text.c_str());
+
+	raw_SetMotorCarDataText(xxx_text  );
+}
+
+inline struct IDUIImageBase * IMeter_::GetTrailCarPenelBack()
+{
+	struct IDUIImageBase * _result;
+	raw_GetTrailCarPenelBack(&_result);
+	return _result;
+}
+
+inline struct IDUITextStyle * IMeter_::GetTrailCarPenelTextStyle()
+{
+	struct IDUITextStyle * _result;
+	raw_GetTrailCarPenelTextStyle(&_result);
+	return _result;
+}
+
+inline tstring  IMeter_::GetTrailCarPenelText()
+{
+	BSTR _result = NULL;
+	raw_GetTrailCarPenelText(&_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline void IMeter_::SetTrailCarPenelBack(OLE_HANDLE  hBitmap, tstring  bstrPath, struct IDUIImageBase * pImageBase, enum enumCHANGE_IMAGE_FROM  enumFrom  )
+{
+	_bstr_t xxx_bstrPath(bstrPath.c_str());
+
+	raw_SetTrailCarPenelBack(hBitmap, xxx_bstrPath, pImageBase, enumFrom  );
+}
+
+inline void IMeter_::SetTrailCarPenelTextStyle(struct IDUITextStyle * pTextStyle  )
+{
+
+	raw_SetTrailCarPenelTextStyle(pTextStyle  );
+}
+
+inline void IMeter_::SetTrailCarPenelText(tstring  text  )
+{
+	_bstr_t xxx_text(text.c_str());
+
+	raw_SetTrailCarPenelText(xxx_text  );
+}
+
+inline struct IDUIImageBase * IMeter_::GetTrailCarDataBack()
+{
+	struct IDUIImageBase * _result;
+	raw_GetTrailCarDataBack(&_result);
+	return _result;
+}
+
+inline struct IDUITextStyle * IMeter_::GetTrailCarDataTextStyle()
+{
+	struct IDUITextStyle * _result;
+	raw_GetTrailCarDataTextStyle(&_result);
+	return _result;
+}
+
+inline tstring  IMeter_::GetTrailCarDataText()
+{
+	BSTR _result = NULL;
+	raw_GetTrailCarDataText(&_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline void IMeter_::SetTrailCarDataBack(OLE_HANDLE  hBitmap, tstring  bstrPath, struct IDUIImageBase * pImageBase, enum enumCHANGE_IMAGE_FROM  enumFrom  )
+{
+	_bstr_t xxx_bstrPath(bstrPath.c_str());
+
+	raw_SetTrailCarDataBack(hBitmap, xxx_bstrPath, pImageBase, enumFrom  );
+}
+
+inline void IMeter_::SetTrailCarDataTextStyle(struct IDUITextStyle * pTextStyle  )
+{
+
+	raw_SetTrailCarDataTextStyle(pTextStyle  );
+}
+
+inline void IMeter_::SetTrailCarDataText(tstring  text  )
+{
+	_bstr_t xxx_text(text.c_str());
+
+	raw_SetTrailCarDataText(xxx_text  );
+}
+
+inline struct IDUIImageBase * IMeter_::GetTestBack()
+{
+	struct IDUIImageBase * _result;
+	raw_GetTestBack(&_result);
+	return _result;
+}
+
+inline struct IDUITextStyle * IMeter_::GetTestTextStyle()
+{
+	struct IDUITextStyle * _result;
+	raw_GetTestTextStyle(&_result);
+	return _result;
+}
+
+inline tstring  IMeter_::GetTestText()
+{
+	BSTR _result = NULL;
+	raw_GetTestText(&_result);
+	tstring _strResult;
+#ifdef UNICODE
+	_strResult = (LPWSTR)_result;
+#else
+	USES_CONVERSION;
+	_strResult = W2A(_result);
+#endif
+	return _strResult;
+}
+
+inline void IMeter_::SetTestBack(OLE_HANDLE  hBitmap, tstring  bstrPath, struct IDUIImageBase * pImageBase, enum enumCHANGE_IMAGE_FROM  enumFrom  )
+{
+	_bstr_t xxx_bstrPath(bstrPath.c_str());
+
+	raw_SetTestBack(hBitmap, xxx_bstrPath, pImageBase, enumFrom  );
+}
+
+inline void IMeter_::SetTestTextStyle(struct IDUITextStyle * pTextStyle  )
+{
+
+	raw_SetTestTextStyle(pTextStyle  );
+}
+
+inline void IMeter_::SetTestText(tstring  text  )
+{
+	_bstr_t xxx_text(text.c_str());
+
+	raw_SetTestText(xxx_text  );
+}
+
+inline long  IMeter_::GetMotorCarToCtrlTop()
+{
+	long  _result;
+	raw_GetMotorCarToCtrlTop(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetMotorCarToCtrlTop(long  offset  )
+{
+
+	raw_SetMotorCarToCtrlTop(offset  );
+}
+
+inline long  IMeter_::GetMotorCarToCtrlRight()
+{
+	long  _result;
+	raw_GetMotorCarToCtrlRight(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetMotorCarToCtrlRight(long  offset  )
+{
+
+	raw_SetMotorCarToCtrlRight(offset  );
+}
+
+inline long  IMeter_::GetMotorCarHeight()
+{
+	long  _result;
+	raw_GetMotorCarHeight(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetMotorCarHeight(long  height  )
+{
+
+	raw_SetMotorCarHeight(height  );
+}
+
+inline long  IMeter_::GetMotorCarPenelWidth()
+{
+	long  _result;
+	raw_GetMotorCarPenelWidth(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetMotorCarPenelWidth(long  width  )
+{
+
+	raw_SetMotorCarPenelWidth(width  );
+}
+
+inline long  IMeter_::GetMotorCarDataWidth()
+{
+	long  _result;
+	raw_GetMotorCarDataWidth(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetMotorCarDataWdith(long  width  )
+{
+
+	raw_SetMotorCarDataWdith(width  );
+}
+
+inline long  IMeter_::GetMotorCarPenelDataOffset()
+{
+	long  _result;
+	raw_GetMotorCarPenelDataOffset(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetMotorCarPenelDataOffset(long  offset  )
+{
+
+	raw_SetMotorCarPenelDataOffset(offset  );
+}
+
+inline long  IMeter_::GetTrailCarToMotor()
+{
+	long  _result;
+	raw_GetTrailCarToMotor(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetTrailCarToMotor(long  offset  )
+{
+
+	raw_SetTrailCarToMotor(offset  );
+}
+
+inline long  IMeter_::GetTrailCarToCtrlRight()
+{
+	long  _result;
+	raw_GetTrailCarToCtrlRight(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetTrailCarToCtrlRight(long  offset  )
+{
+
+	raw_SetTrailCarToCtrlRight(offset  );
+}
+
+inline long  IMeter_::GetTrailCarPenelWidth()
+{
+	long  _result;
+	raw_GetTrailCarPenelWidth(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetTrailCarPenelWdith(long  width  )
+{
+
+	raw_SetTrailCarPenelWdith(width  );
+}
+
+inline long  IMeter_::GetTrailCarDataWidth()
+{
+	long  _result;
+	raw_GetTrailCarDataWidth(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetTrailCarDataWidth(long  width  )
+{
+
+	raw_SetTrailCarDataWidth(width  );
+}
+
+inline long  IMeter_::GetTrailCarHeight()
+{
+	long  _result;
+	raw_GetTrailCarHeight(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetTrailCarHeight(long  height  )
+{
+
+	raw_SetTrailCarHeight(height  );
+}
+
+inline long  IMeter_::GetTrailCarPenelDataOffset()
+{
+	long  _result;
+	raw_GetTrailCarPenelDataOffset(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetTrailCarPenelDataOffset(long  offset  )
+{
+
+	raw_SetTrailCarPenelDataOffset(offset  );
+}
+
+inline long  IMeter_::GetTestToTrailCarLeft()
+{
+	long  _result;
+	raw_GetTestToTrailCarLeft(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetTestToTrailCarLeft(long  offset  )
+{
+
+	raw_SetTestToTrailCarLeft(offset  );
+}
+
+inline long  IMeter_::GetTestToTrailCarBottom()
+{
+	long  _result;
+	raw_GetTestToTrailCarBottom(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetTestToTrailCarBottom(long  offset  )
+{
+
+	raw_SetTestToTrailCarBottom(offset  );
+}
+
+inline long  IMeter_::GetTestWidth()
+{
+	long  _result;
+	raw_GetTestWidth(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetTestWidth(long  width  )
+{
+
+	raw_SetTestWidth(width  );
+}
+
+inline long  IMeter_::GetTestHeight()
+{
+	long  _result;
+	raw_GetTestHeight(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetTestHeight(long  height  )
+{
+
+	raw_SetTestHeight(height  );
+}
+
+inline struct IDUIImageBase * IMeter_::GetMeterCenterEllpise()
+{
+	struct IDUIImageBase * _result;
+	raw_GetMeterCenterEllpise(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetMeterCenterEllipse(OLE_HANDLE  hBitmap, tstring  bstrPath, struct IDUIImageBase * pImageBase, enum enumCHANGE_IMAGE_FROM  enumFrom  )
+{
+	_bstr_t xxx_bstrPath(bstrPath.c_str());
+
+	raw_SetMeterCenterEllipse(hBitmap, xxx_bstrPath, pImageBase, enumFrom  );
+}
+
+inline float  IMeter_::GetFrontPointerYOfset()
+{
+	float  _result;
+	raw_GetFrontPointerYOfset(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetFrontPointerYOfset(float  yOffset  )
+{
+
+	raw_SetFrontPointerYOfset(yOffset  );
+}
+
+inline float  IMeter_::GetAfterPointerYOfset()
+{
+	float  _result;
+	raw_GetAfterPointerYOfset(&_result);
+	return _result;
+}
+
+inline void IMeter_::SetAfterPointerYOfset(float  yOffset  )
+{
+
+	raw_SetAfterPointerYOfset(yOffset  );
+}
+
+inline struct IDUIImageBase * IMeter::GetMeterBack()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetMeterBack();
+}
+
+inline void  IMeter::SetMeterBack(OLE_HANDLE  hBitmap, tstring  bstrPath, struct IDUIImageBase * pImageBase, enum enumCHANGE_IMAGE_FROM  enumFrom  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetMeterBack(hBitmap, bstrPath, pImageBase, enumFrom);
+}
+
+inline struct IDUIImageBase * IMeter::GetMeterFrontPointer()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetMeterFrontPointer();
+}
+
+inline void  IMeter::SetMeterFrontPointer(OLE_HANDLE  hBitmap, tstring  bstrPath, struct IDUIImageBase * pImageBase, enum enumCHANGE_IMAGE_FROM  enumFrom  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetMeterFrontPointer(hBitmap, bstrPath, pImageBase, enumFrom);
+}
+
+inline struct IDUIImageBase * IMeter::GetMeterAfterPointer()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetMeterAfterPointer();
+}
+
+inline void  IMeter::SetMeterAfterPointer(OLE_HANDLE  hBitmap, tstring  bstrPath, struct IDUIImageBase * pImageBase, enum enumCHANGE_IMAGE_FROM  enumFrom  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetMeterAfterPointer(hBitmap, bstrPath, pImageBase, enumFrom);
+}
+
+inline long  IMeter::GetMeterLowerRuler()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetMeterLowerRuler();
+}
+
+inline void  IMeter::SetMeterLowerRuler(long  lowerRuler  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetMeterLowerRuler(lowerRuler);
+}
+
+inline long  IMeter::GetMeterHighRuler()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetMeterHighRuler();
+}
+
+inline void  IMeter::SetMeterHighRuler(long  highRuler  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetMeterHighRuler(highRuler);
+}
+
+inline long  IMeter::GetMeterSpaceRuler()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetMeterSpaceRuler();
+}
+
+inline void  IMeter::SetMeterSpaceRuler(long  spaceRuler  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetMeterSpaceRuler(spaceRuler);
+}
+
+inline long  IMeter::GetMeterFrontPointerRuler()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetMeterFrontPointerRuler();
+}
+
+inline void  IMeter::SetMeterFrontPointerRuler(long  pointerRuler  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetMeterFrontPointerRuler(pointerRuler);
+}
+
+inline long  IMeter::GetMeterAfterPointerRuler()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetMeterAfterPointerRuler();
+}
+
+inline void  IMeter::SetMeterAfterPointerRuler(long  pointerRuler  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetMeterAfterPointerRuler(pointerRuler);
+}
+
+inline struct IDUIImageBase * IMeter::GetMotorCarPenelBack()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetMotorCarPenelBack();
+}
+
+inline struct IDUITextStyle * IMeter::GetMotorCarPenelTextStyle()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetMotorCarPenelTextStyle();
+}
+
+inline tstring  IMeter::GetMotorCarPenelText()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetMotorCarPenelText();
+}
+
+inline void  IMeter::SetMotorCarPenelBack(OLE_HANDLE  hBitmap, tstring  bstrPath, struct IDUIImageBase * pImageBase, enum enumCHANGE_IMAGE_FROM  enumFrom  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetMotorCarPenelBack(hBitmap, bstrPath, pImageBase, enumFrom);
+}
+
+inline void  IMeter::SetMotorCarPenelTextStyle(struct IDUITextStyle * pTextStyle  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetMotorCarPenelTextStyle(pTextStyle);
+}
+
+inline void  IMeter::SetMotorCarPenelText(tstring  text  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetMotorCarPenelText(text);
+}
+
+inline struct IDUIImageBase * IMeter::GetMotorCarDataBack()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetMotorCarDataBack();
+}
+
+inline struct IDUITextStyle * IMeter::GetMotorCarDataTextStyle()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetMotorCarDataTextStyle();
+}
+
+inline tstring  IMeter::GetMotorCarDataText()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetMotorCarDataText();
+}
+
+inline void  IMeter::SetMotorCarDataBack(OLE_HANDLE  hBitmap, tstring  bstrPath, struct IDUIImageBase * pImageBase, enum enumCHANGE_IMAGE_FROM  enumFrom  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetMotorCarDataBack(hBitmap, bstrPath, pImageBase, enumFrom);
+}
+
+inline void  IMeter::SetMotorCarDataTextStyle(struct IDUITextStyle * pTextStyle  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetMotorCarDataTextStyle(pTextStyle);
+}
+
+inline void  IMeter::SetMotorCarDataText(tstring  text  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetMotorCarDataText(text);
+}
+
+inline struct IDUIImageBase * IMeter::GetTrailCarPenelBack()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetTrailCarPenelBack();
+}
+
+inline struct IDUITextStyle * IMeter::GetTrailCarPenelTextStyle()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetTrailCarPenelTextStyle();
+}
+
+inline tstring  IMeter::GetTrailCarPenelText()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetTrailCarPenelText();
+}
+
+inline void  IMeter::SetTrailCarPenelBack(OLE_HANDLE  hBitmap, tstring  bstrPath, struct IDUIImageBase * pImageBase, enum enumCHANGE_IMAGE_FROM  enumFrom  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetTrailCarPenelBack(hBitmap, bstrPath, pImageBase, enumFrom);
+}
+
+inline void  IMeter::SetTrailCarPenelTextStyle(struct IDUITextStyle * pTextStyle  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetTrailCarPenelTextStyle(pTextStyle);
+}
+
+inline void  IMeter::SetTrailCarPenelText(tstring  text  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetTrailCarPenelText(text);
+}
+
+inline struct IDUIImageBase * IMeter::GetTrailCarDataBack()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetTrailCarDataBack();
+}
+
+inline struct IDUITextStyle * IMeter::GetTrailCarDataTextStyle()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetTrailCarDataTextStyle();
+}
+
+inline tstring  IMeter::GetTrailCarDataText()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetTrailCarDataText();
+}
+
+inline void  IMeter::SetTrailCarDataBack(OLE_HANDLE  hBitmap, tstring  bstrPath, struct IDUIImageBase * pImageBase, enum enumCHANGE_IMAGE_FROM  enumFrom  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetTrailCarDataBack(hBitmap, bstrPath, pImageBase, enumFrom);
+}
+
+inline void  IMeter::SetTrailCarDataTextStyle(struct IDUITextStyle * pTextStyle  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetTrailCarDataTextStyle(pTextStyle);
+}
+
+inline void  IMeter::SetTrailCarDataText(tstring  text  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetTrailCarDataText(text);
+}
+
+inline struct IDUIImageBase * IMeter::GetTestBack()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetTestBack();
+}
+
+inline struct IDUITextStyle * IMeter::GetTestTextStyle()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetTestTextStyle();
+}
+
+inline tstring  IMeter::GetTestText()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetTestText();
+}
+
+inline void  IMeter::SetTestBack(OLE_HANDLE  hBitmap, tstring  bstrPath, struct IDUIImageBase * pImageBase, enum enumCHANGE_IMAGE_FROM  enumFrom  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetTestBack(hBitmap, bstrPath, pImageBase, enumFrom);
+}
+
+inline void  IMeter::SetTestTextStyle(struct IDUITextStyle * pTextStyle  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetTestTextStyle(pTextStyle);
+}
+
+inline void  IMeter::SetTestText(tstring  text  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetTestText(text);
+}
+
+inline long  IMeter::GetMotorCarToCtrlTop()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetMotorCarToCtrlTop();
+}
+
+inline void  IMeter::SetMotorCarToCtrlTop(long  offset  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetMotorCarToCtrlTop(offset);
+}
+
+inline long  IMeter::GetMotorCarToCtrlRight()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetMotorCarToCtrlRight();
+}
+
+inline void  IMeter::SetMotorCarToCtrlRight(long  offset  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetMotorCarToCtrlRight(offset);
+}
+
+inline long  IMeter::GetMotorCarHeight()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetMotorCarHeight();
+}
+
+inline void  IMeter::SetMotorCarHeight(long  height  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetMotorCarHeight(height);
+}
+
+inline long  IMeter::GetMotorCarPenelWidth()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetMotorCarPenelWidth();
+}
+
+inline void  IMeter::SetMotorCarPenelWidth(long  width  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetMotorCarPenelWidth(width);
+}
+
+inline long  IMeter::GetMotorCarDataWidth()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetMotorCarDataWidth();
+}
+
+inline void  IMeter::SetMotorCarDataWdith(long  width  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetMotorCarDataWdith(width);
+}
+
+inline long  IMeter::GetMotorCarPenelDataOffset()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetMotorCarPenelDataOffset();
+}
+
+inline void  IMeter::SetMotorCarPenelDataOffset(long  offset  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetMotorCarPenelDataOffset(offset);
+}
+
+inline long  IMeter::GetTrailCarToMotor()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetTrailCarToMotor();
+}
+
+inline void  IMeter::SetTrailCarToMotor(long  offset  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetTrailCarToMotor(offset);
+}
+
+inline long  IMeter::GetTrailCarToCtrlRight()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetTrailCarToCtrlRight();
+}
+
+inline void  IMeter::SetTrailCarToCtrlRight(long  offset  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetTrailCarToCtrlRight(offset);
+}
+
+inline long  IMeter::GetTrailCarPenelWidth()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetTrailCarPenelWidth();
+}
+
+inline void  IMeter::SetTrailCarPenelWdith(long  width  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetTrailCarPenelWdith(width);
+}
+
+inline long  IMeter::GetTrailCarDataWidth()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetTrailCarDataWidth();
+}
+
+inline void  IMeter::SetTrailCarDataWidth(long  width  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetTrailCarDataWidth(width);
+}
+
+inline long  IMeter::GetTrailCarHeight()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetTrailCarHeight();
+}
+
+inline void  IMeter::SetTrailCarHeight(long  height  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetTrailCarHeight(height);
+}
+
+inline long  IMeter::GetTrailCarPenelDataOffset()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetTrailCarPenelDataOffset();
+}
+
+inline void  IMeter::SetTrailCarPenelDataOffset(long  offset  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetTrailCarPenelDataOffset(offset);
+}
+
+inline long  IMeter::GetTestToTrailCarLeft()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetTestToTrailCarLeft();
+}
+
+inline void  IMeter::SetTestToTrailCarLeft(long  offset  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetTestToTrailCarLeft(offset);
+}
+
+inline long  IMeter::GetTestToTrailCarBottom()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetTestToTrailCarBottom();
+}
+
+inline void  IMeter::SetTestToTrailCarBottom(long  offset  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetTestToTrailCarBottom(offset);
+}
+
+inline long  IMeter::GetTestWidth()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetTestWidth();
+}
+
+inline void  IMeter::SetTestWidth(long  width  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetTestWidth(width);
+}
+
+inline long  IMeter::GetTestHeight()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetTestHeight();
+}
+
+inline void  IMeter::SetTestHeight(long  height  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetTestHeight(height);
+}
+
+inline struct IDUIImageBase * IMeter::GetMeterCenterEllpise()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetMeterCenterEllpise();
+}
+
+inline void  IMeter::SetMeterCenterEllipse(OLE_HANDLE  hBitmap, tstring  bstrPath, struct IDUIImageBase * pImageBase, enum enumCHANGE_IMAGE_FROM  enumFrom  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetMeterCenterEllipse(hBitmap, bstrPath, pImageBase, enumFrom);
+}
+
+inline float  IMeter::GetFrontPointerYOfset()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetFrontPointerYOfset();
+}
+
+inline void  IMeter::SetFrontPointerYOfset(float  yOffset  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetFrontPointerYOfset(yOffset);
+}
+
+inline float  IMeter::GetAfterPointerYOfset()
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->GetAfterPointerYOfset();
+}
+
+inline void  IMeter::SetAfterPointerYOfset(float  yOffset  )
+{
+
+	((IDUIControlBase_*)m_pCtrl)->SetDataBlock((OLE_HANDLE)m_pDataBlock);
+
+	return ((IMeter_*)m_pCtrl)->SetAfterPointerYOfset(yOffset);
+}
+

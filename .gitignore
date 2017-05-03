@@ -27,3 +27,9 @@
 *.exe
 *.out
 *.app
+
+#temp dir
+/.vs/*
+/Debug/*
+/x64/*
+/HttpPatchServer/Debug/*

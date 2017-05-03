@@ -30,7 +30,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -76,8 +76,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>.\curl;.\rcfinclude;$(IncludePath)</IncludePath>
-    <LibraryPath>.\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+    <IncludePath>$(BOOST);.\spdinclude;.\curl;.\rcfinclude;.\duiinclude;$(IncludePath)</IncludePath>
+    <LibraryPath>$(BOOST)\bin\vc14_x86\lib;.\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -93,12 +93,12 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;RCF_FEATURE_FILETRANSFER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>libcurld.lib</AdditionalDependencies>
+      <AdditionalDependencies>libcurld.lib;RCFd.lib</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -189,18 +189,26 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AppConfig.h" />
     <ClInclude Include="Clibcurl.h" />
     <ClInclude Include="curl\curl.h" />
     <ClInclude Include="EDPPatchBase.h" />
+    <ClInclude Include="FileTransforRequest.h" />
     <ClInclude Include="HttpPatchServer.h" />
     <ClInclude Include="HttpPatchServerDlg.h" />
     <ClInclude Include="IDownload.h" />
     <ClInclude Include="PackInterface.h" />
     <ClInclude Include="PatchBus.h" />
+    <ClInclude Include="PatchCascade.h" />
+    <ClInclude Include="PatchFile.h" />
     <ClInclude Include="PatchIndex.h" />
-    <ClInclude Include="RcfClient.h" />
-    <ClInclude Include="RcfPatchServer.h" />
-    <ClInclude Include="RcfPatchService.h" />
+    <ClInclude Include="PatchNetSetting.h" />
+    <ClInclude Include="PatchSetting.h" />
+    <ClInclude Include="PatchView.h" />
+    <ClInclude Include="PatchViewError.h" />
+    <ClInclude Include="PatchViewSetting.h" />
+    <ClInclude Include="PatchViewStatics.h" />
+    <ClInclude Include="PathDownloadListView.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -211,8 +219,16 @@
     <ClCompile Include="HttpPatchServerDlg.cpp" />
     <ClCompile Include="PackInterface.cpp" />
     <ClCompile Include="PatchBus.cpp" />
+    <ClCompile Include="PatchCascade.cpp" />
+    <ClCompile Include="PatchFile.cpp" />
     <ClCompile Include="PatchIndex.cpp" />
-    <ClCompile Include="RcfClient.cpp" />
+    <ClCompile Include="PatchNetSetting.cpp" />
+    <ClCompile Include="PatchSetting.cpp" />
+    <ClCompile Include="PatchView.cpp" />
+    <ClCompile Include="PatchViewError.cpp" />
+    <ClCompile Include="PatchViewSetting.cpp" />
+    <ClCompile Include="PatchViewStatics.cpp" />
+    <ClCompile Include="PathDownloadListView.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -228,6 +244,8 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\HttpPatchServer.ico" />
+    <Image Include="res\Icon.png" />
+    <Image Include="res\Main.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
