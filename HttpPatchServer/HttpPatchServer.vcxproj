@@ -76,7 +76,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(BOOST);.\spdinclude;.\curl;.\rcfinclude;.\duiinclude;$(IncludePath)</IncludePath>
+    <IncludePath>$(BOOST);.\spdinclude;.\curl;.\RCF;.\DUI;.\CSHA1-2.1-Source;$(IncludePath)</IncludePath>
     <LibraryPath>$(BOOST)\bin\vc14_x86\lib;.\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -94,7 +94,6 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;RCF_FEATURE_FILETRANSFER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -190,45 +189,69 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppConfig.h" />
+    <ClInclude Include="Base64.h" />
     <ClInclude Include="Clibcurl.h" />
+    <ClInclude Include="Crc.h" />
+    <ClInclude Include="CSHA1-2.1-Source\SHA1.h" />
     <ClInclude Include="curl\curl.h" />
+    <ClInclude Include="DUI\AdvancedAll.h" />
+    <ClInclude Include="DUI\common.h" />
+    <ClInclude Include="DUI\DirectUI.h" />
+    <ClInclude Include="DUI\DirectUIInc.h" />
+    <ClInclude Include="DUI\DUIDialog.h" />
+    <ClInclude Include="DUI\IndustryAll.h" />
+    <ClInclude Include="DUI\KernelAll.h" />
+    <ClInclude Include="DUI\OfficeAll.h" />
     <ClInclude Include="EDPPatchBase.h" />
     <ClInclude Include="FileTransforRequest.h" />
     <ClInclude Include="HttpPatchServer.h" />
     <ClInclude Include="HttpPatchServerDlg.h" />
     <ClInclude Include="IDownload.h" />
+    <ClInclude Include="MessageBox.h" />
     <ClInclude Include="PackInterface.h" />
     <ClInclude Include="PatchBus.h" />
     <ClInclude Include="PatchCascade.h" />
     <ClInclude Include="PatchFile.h" />
     <ClInclude Include="PatchIndex.h" />
+    <ClInclude Include="PatchMode.h" />
     <ClInclude Include="PatchNetSetting.h" />
-    <ClInclude Include="PatchSetting.h" />
+    <ClInclude Include="PatchOther.h" />
+    <ClInclude Include="PatchService.h" />
     <ClInclude Include="PatchView.h" />
     <ClInclude Include="PatchViewError.h" />
     <ClInclude Include="PatchViewSetting.h" />
     <ClInclude Include="PatchViewStatics.h" />
     <ClInclude Include="PathDownloadListView.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SqlConfig.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Base64.cpp" />
     <ClCompile Include="Clibcurl.cpp" />
+    <ClCompile Include="Crc.cpp" />
+    <ClCompile Include="CSHA1-2.1-Source\SHA1.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="DUI\DUIDialog.cpp" />
     <ClCompile Include="HttpPatchServer.cpp" />
     <ClCompile Include="HttpPatchServerDlg.cpp" />
+    <ClCompile Include="MessageBox.cpp" />
     <ClCompile Include="PackInterface.cpp" />
     <ClCompile Include="PatchBus.cpp" />
     <ClCompile Include="PatchCascade.cpp" />
     <ClCompile Include="PatchFile.cpp" />
     <ClCompile Include="PatchIndex.cpp" />
+    <ClCompile Include="PatchMode.cpp" />
     <ClCompile Include="PatchNetSetting.cpp" />
-    <ClCompile Include="PatchSetting.cpp" />
+    <ClCompile Include="PatchOther.cpp" />
     <ClCompile Include="PatchView.cpp" />
     <ClCompile Include="PatchViewError.cpp" />
     <ClCompile Include="PatchViewSetting.cpp" />
     <ClCompile Include="PatchViewStatics.cpp" />
     <ClCompile Include="PathDownloadListView.cpp" />
+    <ClCompile Include="SqlConfig.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -240,6 +263,12 @@
     <ResourceCompile Include="HttpPatchServer.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="DUI\AdvancedAll.tli" />
+    <None Include="DUI\DirectUI.tli" />
+    <None Include="DUI\IndustryAll.tli" />
+    <None Include="DUI\KernelAll.tli" />
+    <None Include="DUI\OfficeAll.tli" />
+    <None Include="msado15.dll" />
     <None Include="res\HttpPatchServer.rc2" />
   </ItemGroup>
   <ItemGroup>

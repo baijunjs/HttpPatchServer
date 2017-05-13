@@ -15,25 +15,30 @@ namespace vrv
 		{
 		}
 
-		bool CPatchIndex::analyze_sub_index(ILoadIndex *loadindex)
+		bool CPatchIndex::load_product_index(ILoadIndex *loadindex)
 		{
-			if (loadindex == nullptr)
-				return false;
-
-			//ÓïÑÔ°ü
-			if (m_bLanguage == true)
+			if (loadindex)
 			{
-				loadindex->SetLanguagePack(m_szIndexPath.c_str());
-			}
-			else
-			{
-				loadindex->SetProductPack(m_szIndexPath.c_str());
+				std::string szindexpath = appconfig.m_http_cfg.m_szPatchPath + "\\Tools\\";
+				loadindex->SetProductPack((szindexpath + m_szIndexPath).c_str());
 				if (!m_szSubIndexPath.empty())
 				{
-					loadindex->SetProductPack(m_szSubIndexPath.c_str());
+					loadindex->SetProductPack((szindexpath + m_szSubIndexPath).c_str());
 				}
+				return true;
 			}
-			return true;
+			return false;
+		}
+
+		bool CPatchIndex::load_language_index(ILoadIndex *loadindex)
+		{
+			if (loadindex)
+			{
+				std::string szindexpath = appconfig.m_http_cfg.m_szPatchPath + "\\Tools\\";
+				loadindex->SetLanguagePack((szindexpath + m_szIndexPath).c_str());
+				return true;
+			}
+			return false;
 		}
 	}
 }

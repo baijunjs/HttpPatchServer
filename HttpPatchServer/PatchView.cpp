@@ -9,10 +9,13 @@
 
 // CPatchView 对话框
 
-IMPLEMENT_DYNAMIC(CPatchView, CDialogEx)
+IMPLEMENT_DYNAMIC(CPatchView, CDUIDialog)
 
 CPatchView::CPatchView(CWnd* pParent /*=NULL*/)
-	: CDialogEx(IDD_DOWNLOADVIEW_DIALOG, pParent)
+	: CDUIDialog(IDD_DOWNLOADVIEW_DIALOG, pParent)
+	, m_hPatchStatics(this)
+	, m_hPatchDown(this)
+	, m_hPatchError(this)
 {
 
 }
@@ -23,13 +26,14 @@ CPatchView::~CPatchView()
 
 void CPatchView::DoDataExchange(CDataExchange* pDX)
 {
-	CDialogEx::DoDataExchange(pDX);
+	CDUIDialog::DoDataExchange(pDX);
 }
 
 
-BEGIN_MESSAGE_MAP(CPatchView, CDialogEx)
+BEGIN_MESSAGE_MAP(CPatchView, CDUIDialog)
 	ON_WM_CREATE()
 	ON_MESSAGE(DUI_TABMSG_SELCHANGED, &CPatchView::OnTabPageChanged)
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 
@@ -38,45 +42,50 @@ END_MESSAGE_MAP()
 
 int CPatchView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
-	if (CDialogEx::OnCreate(lpCreateStruct) == -1)
+
+	m_hPatchStatics.Create(IDD_DIALOG_STATICS, this);
+	m_hPatchDown.Create(IDD_DOWNLOAD_LISTVIEW, this);
+	m_hPatchError.Create(IDD_DIALOG_ERROR, this);
+	if (CDUIDialog::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
 	// TODO:  在此添加您专用的创建代码
-	if (!InitPatchViewDui())
-		return -1;
-
 	return 0;
 }
 
-bool CPatchView::InitPatchViewDui()
+BOOL CPatchView::InitSknPath()
 {
-	m_pDuiPatchView = (ISkinObjResBase*)AfxGetDuiRes()->CreateDirectUI("DUIDownView", HandleToLong(m_hWnd));
-	ASSERT(m_pDuiPatchView);
-
-	m_pDuiTabView = (IDUITabCtrl*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "DownTabCtrl", m_pDuiPatchView, TRUE);
-	ASSERT(m_pDuiTabView);
-
-	m_pDuiListOwner = (IDUIHwndObj*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "HwndSubObj", m_pDuiPatchView, TRUE);
-	ASSERT(m_pDuiListOwner);
-
-	return true;
+	CDUIDialog::InitSknPath();
+	m_strDUIName = _T("DUIDownView");
+	m_strSkinDir = appconfig.m_szAppPath.c_str();
+	m_strDUIFile = m_strSkinDir + _T("\\Skin\\PatchDown.dui");
+	m_strSknFile = m_strSkinDir + _T("\\Skin\\PatchDown.skn");
+	return TRUE;
 }
+
+//bool CPatchView::InitPatchViewDui()
+//{
+//	m_pDuiPatchView = (ISkinObjResBase*)AfxGetDuiRes()->CreateDirectUI("DUIDownView", HandleToLong(m_hWnd));
+//	ASSERT(m_pDuiPatchView);
+//
+//	m_pDuiTabView = (IDUITabCtrl*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "DownTabCtrl", m_pDuiPatchView, TRUE);
+//	ASSERT(m_pDuiTabView);
+//
+//	m_pDuiListOwner = (IDUIHwndObj*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "HwndSubObj", m_pDuiPatchView, TRUE);
+//	ASSERT(m_pDuiListOwner);
+//
+//	return true;
+//}
 
 
 BOOL CPatchView::OnInitDialog()
 {
-	CDialogEx::OnInitDialog();
+	CDUIDialog::OnInitDialog();
 
 	// TODO:  在此添加额外的初始化
-	m_hPatchStatics.Create(IDD_DIALOG_STATICS, this);
-	m_pDuiListOwner->Attach((OLE_HANDLE)HandleToLong(m_hPatchStatics.GetSafeHwnd()));
-
-	m_hPatchDown.Create(IDD_DOWNLOAD_LISTVIEW, this);
-	m_pDuiListOwner->Attach((OLE_HANDLE)HandleToLong(m_hPatchDown.GetSafeHwnd()));
-
-	m_hPatchError.Create(IDD_DIALOG_ERROR, this);
-	m_pDuiListOwner->Attach((OLE_HANDLE)HandleToLong(m_hPatchError.GetSafeHwnd()));
-
+	DHwnd(HwndSubObj)->Attach((OLE_HANDLE)HandleToLong(m_hPatchStatics.GetSafeHwnd()));
+	DHwnd(HwndSubObj)->Attach((OLE_HANDLE)HandleToLong(m_hPatchDown.GetSafeHwnd()));
+	DHwnd(HwndSubObj)->Attach((OLE_HANDLE)HandleToLong(m_hPatchError.GetSafeHwnd()));
 	m_hPatchStatics.ShowWindow(SW_SHOW);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -109,4 +118,23 @@ LRESULT CPatchView::OnTabPageChanged(WPARAM wparam, LPARAM lparam)
 	}
 
 	return 0;
+}
+
+void CPatchView::OnCancel()
+{
+	// TODO: 在此添加专用代码和/或调用基类
+
+	CDUIDialog::OnCancel();
+}
+
+
+void CPatchView::OnClose()
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+	if (appconfig.m_mode_cfg.mode == http_mode)
+		m_hPatchStatics.OnHttpStop();
+	else
+		m_hPatchStatics.OnCasStop();
+
+	CDUIDialog::OnClose();
 }

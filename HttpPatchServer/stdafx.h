@@ -33,22 +33,40 @@
 
 #include <afxcontrolbars.h>     // 功能区和控件条的 MFC 支持
 
+#include "DUIDialog.h"
+
 #include <thread>
 #include "curl.h"
 #include "EDPPatchBase.h"
 #include "IDownload.h"
 #include "PackInterface.h"
-#include "directuiinc.h"
 #include "AppConfig.h"
 #include "log.hpp"
+#include "crc.h"
+#include <RCF/RCF.hpp>
 
 enum  CUSTOM_MESSAGE
 {
 	UM_CUSTOM_TRAY = (WM_USER + 1),
 	UM_CUSTOM_DOWNCENTER,
 	UM_CUSTOM_SETTING,
+	UM_CUSTOM_STATICLIST,
+	UM_CUSTOM_DOWNLIST,
+	UM_DOWNVIEW_INDEXITEM,
+	UM_DOWNVIEW_PATCHITEM,
+	UM_DOWNVIEW_CLEANITEMS,
+	UM_DOWNVIEW_REFRESH,
+	UM_ERRORVIEW_INDEXITEM,
+	UM_ERRORVIEW_PATCHITEM,
+	UM_ERRORVIEW_CLEANITEMS,
 };
 
+
+#import "msado15.dll" no_namespace rename("EOF", "adoEOF") 
+
+BOOL IsTimeValid(std::string &sztime);
+BOOL IsIpValid(std::string &szIp);
+BOOL GetFileSHA1(std::string szFile, OUT std::string &szSha);
 
 #ifdef _UNICODE
 #if defined _M_IX86

@@ -10,7 +10,7 @@
 
 
 // CHttpPatchServerDlg 对话框
-class CHttpPatchServerDlg : public CDialogEx
+class CHttpPatchServerDlg : public CDUIDialog
 {
 // 构造
 public:
@@ -24,7 +24,7 @@ public:
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 支持
 
-	bool InitMainDui();
+	//bool InitDui();
 // 实现
 protected:
 	HICON m_hIcon;
@@ -39,21 +39,33 @@ public:
 	afx_msg void OnBnClickedButton1();
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg LRESULT OnTabPageChanged(WPARAM, LPARAM);
+	afx_msg LRESULT OnAddIconToTaskbar(WPARAM wParam, LPARAM lParam);
 
+	void AddTaskbarIcons();
+	BOOL InitSknPath();
 public:
 	vrv::patch::CPatchBus  m_patchbus;
 
+
+protected:
+	LRESULT OnButtonUp(WPARAM, LPARAM);
+
 private:
 	NOTIFYICONDATA			m_NotifyIconData;
-	ISkinObjResBase  *		m_pDirectUI;
-	ICmdButton*				m_pDUIBtnClose;
-	ICmdButton*				m_pDUIBtnMini;
-	IDUICheckBox *			m_pDUIchkMax;
+	//ICmdButton*				m_pDUIBtnClose;
+	//ICmdButton*				m_pDUIBtnMini;
+	//IDUICheckBox *			m_pDUIchkMax;
 
-	IDUITabCtrl *			m_pTabMain;
-	IDUIHwndObj *			m_pHwndSubWnd;
+	//IDUITabCtrl *			m_pTabMain;
+	//IDUIHwndObj *			m_pHwndSubWnd;
 
-	IDUILogoObj*			m_pDUILogo;
+	//IDUILogoObj*			m_pDUILogo;
 	CPatchView				m_patchview;		//下载中心
 	CPatchViewSetting		m_patchsetting;		//设置中心
+
+
+public:
+	virtual void OnOK();
+	virtual void OnCancel();
+	LRESULT OnTrayIcon(WPARAM, LPARAM);
 };

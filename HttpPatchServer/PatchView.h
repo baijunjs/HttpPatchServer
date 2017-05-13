@@ -5,7 +5,8 @@
 
 // CPatchView 对话框
 
-class CPatchView : public CDialogEx
+
+class CPatchView : public CDUIDialog
 {
 	DECLARE_DYNAMIC(CPatchView)
 
@@ -24,12 +25,28 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	bool InitPatchViewDui();
+	//bool InitPatchViewDui();
+	BOOL InitSknPath();
+
+	CWnd* GetStaticView()
+	{
+		return &m_hPatchStatics;
+	}
+
+	CWnd* GetDownView()
+	{
+		return &m_hPatchDown;
+	}
+
+	CWnd* GetErrorView()
+	{
+		return &m_hPatchError;
+	}
 
 private:
-	ISkinObjResBase *m_pDuiPatchView;
-	IDUITabCtrl	*m_pDuiTabView;
-	IDUIHwndObj *m_pDuiListOwner;
+	//ISkinObjResBase *m_pDuiPatchView;
+	//IDUITabCtrl	*m_pDuiTabView;
+	//IDUIHwndObj *m_pDuiListOwner;
 
 	CPatchViewStatics	m_hPatchStatics;			//统计界面
 	CPatchDownView		m_hPatchDown;				//下载界面
@@ -38,4 +55,6 @@ private:
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg LRESULT OnTabPageChanged(WPARAM, LPARAM);
+	virtual void OnCancel();
+	afx_msg void OnClose();
 };

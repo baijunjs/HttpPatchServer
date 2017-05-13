@@ -3,10 +3,12 @@
 #include "PatchNetSetting.h"
 #include "PatchSetting.h"
 #include "PatchCascade.h"
+#include "PatchMode.h"
+#include "PatchOther.h"
 
 // CPatchViewSetting 对话框
 
-class CPatchViewSetting : public CDialogEx
+class CPatchViewSetting : public CDUIDialog
 {
 	DECLARE_DYNAMIC(CPatchViewSetting)
 
@@ -21,20 +23,28 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
-	bool InitDui();
+	//bool InitDui();
+	BOOL InitSknPath();
 
 
-	ISkinObjResBase			*m_pDuiSetting;
-	IDUITabCtrl				*m_pTabSetting;
-	IDUIHwndObj				*m_pHwndOwner;
-	
+	//ISkinObjResBase			*m_pDuiSetting;
+	//IDUITabCtrl				*m_pTabSetting;
+	//IDUIHwndObj				*m_pHwndOwner;
+	//ICmdButton				*m_pBtnApply;
+	//ICmdButton				*m_pBtnCancel;
+
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	virtual BOOL OnInitDialog();
 	LRESULT OnTabPageChanged(WPARAM, LPARAM);
-
-	CPatchNetSetting		m_patchNetSetting;
-	CPatchSetting			m_patchSetting;
-	CPatchCascade			m_patchCascade;
+	LRESULT OnApply(WPARAM wparam, LPARAM lparam);
+	void SaveSetting();
+	void RestoreSetitng();
+	void SetPatchView(CWnd*);
+	CWnd* GetPatchView();
+	CPatchMode				m_patchMode;
+	CPatchOther				m_patchOtherSetting;
+	CWnd*					m_pPatchView;
+	afx_msg void OnClose();
 };

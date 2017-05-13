@@ -8,20 +8,19 @@ PFNCreateLoadObject CPackInterface::pfn_createloadobject = nullptr;
 
 bool CPackInterface::init()
 {
-#ifdef _MSC_VER
 	HMODULE h = LoadLibraryA("EdpPatch.dll");
-	if (h == NULL)
-	{
-		return false;
-	}
-	else
+	if (h)
 	{
 		pfn_createpackobject = (PFNCreatePackObject)GetProcAddress(h, "CreatePackObject");
 		pfn_createloadobject = (PFNCreateLoadObject)GetProcAddress(h, "CreateLoadObject");
 		assert(pfn_createpackobject != nullptr);
 		assert(pfn_createloadobject != nullptr);
 	}
-#endif
+	else
+	{
+		vrvlog::SPD_LOG_CRITICAL("EdpPatch.dll load failed ({0}), exit", GetLastError());
+		return false;
+	}
 
 	return true;
 }

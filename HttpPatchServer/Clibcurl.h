@@ -3,44 +3,70 @@
 
 
 
-typedef size_t(*pfn_write_callback)(char *pbuf, size_t size, size_t stNum, void * pData);
-typedef int(*pfn_progress_callback)(void *clientp, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow);
 
-class Clibcurl :
-	public IDownload
+enum Task_Status
+{
+	DOWNLOAD_ERROR = -1,			//下载错误
+	DOWNLOAD_STOPPED,				//已停止
+	DOWNLOAD_STARTED,				//启动
+	DOWNLOAD_RUNNING,				//正在运行
+	DOWNLOAD_DONE,					//下载完成
+};
+
+
+typedef size_t (*_TyWrittenCallback)(char *pbuf, size_t size, size_t stNum, void * pData);
+typedef int (*_TyProgressCallback)(void *clientp, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow);
+
+class Curl
 {
 public:
-	Clibcurl() noexcept(false);
-	virtual ~Clibcurl();
+	Curl() noexcept(false);
+	virtual ~Curl();
 
 public:
 
-	bool setproxy(std::string&, std::string&, std::string&, std::string&);
+	void SetProxy(std::string&, std::string&, std::string&, std::string&);
 
-	bool setUpRate(unsigned long ulrate);
+	void SetUploadSpeed(long ulrate);
 
-	bool setDownRate(unsigned long ulrate);
+	void SetDownloadSpeed(long ulrate);
 
-	bool downloadfile(std::string& szurl, std::string& szsavepath);
+	void SetUrlFile(std::string szUrl, std::string szFile);
 
-	int startdownload();
+	long StartDownload();
 
-	int stopdownload();
+	long StopDownload();
 
-	int pausedownload();
+	long GetFileSize(size_t &size);
 
-	int continuedownload();
+	void SetProgressCallback(_TyProgressCallback progressfun, void* param, void* phwnd);
 
-private:
-	bool getfilesize(std::string& szurl, size_t& size);
+	void SetWriteCallback(_TyWrittenCallback writefun, void* param);
 
-	bool setprogressfun(pfn_progress_callback progressfun, void* param);
-
-	bool setwritefun(pfn_write_callback writefun, void* param);
+	Task_Status GetTaskStatus()
+	{
+		return m_status;
+	}
 private:
 	CURL *m_pCURL;
-	task_status st;
-	HANDLE m_hEvt;
-	//HANDLE m_hExit;
+	Task_Status m_status;
+	_TyProgressCallback m_pProgress;
+	void *m_pProgressParam;
+	_TyWrittenCallback m_pWritten;
+	void *m_pWrittenParam;
+	std::string m_szProxyip;
+	std::string m_szProxyport;
+	std::string m_szProxyuser;
+	std::string m_szProxypwd;
+	long m_lupspeed;
+	long m_ldownspeed;
+	std::string m_szUrl;
+	std::string m_szFile;
+
+public:
+	std::streamoff m_curLength;
+	void *m_pProgressCtrl;
+	size_t m_filesize;
+
 };
 

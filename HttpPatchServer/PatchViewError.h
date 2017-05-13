@@ -3,7 +3,7 @@
 
 // CPatchViewError 对话框
 
-class CPatchViewError : public CDialogEx
+class CPatchViewError : public CDUIDialog
 {
 	DECLARE_DYNAMIC(CPatchViewError)
 
@@ -18,12 +18,21 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
-	bool InitDui();
+	//bool InitDui();
 
-	ISkinObjResBase		*m_pDuiError;
-	IDUIListView		*m_pErrorView;
+	//ISkinObjResBase		*m_pDuiError;
+	//IDUIListView		*m_pErrorView;
+	BOOL InitSknPath();
 
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	CWnd* GetParent();
+private:
+	CWnd* m_pParent;
+public:
+	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
+	LRESULT InsertIndexItem(WPARAM wparam, LPARAM lparam);
+	LRESULT InsertPatchItem(WPARAM wparam, LPARAM lparam);
+	LRESULT CleanItems(WPARAM wparam, LPARAM lparam);
 };

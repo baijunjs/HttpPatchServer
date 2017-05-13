@@ -7,7 +7,7 @@
 #include "HttpPatchServerDlg.h"
 #include "afxdialogex.h"
 #include "Clibcurl.h"
-
+#include "MessageBox.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -49,26 +49,29 @@ END_MESSAGE_MAP()
 
 // CHttpPatchServerDlg 对话框
 
-
+const UINT WM_ADDICON_TOTASKBAR = ::RegisterWindowMessage(_T("TaskbarCreated"));
 
 CHttpPatchServerDlg::CHttpPatchServerDlg(CWnd* pParent /*=NULL*/)
-	: CDialogEx(IDD_HTTPPATCHSERVER_DIALOG, pParent)
+	: CDUIDialog(IDD_HTTPPATCHSERVER_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
 void CHttpPatchServerDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialogEx::DoDataExchange(pDX);
+	CDUIDialog::DoDataExchange(pDX);
 }
 
-BEGIN_MESSAGE_MAP(CHttpPatchServerDlg, CDialogEx)
+BEGIN_MESSAGE_MAP(CHttpPatchServerDlg, CDUIDialog)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON1, &CHttpPatchServerDlg::OnBnClickedButton1)
 	ON_WM_CREATE()
 	ON_MESSAGE(DUI_TABMSG_SELCHANGED, &CHttpPatchServerDlg::OnTabPageChanged)
+	ON_MESSAGE(DUISM_LBUTTONUP, &CHttpPatchServerDlg::OnButtonUp)
+	ON_REGISTERED_MESSAGE(WM_ADDICON_TOTASKBAR, &CHttpPatchServerDlg::OnAddIconToTaskbar)
+	ON_MESSAGE(UM_CUSTOM_TRAY, &CHttpPatchServerDlg::OnTrayIcon)
 END_MESSAGE_MAP()
 
 
@@ -76,7 +79,7 @@ END_MESSAGE_MAP()
 
 BOOL CHttpPatchServerDlg::OnInitDialog()
 {
-	CDialogEx::OnInitDialog();
+	CDUIDialog::OnInitDialog();
 
 	// 将“关于...”菜单项添加到系统菜单中。
 
@@ -105,66 +108,19 @@ BOOL CHttpPatchServerDlg::OnInitDialog()
 
 	// TODO: 在此添加额外的初始化代码
 
-	m_patchview.Create(IDD_DOWNLOADVIEW_DIALOG, this);
-	m_pHwndSubWnd->Attach((OLE_HANDLE)HandleToLong(m_patchview.GetSafeHwnd()));
+	//m_patchview.Create(IDD_DOWNLOADVIEW_DIALOG, this);
+	DHwnd(HwndObj14)->Attach((OLE_HANDLE)HandleToLong(m_patchview.GetSafeHwnd()));
 
-	m_patchsetting.Create(IDD_DIALOG_SETTING, this);
-	m_pHwndSubWnd->Attach((OLE_HANDLE)HandleToLong(m_patchsetting.GetSafeHwnd()));
-
+	//m_patchsetting.Create(IDD_DIALOG_SETTING, this);
+	DHwnd(HwndObj14)->Attach((OLE_HANDLE)HandleToLong(m_patchsetting.GetSafeHwnd()));
+	m_patchsetting.SetPatchView(&m_patchview);
 	m_patchview.ShowWindow(SW_SHOW);
 
-	//m_pHwndSubWnd->Attach((OLE_HANDLE)HandleToLong(m_cfigView.GetSafeHwnd()));
+	DCheck(ChkMax)->SetValue(DUICHECKBOX_UNCHECKED);
 
 
-	//set window title
-	//m_pDUIHwndTitle->SetText(AfxGetAppTitle());//(_T(WND_SHOW_TEXT));
+	AddTaskbarIcons();
 
-
-											   //set tray_icon
-	ZeroMemory(&m_NotifyIconData, sizeof(m_NotifyIconData));
-	m_NotifyIconData.cbSize = sizeof(m_NotifyIconData);
-	m_NotifyIconData.hWnd = m_hWnd;
-	m_NotifyIconData.uID = IDI_APP_ICON;
-	m_NotifyIconData.hIcon = AfxGetApp()->LoadIcon(IDI_APP_ICON);
-	m_NotifyIconData.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP;
-	m_NotifyIconData.uCallbackMessage = UM_CUSTOM_TRAY;
-	strcpy_s(m_NotifyIconData.szTip, 128, AfxGetAppTitle());//_T(WND_SHOW_TEXT));
-	Shell_NotifyIcon(NIM_ADD, &m_NotifyIconData); //使右下角图标在程序运行的时候就被注册
-
-
-	//std::string szPngPath;
-	//IDUITabCtrlItem *pItem = m_pTabMain->InsertItem(0, "下载中心", UM_CUSTOM_DOWNCENTER, "下载中心");
-	//if (pItem == NULL) return FALSE;
-	//szPngPath = appconfig.m_szAppPath + "\\Res\\download.png";
-	//for (int itemstate = DUITABITEM_STATE_NORMAL; itemstate < DUITABITEM_STATE_LAST; itemstate++)
-	//	pItem->SetIconFilePath(szPngPath, (DUITABITEM_STATE)itemstate);
-	//pItem->SetTooltip("下载中心");
-
-	//pItem = m_pTabMain->InsertItem(1, "设置中心", UM_CUSTOM_SETTING, "设置中心");
-	//if (pItem == NULL) return FALSE;
-	//szPngPath = appconfig.m_szAppPath + "\\Res\\setting.png";
-	//for (int itemstate = DUITABITEM_STATE_NORMAL; itemstate < DUITABITEM_STATE_LAST; itemstate++)
-	//	pItem->SetIconFilePath(szPngPath, (DUITABITEM_STATE)itemstate);
-	//pItem->SetTooltip("设置中心");
-
-
-	//pItem = m_pTabMain->InsertItem(2, "互联网模式", HTTP_TABCTRL_SWITCH, "级联模式");
-	//if (pItem == NULL) return FALSE;
-	//szPngPath = appconfig.m_szAppPath + "\\Res\\ImExportView.png";
-	//pItem->SetIconFilePath(szPngPath);
-	//pItem->SetTooltip("级联模式");
-
-	m_pTabMain->SetSelectedItem(0);
-
-	//std::string szIconPath = appconfig.m_szAppPath + "\\Res\\Icon.png";
-	//m_pDUILogIcon->SetLogoImage(szIconPath);
-
-	//隐藏LOGO
-	int visible = GetPrivateProfileIntA("VISIBLE", "LOGO", 1, appconfig.m_szConfigFile.c_str());
-	if (visible)
-		m_pDUILogo->SetVisible(TRUE, TRUE, TRUE);
-	else
-		m_pDUILogo->SetVisible(FALSE, TRUE, TRUE);
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -179,7 +135,7 @@ void CHttpPatchServerDlg::OnSysCommand(UINT nID, LPARAM lParam)
 	}
 	else
 	{
-		CDialogEx::OnSysCommand(nID, lParam);
+		CDUIDialog::OnSysCommand(nID, lParam);
 	}
 }
 
@@ -208,7 +164,7 @@ void CHttpPatchServerDlg::OnPaint()
 	}
 	else
 	{
-		CDialogEx::OnPaint();
+		CDUIDialog::OnPaint();
 	}
 }
 
@@ -229,27 +185,27 @@ void CHttpPatchServerDlg::OnBnClickedButton1()
 	{
 		IPackIndex *indexobject = CPackInterface::getPackIndexObject();
 		ILoadIndex *loadobject = CPackInterface::getLoadIndexObject();
-		do
-		{
-			//if (!r->m_patchbus.download_main_index<Clibcurl>())
-			//	break;
+		//do
+		//{
+		//	//if (!r->m_patchbus.download_main_index<Clibcurl>())
+		//	//	break;
 
-			if (!r->m_patchbus.analyze_main_index(indexobject))
-				break;
+		//	if (!r->m_patchbus.analyze_main_index(indexobject))
+		//		break;
 
-			//if (!r->m_patchbus.download_sub_index<Clibcurl>())
-			//	break;
+		//	//if (!r->m_patchbus.download_sub_index<Clibcurl>())
+		//	//	break;
 
-			if (!r->m_patchbus.loadProductIndex(loadobject))
-				break;
+		//	if (!r->m_patchbus.loadProductIndex(loadobject))
+		//		break;
 
-			if (!r->m_patchbus.loadLanuageIndex(loadobject))
-				break;
+		//	if (!r->m_patchbus.loadLanuageIndex(loadobject))
+		//		break;
 
-			if (!r->m_patchbus.fetchPatchFile(loadobject))
-				break;
+		//	if (!r->m_patchbus.fetchPatchFile(loadobject))
+		//		break;
 
-		} while (false);
+		//} while (false);
 
 		indexobject->Release();
 		loadobject->Release();
@@ -261,44 +217,66 @@ void CHttpPatchServerDlg::OnBnClickedButton1()
 
 int CHttpPatchServerDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
-	if (CDialogEx::OnCreate(lpCreateStruct) == -1)
+	m_patchview.Create(IDD_DOWNLOADVIEW_DIALOG, this);
+	m_patchsetting.Create(IDD_DIALOG_SETTING, this);
+	if (CDUIDialog::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
 	// TODO:  在此添加您专用的创建代码
-	if (!InitMainDui())
-		return -1;
+	return 0;
+}
+
+BOOL CHttpPatchServerDlg::InitSknPath()
+{
+
+	CDUIDialog::InitSknPath();
+	m_strDUIName = _T("DUIMain");
+	m_strSkinDir = appconfig.m_szAppPath.c_str();
+	m_strDUIFile = m_strSkinDir + _T("\\Skin\\PatchDown.dui");
+	m_strSknFile = m_strSkinDir + _T("\\Skin\\PatchDown.skn");
+	return TRUE;
+}
+
+
+LRESULT CHttpPatchServerDlg::OnButtonUp(WPARAM wparam, LPARAM lparam)
+{
+	if (DBtn(BtnClose) == (ICmdButton*)wparam)
+	{
+		OnCancel();
+	}
+	else if (DBtn(BtnMin) == (ICmdButton*)wparam)
+	{
+		ShowWindow(SW_HIDE);
+	}
 
 	return 0;
 }
 
-
-bool CHttpPatchServerDlg::InitMainDui()
-{
-	m_pDirectUI = (ISkinObjResBase  *)AfxGetDuiRes()->CreateDirectUI(_T("DUIMain"), HandleToLong(m_hWnd));
-	if (NULL == m_pDirectUI) return FALSE;
-
-	m_pTabMain = (IDUITabCtrl *)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, _T("TabMain"), m_pDirectUI, TRUE);
-	ASSERT(m_pTabMain);
-
-	m_pHwndSubWnd = (IDUIHwndObj *)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, _T("HwndObj14"), m_pDirectUI, TRUE);
-	ASSERT(m_pHwndSubWnd);
-
-	m_pDUILogo = (IDUILogoObj *)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, _T("LogoWeb"), m_pDirectUI, TRUE);
-	ASSERT(m_pDUILogo);
-
-	m_pDUIBtnClose = (ICmdButton *)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, _T("BtnClose"), m_pDirectUI, TRUE);
-	ASSERT(m_pDUIBtnClose);
-
-	m_pDUIBtnMini = (ICmdButton *)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, _T("BtnMin"), m_pDirectUI, TRUE);
-	ASSERT(m_pDUIBtnMini);
-
-	m_pDUIchkMax = (IDUICheckBox *)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, _T("ChkMax"), m_pDirectUI, TRUE);
-	ASSERT(m_pDUIchkMax);
-
-	m_pDUIchkMax->SetValue(DUICHECKBOX_UNCHECKED);
-
-	return true;
-}
+//bool CHttpPatchServerDlg::InitDui()
+//{
+//
+//	m_pTabMain = (IDUITabCtrl *)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, _T("TabMain"), m_pDirectUI, TRUE);
+//	ASSERT(m_pTabMain);
+//
+//	m_pHwndSubWnd = (IDUIHwndObj *)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, _T("HwndObj14"), m_pDirectUI, TRUE);
+//	ASSERT(m_pHwndSubWnd);
+//
+//	m_pDUILogo = (IDUILogoObj *)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, _T("LogoWeb"), m_pDirectUI, TRUE);
+//	ASSERT(m_pDUILogo);
+//
+//	m_pDUIBtnClose = (ICmdButton *)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, _T("BtnClose"), m_pDirectUI, TRUE);
+//	ASSERT(m_pDUIBtnClose);
+//
+//	m_pDUIBtnMini = (ICmdButton *)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, _T("BtnMin"), m_pDirectUI, TRUE);
+//	ASSERT(m_pDUIBtnMini);
+//
+//	m_pDUIchkMax = (IDUICheckBox *)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, _T("ChkMax"), m_pDirectUI, TRUE);
+//	ASSERT(m_pDUIchkMax);
+//
+//	m_pDUIchkMax->SetValue(DUICHECKBOX_UNCHECKED);
+//
+//	return true;
+//}
 
 LRESULT CHttpPatchServerDlg::OnTabPageChanged(WPARAM wparam, LPARAM lparam)
 {
@@ -314,5 +292,58 @@ LRESULT CHttpPatchServerDlg::OnTabPageChanged(WPARAM wparam, LPARAM lparam)
 		m_patchsetting.ShowWindow(SW_SHOWNORMAL);
 	}
 
+	return 0;
+}
+
+
+void CHttpPatchServerDlg::OnOK()
+{
+	CDUIDialog::OnOK();
+}
+
+void CHttpPatchServerDlg::OnCancel()
+{
+	// TODO: 在此添加专用代码和/或调用基类
+	CMessageBox msg;
+	if (IDOK == msg.ShowMessage("是否确定退出程序？", MB_OKCANCEL))
+	{
+		m_patchview.OnClose();
+		m_patchsetting.OnClose();
+		Shell_NotifyIcon(NIM_DELETE, &m_NotifyIconData); //使右下角图标在程序运行的时候就被注册
+		IsAnswerOnOkAndOnCancel(TRUE);
+		CDUIDialog::OnCancel();
+	}
+}
+
+
+LRESULT CHttpPatchServerDlg::OnAddIconToTaskbar(WPARAM wParam, LPARAM lParam)
+{
+	AddTaskbarIcons();
+	return 0;
+}
+
+void CHttpPatchServerDlg::AddTaskbarIcons()
+{
+	//set tray_icon
+	ZeroMemory(&m_NotifyIconData, sizeof(m_NotifyIconData));
+	m_NotifyIconData.cbSize = sizeof(m_NotifyIconData);
+	m_NotifyIconData.hWnd = m_hWnd;
+	m_NotifyIconData.uID = IDI_APP_ICON;
+	m_NotifyIconData.hIcon = AfxGetApp()->LoadIcon(IDI_APP_ICON);
+	m_NotifyIconData.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP;
+	m_NotifyIconData.uCallbackMessage = UM_CUSTOM_TRAY;
+	strcpy_s(m_NotifyIconData.szTip, 128, AfxGetAppTitle());//_T(WND_SHOW_TEXT));
+	Shell_NotifyIcon(NIM_ADD, &m_NotifyIconData); //使右下角图标在程序运行的时候就被注册
+}
+
+LRESULT CHttpPatchServerDlg::OnTrayIcon(WPARAM wparam, LPARAM lparam)
+{
+	switch (lparam)
+	{
+	case WM_LBUTTONUP:
+	case WM_RBUTTONUP:
+		ShowWindow(SW_SHOWNORMAL);
+		break;
+	}
 	return 0;
 }

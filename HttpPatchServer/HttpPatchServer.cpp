@@ -5,10 +5,53 @@
 #include "stdafx.h"
 #include "HttpPatchServer.h"
 #include "HttpPatchServerDlg.h"
+#include "sha1.h"
+#include "Base64.h"
+#include <boost/make_shared.hpp>
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
+
+
+
+extern bool g_bstop;
+
+
+
+
+
+void onServerFileDownload(RCF::RcfSession & session, const RCF::FileDownloadInfo & uploadInfo)
+{
+	// Which files are being downloaded.
+	const RCF::FileManifest& manifest = uploadInfo.mManifest;
+	// How far has the download progressed.
+	boost::uint32_t currentFile = uploadInfo.mCurrentFile;
+	boost::uint64_t currentFilePos = uploadInfo.mCurrentPos;
+	std::string a = session.getRequestUserData();
+	if (a.compare("1") == 0)
+	{
+		session.cancelDownload();
+	}
+	//boost::any &value = session.getUserData();
+	//if (value.type() == typeid(int))
+	//{
+	//	int i = boost::any_cast<int>(value);
+	//	if (i == 1)
+	//	{
+	//		session.cancelDownload();
+	//	}
+	//}
+	//if (uploadInfo.mCancel == true)
+	//{
+	//	throw RCF::Exception();
+	//}
+
+	// To cancel the download, throw an exception.
+	// ...
+	//throw RCF::Exception();
+}
 
 
 // CHttpPatchServerApp
@@ -17,22 +60,45 @@ BEGIN_MESSAGE_MAP(CHttpPatchServerApp, CWinApp)
 	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
-Fun_OpenSkinA OpenSkinA = nullptr;
-Fun_FreeSkin FreeSkin = nullptr;
 app_config appconfig;
 
+RCF::RcfInitDeinit rcfInit;
 
 // CHttpPatchServerApp 构造
 
-IDUIRes *AfxGetDuiRes()
-{
-	return theApp.m_pDuiRes;
-}
+//IDUIRes *AfxGetDuiRes()
+//{
+//	return theApp.m_pDuiRes;
+//}
 
 LPCSTR AfxGetAppTitle()
 {
 	//return theApp.m_szWindowText.c_str();
 	return "";
+}
+
+
+BOOL GetFileSHA1(std::string szFile, OUT std::string &szSha)
+{
+	char szSHA1Value[0x80] = { 0 };
+	char szBase64Out[0x80] = { 0 };
+	CSHA1 calcSha;
+	if (calcSha.HashFile(szFile.c_str()))
+	{
+		calcSha.Final();
+		if (calcSha.ReportHash(szSHA1Value, calcSha.REPORT_DIGIT))
+		{
+			calcSha.GetHash((unsigned char *)szSHA1Value);
+			size_t stOutLength = 0;
+			encode_base64(szSHA1Value, 20, szBase64Out, 0x80, &stOutLength);
+			szSha = szBase64Out;
+			if (szSha.back() == '\n')
+				szSha.pop_back();
+
+			return TRUE;
+		}
+	}
+	return FALSE;
 }
 
 
@@ -45,7 +111,7 @@ CHttpPatchServerApp::CHttpPatchServerApp()
 {
 	// 支持重新启动管理器
 	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_RESTART;
-	m_pDuiRes = nullptr;
+	//m_pDuiRes = nullptr;
 
 
 	// TODO: 在此处添加构造代码，
@@ -58,17 +124,42 @@ CHttpPatchServerApp::CHttpPatchServerApp()
 // CHttpPatchDownLoaderApp 初始化
 void CHttpPatchServerApp::Initlog()
 {
-	int lvl = GetPrivateProfileIntA("DEBUG", "LEVEL", -1, appconfig.m_szConfigFile.c_str());
-	if (lvl >= 0)
+	if (appconfig.m_other_cfg.enable)
 	{
 		if (vrvlog::log::get().init(appconfig.m_szLogPath))
 		{
-			vrvlog::log::get().get_log()->flush_on((spdlog::level::level_enum)lvl);
-			vrvlog::log::get().get_log()->set_level((spdlog::level::level_enum)lvl);
+			vrvlog::log::get().get_log()->flush_on((spdlog::level::level_enum)appconfig.m_other_cfg.level);
+			vrvlog::log::get().get_log()->set_level((spdlog::level::level_enum)appconfig.m_other_cfg.level);
 		}
 	}
 }
 
+
+void CHttpPatchServerApp::InitPatchServer()
+{
+	server = std::make_shared<RCF::RcfServer>(RCF::TcpEndpoint("0.0.0.0",
+		appconfig.m_cascade_cfg.localserverport));
+	server->bind<MyService>(myservice);
+	server->setOnFileDownloadProgress(&onServerFileDownload);
+	server->getServerTransport().setConnectionLimit(50);
+	RCF::ThreadPoolPtr tpPtr = boost::make_shared<RCF::ThreadPool>(1, 10);
+	server->setThreadPool(tpPtr);
+	server->start();
+}
+
+
+void CHttpPatchServerApp::InitPatchClient()
+{
+	int port;
+	std::stringstream ss;
+	ss << appconfig.m_cascade_cfg.szupserverport;
+	ss >> port;
+	client = std::make_shared<RcfClient<MyService>>(RCF::TcpEndpoint(appconfig.m_cascade_cfg.szupserverip, port));
+	client->getClientStub().setRemoteCallTimeoutMs(60000);
+	client->getClientStub().setConnectTimeoutMs(10000);
+	client->getClientStub().setTransferWindowS(1);
+	fileDownload = std::make_shared<RCF::FileDownload>();
+}
 
 
 
@@ -82,153 +173,189 @@ BOOL CHttpPatchServerApp::GetAppRootPath()
 	CHAR * pTail = strrchr(szAppPath, '\\');
 	if (NULL != pTail)
 		strcpy_s(pTail, 1, "");
-	m_szPath = szAppPath;
+	appconfig.m_szAppPath = szAppPath;
 	return TRUE;
 }
-
-void StringtoMapOfProduct(std::string str, const char* szDelim, m_publishers& op_products)
-{
-	char* sztok = nullptr, *sznxt = nullptr;
-	sztok = strtok_s(const_cast<char*>(str.c_str()), szDelim, &sznxt);
-	while (sztok)
-	{
-		std::string szCompany, szProduct, szPackage;
-		std::string szItem = sztok;
-		auto pos1 = szItem.find_first_of('-');
-		if (pos1 != std::string::npos)
-		{
-			szCompany = szItem.substr(0, pos1);
-			std::transform(szCompany.begin(), szCompany.end(), szCompany.begin(), toupper);
-		}
-
-		auto pos2 = szItem.find_first_of('-', pos1 + 1);
-		if (pos2 != std::string::npos)
-		{
-			szProduct = szItem.substr(pos1 + 1, pos2 - pos1 - 1);
-			std::transform(szProduct.begin(), szProduct.end(), szProduct.begin(), toupper);
-		}
-
-		szPackage = szItem.substr(pos2 + 1);
-
-		auto iter = op_products._inner_companys.find(szCompany);
-		if (iter == op_products._inner_companys.end())
-		{
-			auto _pair = op_products._inner_companys.insert(std::make_pair(szCompany, m_familys()));
-			iter = _pair.first;
-		}
-
-		m_familys &familys = iter->second;
-
-		auto iter_ = familys._inner_familys.find(szProduct);
-		if (iter_ == familys._inner_familys.end())
-		{
-			auto _pair = familys._inner_familys.insert(std::make_pair(szProduct, v_products()));
-			iter_ = _pair.first;
-		}
-
-		v_products &pdu = iter_->second;
-		pdu._inner_products.push_back(szPackage);
-
-		sztok = strtok_s(NULL, ";", &sznxt);
-	}
-}
-
 
 BOOL CHttpPatchServerApp::InitAppConfig()
 {
-	CHAR szModulePath[MAX_PATH] = { 0 };
-	GetModuleFileNameA(NULL, szModulePath, MAX_PATH);
-	appconfig.m_szAppPath = szModulePath;
-	std::string &apppath = appconfig.m_szAppPath;
-	apppath = apppath.substr(0, apppath.find_last_of('\\'));
-	appconfig.m_szConfigFile = apppath + "\\Cfig\\HttpPatchCfig.ini";
-	appconfig.m_szLogPath = apppath + "\\httplog";
-	appconfig.m_downloadcfg.tmode = (time_mode)GetPrivateProfileIntA("DOWNOPTION", "MODE", -1, appconfig.m_szConfigFile.c_str());
-	/*if (appconfig.m_downloadcfg.tmode == period_mode)*/
+	CHAR szPath[MAX_PATH] = { 0 };
+	if (!SHGetSpecialFolderPathA(NULL, szPath, CSIDL_APPDATA, TRUE))
 	{
-		appconfig.m_downloadcfg.time.period.period_min = \
-			GetPrivateProfileIntA("DOWNOPTION", "PERIOD", 0, appconfig.m_szConfigFile.c_str());
-	}
-	/*else if (appconfig.m_downloadcfg.tmode == interval_mode)*/
-	{
-		appconfig.m_downloadcfg.time.interval.hour_start = \
-			GetPrivateProfileIntA("DOWNOPTION", "BEGIN_HOUR", 0, appconfig.m_szConfigFile.c_str());
-		appconfig.m_downloadcfg.time.interval.min_start = \
-			GetPrivateProfileIntA("DOWNOPTION", "BEGIN_MIN", 0, appconfig.m_szConfigFile.c_str());
-		appconfig.m_downloadcfg.time.interval.hour_end = \
-			GetPrivateProfileIntA("DOWNOPTION", "END_HOUR", 0, appconfig.m_szConfigFile.c_str());
-		appconfig.m_downloadcfg.time.interval.min_end = \
-			GetPrivateProfileIntA("DOWNOPTION", "END_MIN", 0, appconfig.m_szConfigFile.c_str());
+		return FALSE;
 	}
 
-	appconfig.m_downloadcfg.rate = GetPrivateProfileIntA("DOWNOPTION", "RATE", 0, appconfig.m_szConfigFile.c_str());
-
-	appconfig.m_downloadcfg.bproxy = (bool)GetPrivateProfileIntA("DOWNOPTION", "PROXY", 0, appconfig.m_szConfigFile.c_str());
-	if (appconfig.m_downloadcfg.bproxy == 1)
+	std::string szTempPath = szPath;
+	szTempPath.append("\\PatchServer");
+	if (!PathFileExistsA(szTempPath.c_str()))
 	{
-		CHAR szparam[100] = { 0 };
-		GetPrivateProfileStringA("DOWNOPTION", "PROXY_IP", "", szparam, 100, appconfig.m_szConfigFile.c_str());
-		appconfig.m_downloadcfg.proxyparam.szIp = szparam;
-		appconfig.m_downloadcfg.proxyparam.uPort = \
-			GetPrivateProfileIntA("DOWNOPTION", "PROXY_PORT", 0, appconfig.m_szConfigFile.c_str());
-		GetPrivateProfileStringA("DOWNOPTION", "PROXY_USER", "", szparam, 100, appconfig.m_szConfigFile.c_str());
-		appconfig.m_downloadcfg.proxyparam.szUser = szparam;
-		GetPrivateProfileStringA("DOWNOPTION", "PROXY_PWD", "", szparam, 100, appconfig.m_szConfigFile.c_str());
-		appconfig.m_downloadcfg.proxyparam.szPwd = szparam;
+		CreateDirectoryA(szTempPath.c_str(), NULL);
 	}
-	CHAR szopt[MAX_PATH] = { 0 };
-	GetPrivateProfileStringA("PATCHOPTION", "PATCH_PATH", "", szopt, MAX_PATH, appconfig.m_szConfigFile.c_str());
-	appconfig.m_patch_opt.m_szPatchPath = szopt;
-	if (!appconfig.m_patch_opt.m_szPatchPath.empty())
-		appconfig.m_patch_opt.m_szIndexPath = appconfig.m_patch_opt.m_szPatchPath + "\\Tools";
 
-	GetPrivateProfileStringA("PATCHOPTION", "INDEX_URL", "", szopt, MAX_PATH, appconfig.m_szConfigFile.c_str());
-	appconfig.m_patch_opt.szUrl = szopt;
-	std::replace(appconfig.m_patch_opt.szUrl.begin(), appconfig.m_patch_opt.szUrl.end(), '\\', '/');
-	appconfig.m_patch_opt.szPackIndex = appconfig.m_patch_opt.szUrl.substr(appconfig.m_patch_opt.szUrl.find_last_of('/') + 1);
+	appconfig.m_szConfigFile = szTempPath + "\\setup.ini";
+	if (!PathFileExistsA(appconfig.m_szConfigFile.c_str()))
+	{
+		std::string &szconfig = appconfig.m_szConfigFile;
 
-	CHAR szProducts[1024 * 5] = { 0 };
-	GetPrivateProfileStringA("PATCHOPTION", "PATCH_PRODUCTS", "", szProducts, 1024 * 5, appconfig.m_szConfigFile.c_str());
+		WritePrivateProfileStringA("PATCH", "URL", "http://www.vrvsoft.com/update/patch/newpatch/PackIndex.dat", szconfig.c_str());
+		WritePrivateProfileStringA("PATCH", "PATH", "请选择补丁目录", szconfig.c_str());
+		WritePrivateProfileStringA("PATCH", "PRODUCTS", "", szconfig.c_str());
+		WritePrivateProfileStringA("PATCH", "LAN", "", szconfig.c_str());
 
-	StringtoMapOfProduct(szProducts, ";", appconfig.m_patch_opt.m_inst_products);
+		WritePrivateProfileStringA("NET", "TIMEMODE", "0", szconfig.c_str());
+		WritePrivateProfileStringA("NET", "NETTIME", "", szconfig.c_str());
+		WritePrivateProfileStringA("NET", "FLUX", "0", szconfig.c_str());
+		WritePrivateProfileStringA("NET", "FLUXSPEED", "0", szconfig.c_str());
+		WritePrivateProfileStringA("NET", "PROXY", "0", szconfig.c_str());
+		WritePrivateProfileStringA("NET", "PROXYIP", "", szconfig.c_str());
+		WritePrivateProfileStringA("NET", "PROXYPORT", "", szconfig.c_str());
+		WritePrivateProfileStringA("NET", "PROXYUSER", "", szconfig.c_str());
+		WritePrivateProfileStringA("NET", "PROXYPWD", "", szconfig.c_str());
 
-	GetPrivateProfileStringA("PATCHOPTION", "PATCH_LANG", "", szProducts, 1024 * 5, appconfig.m_szConfigFile.c_str());
-	StringtoMapOfProduct(szProducts, ";", appconfig.m_patch_opt.m_inst_products);
+		WritePrivateProfileStringA("CASCADE", "DBIP", "", szconfig.c_str());
+		WritePrivateProfileStringA("CASCADE", "DBSRC", "", szconfig.c_str());
+		WritePrivateProfileStringA("CASCADE", "DBUSER", "", szconfig.c_str());
+		WritePrivateProfileStringA("CASCADE", "DBPWD", "", szconfig.c_str());
+		WritePrivateProfileStringA("CASCADE", "CASCADE", "0", szconfig.c_str());
+		WritePrivateProfileStringA("CASCADE", "UPSERVERIP", "", szconfig.c_str());
+		WritePrivateProfileStringA("CASCADE", "UPSERVERPORT", "", szconfig.c_str());
+		WritePrivateProfileStringA("CASCADE", "TIMEMODE", "0", szconfig.c_str());
+		WritePrivateProfileStringA("CASCADE", "NETTIME", "", szconfig.c_str());
+		WritePrivateProfileStringA("CASCADE", "FLUX", "0", szconfig.c_str());
+		WritePrivateProfileStringA("CASCADE", "FLUXSPEED", "0", szconfig.c_str());
+		WritePrivateProfileStringA("CASCADE", "PATH", "", szconfig.c_str());
+		WritePrivateProfileStringA("CASCADE", "LOCALPORT", "6998", szconfig.c_str());
 
-	CHAR szWndTitle[200] = { 0 };
-	GetPrivateProfileStringA("TITLE", "MAINTITLE", "", szWndTitle, 200, appconfig.m_szConfigFile.c_str());
-	appconfig.m_szAppTitle = szWndTitle;
+		WritePrivateProfileStringA("SWITCHMODE", "MODE", "0", szconfig.c_str());
+
+		WritePrivateProfileStringA("DEBUG", "LOG", "1", szconfig.c_str());
+		WritePrivateProfileStringA("DEBUG", "LEVEL", "4", szconfig.c_str());
+		WritePrivateProfileStringA("LANGUAGE", "DEFAULT", "ZHCN", szconfig.c_str());
+	}
+
+	CTime tmNow = CTime::GetCurrentTime();
+	CString szTime = tmNow.Format("%Y%m%d%H%M%S");
+	appconfig.m_szLogPath = szTempPath + "\\" + szTime.GetString();
+
 	return TRUE;
 }
 
 
-BOOL CHttpPatchServerApp::InitDUI()
+void  CHttpPatchServerApp::ReadConfig()
 {
-	std::string szDuiDllPath = m_szPath + "\\DirectUI.dll";
-	std::string szDuiPath = m_szPath + "\\skin\\PatchDown.dui";
-	std::string szSknPath = m_szPath + "\\skin\\PatchDown.skn";
-	HMODULE hDuiDll = LoadLibraryA(szDuiDllPath.c_str());
-	if (NULL == hDuiDll)
-	{
-		::MessageBox(NULL, _T("LoadLibrary DirectUI.dll Fail!"), _T("ERROR"), MB_OK);
-		return FALSE;
-	}
-	OpenSkinA = (Fun_OpenSkinA)GetProcAddress(hDuiDll, "OpenSkinA");
-	FreeSkin = (Fun_FreeSkin)GetProcAddress(hDuiDll, "FreeSkin");
-	if (NULL == OpenSkinA || NULL == FreeSkin)
-	{
-		::MessageBox(AfxGetMainWnd()->m_hWnd, _T("Get DUI FUN Fail!"), _T("ERROR"), MB_OK);
-		return FALSE;
-	}
+#define MAX_LEN			500
 
-	m_pDuiRes = OpenSkinA(const_cast<char*>(szDuiPath.c_str()), const_cast<char*>(szSknPath.c_str()), FALSE, FALSE, TRUE);
-	if (NULL == m_pDuiRes)
-	{
-		::MessageBox(NULL, _T("LoadLibrary Skin Fail!"), _T("ERROR"), MB_OK);
-		return FALSE;
-	}
-	return TRUE;
+	std::string &szconfig = appconfig.m_szConfigFile;
+	CHAR szBuff[500] = { 0 };
+	GetPrivateProfileStringA("PATCH", "URL", "http://www.vrvsoft.com/update/patch/newpatch/PackIndex.dat", szBuff, MAX_LEN, szconfig.c_str());
+	appconfig.m_http_cfg.m_szIndexUrl = szBuff;
+
+	GetPrivateProfileStringA("PATCH", "PATH", "", szBuff, MAX_LEN, szconfig.c_str());
+	appconfig.m_http_cfg.m_szPatchPath = szBuff;
+
+	GetPrivateProfileStringA("PATCH", "PRODUCTS", "", szBuff, MAX_LEN, szconfig.c_str());
+	appconfig.m_http_cfg.m_szProducts = szBuff;
+
+	GetPrivateProfileStringA("PATCH", "LAN", "", szBuff, MAX_LEN, szconfig.c_str());
+	appconfig.m_http_cfg.m_szLans = szBuff;
+
+	appconfig.m_http_cfg.mode = (timemode)GetPrivateProfileIntA("NET", "TIMEMODE", 0, szconfig.c_str());
+
+	GetPrivateProfileStringA("NET", "NETTIME", "", szBuff, MAX_LEN, szconfig.c_str());
+	appconfig.m_http_cfg.sznettime = szBuff;
+
+	appconfig.m_http_cfg.flux = (bool)GetPrivateProfileIntA("NET", "FLUX", 0, szconfig.c_str());
+
+	appconfig.m_http_cfg.fluxspeed = GetPrivateProfileIntA("NET", "FLUXSPEED", 0, szconfig.c_str());
+
+	appconfig.m_http_cfg.proxy = GetPrivateProfileIntA("NET", "PROXY", 0, szconfig.c_str());
+
+	GetPrivateProfileStringA("NET", "PROXYIP", "", szBuff, MAX_LEN, szconfig.c_str());
+	appconfig.m_http_cfg.szip = szBuff;
+
+	GetPrivateProfileStringA("NET", "PROXYPORT", "", szBuff, MAX_LEN, szconfig.c_str());
+	appconfig.m_http_cfg.szport = szBuff;
+
+	GetPrivateProfileStringA("NET", "PROXYUSER", "", szBuff, MAX_LEN, szconfig.c_str());
+	appconfig.m_http_cfg.szuser = szBuff;
+
+	GetPrivateProfileStringA("NET", "PROXYPWD", "", szBuff, MAX_LEN, szconfig.c_str());
+	appconfig.m_http_cfg.szpwd = szBuff;
+
+	GetPrivateProfileStringA("CASCADE", "DBIP", "", szBuff, MAX_LEN, szconfig.c_str());
+	appconfig.m_cascade_cfg.szdbip = szBuff;
+
+	GetPrivateProfileStringA("CASCADE", "DBSRC", "", szBuff, MAX_LEN, szconfig.c_str());
+	appconfig.m_cascade_cfg.szdbsrc = szBuff;
+
+	GetPrivateProfileStringA("CASCADE", "DBUSER", "", szBuff, MAX_LEN, szconfig.c_str());
+	appconfig.m_cascade_cfg.szdbuser = szBuff;
+
+	GetPrivateProfileStringA("CASCADE", "DBPWD", "", szBuff, MAX_LEN, szconfig.c_str());
+	appconfig.m_cascade_cfg.szdbpwd = szBuff;
+
+	appconfig.m_cascade_cfg.cascade = (bool)GetPrivateProfileIntA("CASCADE", "CASCADE", 0, szconfig.c_str());
+
+	GetPrivateProfileStringA("CASCADE", "UPSERVERIP", "", szBuff, MAX_LEN, szconfig.c_str());
+	appconfig.m_cascade_cfg.szupserverip = szBuff;
+
+	GetPrivateProfileStringA("CASCADE", "UPSERVERPORT", "", szBuff, MAX_LEN, szconfig.c_str());
+	appconfig.m_cascade_cfg.szupserverport = szBuff;
+
+	appconfig.m_cascade_cfg.mode = (timemode)GetPrivateProfileIntA("CASCADE", "TIMEMODE", 0, szconfig.c_str());
+
+	GetPrivateProfileStringA("CASCADE", "NETTIME", "", szBuff, MAX_LEN, szconfig.c_str());
+	appconfig.m_cascade_cfg.sznettime = szBuff;
+
+	appconfig.m_cascade_cfg.flux = (bool)GetPrivateProfileIntA("CASCADE", "FLUX", 0, szconfig.c_str());
+
+	appconfig.m_cascade_cfg.fluxspeed = GetPrivateProfileIntA("CASCADE", "FLUXSPEED", 0, szconfig.c_str());
+
+	GetPrivateProfileStringA("CASCADE", "PATH", "", szBuff, MAX_LEN, szconfig.c_str());
+	appconfig.m_cascade_cfg.szPatchPath = szBuff;
+
+	appconfig.m_cascade_cfg.localserverport = GetPrivateProfileIntA("CASCADE", "LOCALPORT", 6998, szconfig.c_str());
+
+	appconfig.m_mode_cfg.mode = (switchmode)GetPrivateProfileIntA("SWITCHMODE", "MODE", 0, szconfig.c_str());
+
+	appconfig.m_other_cfg.enable = (bool)GetPrivateProfileIntA("DEBUG", "LOG", 1, szconfig.c_str());
+	appconfig.m_other_cfg.level = GetPrivateProfileIntA("DEBUG", "LEVEL", 4, szconfig.c_str());
+
+	GetPrivateProfileStringA("LANGUAGE", "DEFAULT", "ZHCN", szBuff, MAX_LEN, szconfig.c_str());
+	if (_stricmp(szBuff, "ZHCN") == 0)
+		appconfig.m_other_cfg.lang = ZHCN;
+	else
+		appconfig.m_other_cfg.lang = EN;
+
 }
+
+//BOOL CHttpPatchServerApp::InitDUI()
+//{
+//	std::string szDuiDllPath = appconfig.m_szAppPath + "\\DirectUI.dll";
+//	std::string szDuiPath = appconfig.m_szAppPath + "\\skin\\PatchDown.dui";
+//	std::string szSknPath = appconfig.m_szAppPath + "\\skin\\PatchDown.skn";
+//	HMODULE hDuiDll = LoadLibraryA(szDuiDllPath.c_str());
+//	if (NULL == hDuiDll)
+//	{
+//		vrvlog::SPD_LOG_CRITICAL("DirectUI.dll load failed {0}, exit", GetLastError());
+//		return FALSE;
+//	}
+//	OpenSkinA = (Fun_OpenSkinA)GetProcAddress(hDuiDll, "OpenSkinA");
+//	FreeSkin = (Fun_FreeSkin)GetProcAddress(hDuiDll, "FreeSkin");
+//	if (NULL == OpenSkinA || NULL == FreeSkin)
+//	{
+//		vrvlog::SPD_LOG_CRITICAL("OpenSkinA or FreeSkin exports failed, exit");
+//		return FALSE;
+//	}
+//
+//	m_pDuiRes = OpenSkinA(const_cast<char*>(szDuiPath.c_str()), const_cast<char*>(szSknPath.c_str()), FALSE, FALSE, TRUE);
+//	if (NULL == m_pDuiRes)
+//	{
+//		vrvlog::SPD_LOG_CRITICAL("OpenSkinA {0} failed, exit", szSknPath.c_str());
+//		return FALSE;
+//	}
+//	return TRUE;
+//}
 
 BOOL CHttpPatchServerApp::InitInstance()
 {
@@ -265,16 +392,19 @@ BOOL CHttpPatchServerApp::InitInstance()
 
 	curl_global_init(CURL_GLOBAL_WIN32);
 
-	InitAppConfig();
+	if (!InitAppConfig())
+		return FALSE;
+
+	ReadConfig();
 
 	Initlog();
 
+	InitPatchServer();
+
+	InitPatchClient();
+
 	if (!CPackInterface::init())
 		return FALSE;
-
-	if (!InitDUI())
-		return FALSE;
-
 
 	CHttpPatchServerDlg dlg;
 	m_pMainWnd = &dlg;
@@ -316,7 +446,210 @@ int CHttpPatchServerApp::ExitInstance()
 {
 	// TODO: 在此添加专用代码和/或调用基类
 	curl_global_cleanup();
-	if(FreeSkin)
-		FreeSkin();
+	server->stop();
+	if (_thread.joinable())
+		_thread.join();
+	//if(FreeSkin)
+		//FreeSkin();
 	return CWinApp::ExitInstance();
+}
+
+
+
+void CHttpPatchServerApp::StopByCurl()
+{
+	g_bstop = true;
+	if (theApp.m_curlptr)
+		theApp.m_curlptr->StopDownload();
+}
+
+
+void CHttpPatchServerApp::StopByRcf()
+{
+	g_bstop = true;
+	try
+	{
+		if (theApp.client)
+			theApp.client->getClientStub().disconnect();
+	}
+	catch (RCF::Exception &e)
+	{
+		vrvlog::SPD_LOG_ERROR("RcfClient disconnect error({0})", e.getErrorId());
+	}
+}
+
+
+BOOL MakeSureDirectoryExist(const TCHAR *pszPath, BOOL bFilePath)
+{
+	std::string szPath = pszPath;
+	if (bFilePath)
+		szPath = szPath.substr(0, szPath.find_last_of('\\'));
+
+	if (!PathIsDirectoryA(szPath.c_str()))
+	{
+		std::string szParentPath;
+		std::string szFullPath = szPath;
+		auto pos = szFullPath.find_last_of("\\");
+		if (pos != std::string::npos)
+			szParentPath = szFullPath.substr(0, pos);
+		if (MakeSureDirectoryExist(szParentPath.c_str(), FALSE))
+			return CreateDirectoryA(szPath.c_str(), NULL);
+		else
+			return FALSE;
+	}
+	return TRUE;
+}
+
+
+
+int CPatchServiceImpl::add(int a, int b)
+{
+	return a + b;
+}
+
+void  CPatchServiceImpl::RequestPatchInfo(std::vector<vrv::patch::PatchInfo> &patches)
+{
+	std::lock_guard<std::mutex> locker(mtxforpatch);
+
+	if (appconfig.m_mode_cfg.mode == http_mode)
+		szPatchpath = appconfig.m_http_cfg.m_szPatchPath;
+
+	else if (appconfig.m_mode_cfg.mode == cascade_mode)
+		szPatchpath = appconfig.m_cascade_cfg.szPatchPath;
+
+	TravelPatchPath(szPatchpath, patches);
+}
+
+void  CPatchServiceImpl::RequestIndexInfo(std::vector<vrv::patch::IndexInfo> &indexes)
+{
+	std::lock_guard<std::mutex> locker(mtxforindex);
+
+	if (appconfig.m_mode_cfg.mode == http_mode)
+		szToolpath = appconfig.m_http_cfg.m_szPatchPath + "\\Tools";
+
+	else if (appconfig.m_mode_cfg.mode == cascade_mode)
+		szToolpath = appconfig.m_cascade_cfg.szPatchPath + "\\Tools";
+
+	TravelIndexPath(szToolpath, indexes);
+}
+
+void  CPatchServiceImpl::DownloadFiles(std::string& szFile, RCF::FileDownload &fileDownload)
+{
+	fileDownload = RCF::FileDownload(szFile);
+}
+
+void  CPatchServiceImpl::DownloadIndexFile(std::string& szFile, RCF::FileDownload &fileDownload)
+{
+	std::lock_guard<std::mutex> locker(mtxforindex);
+	std::string szIndexFile = szToolpath + "\\" + szFile;
+	fileDownload = RCF::FileDownload(szIndexFile);
+}
+
+void  CPatchServiceImpl::DownloadPatchFile(std::string& szFile, RCF::FileDownload &fileDownload)
+{
+	std::lock_guard<std::mutex> locker(mtxforpatch);
+	std::string szPatchFile = szPatchpath + "\\" + szFile;
+	fileDownload = RCF::FileDownload(szPatchFile);
+}
+
+void  CPatchServiceImpl::DownloadIndex1xml(RCF::FileDownload &fileDownload)
+{
+	std::lock_guard<std::mutex> locker(mtxforpatch);
+	std::string szIndex1Xml = szPatchpath + "\\" + "index1.xml";
+	std::string szIndex1Zip = szPatchpath + "\\" + "index1.zip";
+	if (PathFileExistsA(szIndex1Zip.c_str()))
+		fileDownload = RCF::FileDownload(szIndex1Xml);
+	else
+		throw RCF::Exception(szIndex1Zip + " not exsits");
+}
+
+void  CPatchServiceImpl::TravelIndexPath(std::string &szPath, std::vector<vrv::patch::IndexInfo> &indexes)
+{
+	std::string szFindPath = szPath + "\\*.*";
+	_finddata32_t data = { 0 };
+	intptr_t handle = _findfirst32(szFindPath.c_str(), &data);
+	if (handle == 0)
+		return;
+	do
+	{
+		if (data.attrib & _A_SUBDIR)
+		{
+			if (_stricmp(data.name, ".")
+				&& _stricmp(data.name, ".."))
+				TravelIndexPath(szPath + "\\" + data.name, indexes);
+		}
+		else
+		{
+			std::string szName = data.name;
+			if (szName.back() != '~')
+			{
+				vrv::patch::IndexInfo indexInfo;
+				indexInfo.size = data.size;
+				indexInfo.szIndexName = szPath + "\\" + data.name;
+				indexInfo.dwCrc = GetFileCrc(indexInfo.szIndexName.c_str());
+				indexInfo.szIndexName = indexInfo.szIndexName.substr(szToolpath.length() + 1);
+				indexes.push_back(indexInfo);
+			}
+		}
+
+	} while (!_findnext32(handle, &data));
+	_findclose(handle);
+}
+
+void  CPatchServiceImpl::GetIndexInfo(std::string &szFile, vrv::patch::IndexInfo& indexinfo)
+{
+	std::ifstream ifs(szFile);
+	ifs.seekg(0, ifs.end);
+	std::streamoff len = ifs.tellg();
+	indexinfo.size = len;
+	indexinfo.szIndexName = szFile;
+	indexinfo.dwCrc = GetFileCrc(szFile.c_str());
+}
+
+void  CPatchServiceImpl::TravelPatchPath(std::string &szPath, std::vector<vrv::patch::PatchInfo> &patches)
+{
+	std::string szFindPath = szPath + "\\*.*";
+	_finddata32_t data = { 0 };
+	intptr_t handle = _findfirst32(szFindPath.c_str(), &data);
+	if (handle == 0)
+		return;
+	do
+	{
+		if (data.attrib & _A_SUBDIR)
+		{
+			if (_stricmp(data.name, "Tools")
+				&& _stricmp(data.name, ".")
+				&& _stricmp(data.name, ".."))
+				TravelPatchPath(szPath + "\\" + data.name, patches);
+		}
+		else
+		{
+			std::string szName = data.name;
+			if (szName.back() != '~')
+			{
+				std::stringstream ss;
+				ss << data.size;
+				vrv::patch::PatchInfo patchInfo;
+				patchInfo.szPatchSize = ss.str();
+				patchInfo.szPatchName = szPath + "\\" + data.name;
+				GetFileSHA1(patchInfo.szPatchName, patchInfo.szMd5);
+				patchInfo.szPatchName = patchInfo.szPatchName.substr(szPatchpath.length() + 1);
+				patches.push_back(patchInfo);
+			}
+		}
+
+	} while (!_findnext32(handle, &data));
+	_findclose(handle);
+}
+
+void  CPatchServiceImpl::GetPatchInfo(std::string &szFile, vrv::patch::PatchInfo& patchInfo)
+{
+	std::stringstream ss;
+	std::ifstream ifs(szFile);
+	ifs.seekg(0, ifs.end);
+	std::streamoff len = ifs.tellg();
+	ss << len;
+	patchInfo.szPatchSize = ss.str();
+	patchInfo.szPatchName = szFile;
+	GetFileSHA1(patchInfo.szPatchName, patchInfo.szMd5);
 }

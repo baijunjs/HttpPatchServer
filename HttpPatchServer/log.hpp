@@ -38,6 +38,10 @@ namespace vrvlog
 			return _init;
 		}
 
+		void enable_log(bool enable)
+		{
+			_init = enable;
+		}
 
 		std::shared_ptr<spdlog::logger> get_log()
 		{

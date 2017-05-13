@@ -3,4 +3,11 @@
   <PropertyGroup>
     <RESOURCE_FILE>HttpPatchServer.rc</RESOURCE_FILE>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <RemoteDebuggerCommand>C:\Users\Dean\Desktop\Debug\HttpPatchServer.exe</RemoteDebuggerCommand>
+    <RemoteDebuggerWorkingDirectory>C:\Users\Dean\Desktop\Debug</RemoteDebuggerWorkingDirectory>
+    <RemoteDebuggerServerName>WIN-T0UPVTNQ6B4:4022</RemoteDebuggerServerName>
+    <RemoteDebuggerConnection>RemoteWithoutAuthentication</RemoteDebuggerConnection>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
 </Project>

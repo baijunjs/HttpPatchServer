@@ -4,7 +4,7 @@
 #include "Clibcurl.h"
 
 
-size_t write_callback(char *pbuf, size_t size, size_t stNum, void * pData)
+size_t Writtenfun(char *pbuf, size_t size, size_t stNum, void * pData)
 {
 	std::ofstream *pfile = (std::ofstream *)pData;
 	if (pfile)
@@ -16,239 +16,275 @@ size_t write_callback(char *pbuf, size_t size, size_t stNum, void * pData)
 }
 
 
-Clibcurl::Clibcurl() noexcept(false)
+Curl::Curl() noexcept(false)
 {
 	m_pCURL = curl_easy_init();
 	if (m_pCURL == nullptr)
-	{
 		throw std::exception("curl_easy_init failed!");
-	}
-
-	m_hEvt = CreateEventA(NULL, TRUE, TRUE, NULL);
-	//m_hExit = CreateEventA(NULL, FALSE, FALSE, NULL);
+	m_pProgress = nullptr;
+	m_pProgressParam = nullptr;
+	m_pWritten = nullptr;
+	m_pWrittenParam = nullptr;
+	m_lupspeed = 0;
+	m_ldownspeed = 0;
+	m_filesize = 0;
+	m_curLength = 0;
+	m_pProgressCtrl = nullptr;
+	m_status = DOWNLOAD_STARTED;
 }
 
 
-Clibcurl::~Clibcurl()
+Curl::~Curl()
 {
 	curl_easy_cleanup(m_pCURL);
-	CloseHandle(m_hEvt);
-	//CloseHandle(m_hExit);
 }
 
 
-bool Clibcurl::setprogressfun(pfn_progress_callback progressfun, void* param)
+void Curl::SetProgressCallback(_TyProgressCallback progressfun, void* param, void* phwnd)
 {
-	if (progressfun)
-	{
-		if (CURLE_OK != curl_easy_setopt(m_pCURL, CURLOPT_NOPROGRESS, 0L))
-		{
-			return false;
-		}
-
-		if (CURLE_OK != curl_easy_setopt(m_pCURL, CURLOPT_XFERINFOFUNCTION, progressfun))
-		{
-			return false;
-		}
-
-		if (CURLE_OK != curl_easy_setopt(m_pCURL, CURLOPT_XFERINFODATA, param))
-		{
-			return false;
-		}
-	}
-	else
-	{
-		if (CURLE_OK != curl_easy_setopt(m_pCURL, CURLOPT_NOPROGRESS, 1L))
-		{
-			return false;
-		}
-	}
-
-	return true;
+	m_pProgress = progressfun;
+	m_pProgressParam = param;
+	m_pProgressCtrl = phwnd;
 }
 
-bool Clibcurl::setwritefun(pfn_write_callback writefun, void* param)
+void Curl::SetWriteCallback(_TyWrittenCallback writtenfun, void* param)
 {
-	if (CURLE_OK != curl_easy_setopt(m_pCURL, CURLOPT_WRITEFUNCTION, writefun))
-	{
-		return false;
-	}
-
-	if (CURLE_OK != curl_easy_setopt(m_pCURL, CURLOPT_WRITEDATA, param))
-	{
-		return false;
-	}
-
-	return true;
+	m_pWritten = writtenfun;
+	m_pWrittenParam = param;
 }
 
-bool Clibcurl::setproxy(std::string& szip, std::string& szport, std::string& szuser, std::string& szpwd)
+void Curl::SetProxy(std::string& szip, std::string& szport, std::string& szuser, std::string& szpwd)
 {
-	if (!szip.empty())
-	{
-		std::string szproxy = szip + ":" + szport;
-		if (CURLE_OK != curl_easy_setopt(m_pCURL, CURLOPT_PROXY, szproxy.c_str()))
-			return false;
-	}
 
-	if (!szuser.empty())
-	{
-		std::string szuserinfo = szuser + ":" + szpwd;
-		if (CURLE_OK != curl_easy_setopt(m_pCURL, CURLOPT_PROXYUSERPWD, szuserinfo.c_str()))
-			return false;
-	}
-	return true;
+	m_szProxyip = szip;
+	m_szProxyport = szport;
+	m_szProxyuser = szuser;
+	m_szProxypwd = szpwd;
 }
 
 
-bool Clibcurl::setUpRate(unsigned long ulrate)
+void Curl::SetUploadSpeed(long ulrate)
 {
-	if (CURLE_OK != curl_easy_setopt(m_pCURL, CURLOPT_MAX_SEND_SPEED_LARGE, curl_off_t(ulrate)))
-	{
-		return false;
-	}
-	return true;
+	m_lupspeed = ulrate * 1024;
+	curl_easy_setopt(m_pCURL, CURLOPT_MAX_SEND_SPEED_LARGE, curl_off_t(m_lupspeed));
 }
 
-bool Clibcurl::setDownRate(unsigned long ulrate)
+void Curl::SetDownloadSpeed(long ulrate)
 {
-	if (CURLE_OK != curl_easy_setopt(m_pCURL, CURLOPT_MAX_RECV_SPEED_LARGE, curl_off_t(ulrate)))
-	{
-		return false;
-	}
-	return true;
+	m_ldownspeed = ulrate * 1024;
+	curl_easy_setopt(m_pCURL, CURLOPT_MAX_RECV_SPEED_LARGE, curl_off_t(m_ldownspeed));
+}
+
+void Curl::SetUrlFile(std::string szUrl, std::string szFile)
+{
+	m_szUrl = szUrl;
+	m_szFile = szFile;
 }
 
 
-bool Clibcurl::getfilesize(std::string& szurl, size_t& size)
+long Curl::GetFileSize(size_t& size)
 {
-	bool bret = false;
-	double filesize = 0.0;
-	CURL* easy_handle = curl_easy_init();
-	if (easy_handle == nullptr)
-	{
-		return false;
-	}
+
+	CURLcode code = CURLE_OK;
 
 	do
 	{
-		if (CURLE_OK != curl_easy_setopt(easy_handle, CURLOPT_URL, szurl.c_str()))
+		double filesize = 0.0;
+		long lRespCode = 0;
+		curl_easy_reset(m_pCURL);
+
+		if (!m_szProxyip.empty())
+		{
+			std::string szproxy = m_szProxyip + ":" + m_szProxyport;
+			if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_PROXY, szproxy.c_str())))
+				break;
+		}
+
+		if (!m_szProxyuser.empty())
+		{
+			std::string szuserinfo = m_szProxyuser + ":" + m_szProxypwd;
+			if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_PROXYUSERPWD, szuserinfo.c_str())))
+				break;
+		}
+		if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_CONNECTTIMEOUT, 5L)))
+			break;
+
+		if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_TIMEOUT, 5)))
+			break;
+
+		if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_URL, m_szUrl.c_str())))
 			break;
 
 		//BREAKCURL(curl_easy_setopt(handle, CURLOPT_HEADER, 1L));    //只需要header头  
-		if (CURLE_OK != curl_easy_setopt(easy_handle, CURLOPT_NOBODY, 1L))    //不需要body  
+		if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_NOBODY, 1L)))    //不需要body  
 			break;
 																	//BREAKCURL(curl_easy_setopt(handle, CURLOPT_FOLLOWLOCATION, 1L));
-		if (CURLE_OK != curl_easy_perform(easy_handle))
+		if (CURLE_OK != (code = curl_easy_perform(m_pCURL)))
+		{
+			m_status = DOWNLOAD_ERROR;
+			break;
+		}
+
+		if (CURLE_OK != (code = curl_easy_getinfo(m_pCURL, CURLINFO_CONTENT_LENGTH_DOWNLOAD, &filesize)))
 			break;
 
-		if (CURLE_OK != curl_easy_getinfo(easy_handle, CURLINFO_CONTENT_LENGTH_DOWNLOAD, &filesize))
+		if (CURLE_OK != (code = curl_easy_getinfo(m_pCURL, CURLINFO_RESPONSE_CODE, &lRespCode)))
 			break;
-		size = (size_t)filesize;
-		bret = true;
+
+		if (lRespCode == 200)
+		{
+			m_filesize = size = (size_t)filesize;
+		}
+		
 	} while (FALSE);
-	curl_easy_cleanup(easy_handle);
-	return bret;
+
+	return code;
 }
 
 
-bool Clibcurl::downloadfile(std::string& szurl, std::string& szsavepath)
+long Curl::StartDownload()
 {
-	int loop = 0;
-	st = DOWNLOAD_START_PENDING;
 	INT nGetResPonse = 0;
 	size_t filesize = 0;
+	if (m_filesize == 0)
+	{
+		long lret = GetFileSize(filesize);
+		if (lret != CURLE_OK)
+			return lret;
+	}
 
-	std::ofstream ofs(szsavepath.c_str(), std::ios_base::out | std::ios_base::app | std::ios_base::binary);
-	if (!ofs.is_open()) goto _ERROR_;
+	std::ofstream ofs(m_szFile.c_str(), 
+		std::ios_base::out |
+		std::ios_base::app |
+		std::ios_base::binary);
+	if (!ofs.is_open())
+		return CURLE_WRITE_ERROR;
 
-	if (!getfilesize(szurl, filesize)) goto _ERROR_;
+	if (m_pWritten == nullptr)
+	{
+		m_pWritten = Writtenfun;
+		m_pWrittenParam = &ofs;
+	}
 
-	if (!setwritefun(write_callback, &ofs)) goto _ERROR_;
+	curl_easy_reset(m_pCURL);
+	CURLcode code = CURLE_OK;
+	m_status = DOWNLOAD_STARTED;
+	do
+	{
 
-	if (CURLE_OK != curl_easy_setopt(m_pCURL, CURLOPT_FAILONERROR, 1L)) goto _ERROR_;
-	if (CURLE_OK != curl_easy_setopt(m_pCURL, CURLOPT_VERBOSE, 1)) goto _ERROR_;
-	if (CURLE_OK != curl_easy_setopt(m_pCURL, CURLOPT_URL, szurl.c_str())) goto _ERROR_;
-	if (CURLE_OK != curl_easy_setopt(m_pCURL, CURLOPT_HEADER, 0L)) goto _ERROR_;
-	if (CURLE_OK != curl_easy_setopt(m_pCURL, CURLOPT_CONNECTTIMEOUT, 4000)) goto _ERROR_;
-	if (CURLE_OK != curl_easy_setopt(m_pCURL, CURLOPT_TIMEOUT, 4000)) goto _ERROR_;
+		if (!m_szProxyip.empty())
+		{
+			std::string szproxy = m_szProxyip + ":" + m_szProxyport;
+			if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_PROXY, szproxy.c_str())))
+				break;
+		}
+
+		if (!m_szProxyuser.empty())
+		{
+			std::string szuserinfo = m_szProxyuser + ":" + m_szProxypwd;
+			if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_PROXYUSERPWD, szuserinfo.c_str())))
+				break;
+		}
+
+		if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_WRITEFUNCTION, m_pWritten)))
+			break;
+
+		if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_WRITEDATA, m_pWrittenParam)))
+			break;
+
+		if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_FAILONERROR, 1L)))
+			break;
+
+		if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_VERBOSE, 1)))
+			break;
+
+		if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_URL, m_szUrl.c_str())))
+			break;
+
+		if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_HEADER, 0L)))
+			break;
+
+		if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_CONNECTTIMEOUT, 5)))
+			break;
+
+		if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_TIMEOUT, 5)))
+			break;
+
+		//if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_MAX_SEND_SPEED_LARGE, curl_off_t(m_lupspeed))))
+			//break;
+
+		if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_MAX_RECV_SPEED_LARGE, curl_off_t(m_ldownspeed))))
+			break;
+
+		if (m_pProgress)
+		{
+			if (CURLE_OK != curl_easy_setopt(m_pCURL, CURLOPT_NOPROGRESS, 0L))
+				break;
+
+			if (CURLE_OK != curl_easy_setopt(m_pCURL, CURLOPT_XFERINFOFUNCTION, m_pProgress))
+				break;
+
+			if (CURLE_OK != curl_easy_setopt(m_pCURL, CURLOPT_XFERINFODATA, m_pProgressParam))
+				break;
+		}
+		
+	} while (FALSE);
+	
+	if (code != CURLE_OK)
+		return code;
 
 	do
 	{
-		st = DOWNLOAD_RUNING;
+		m_status = DOWNLOAD_RUNNING;
+
 		ofs.seekp(0, ofs.end);
-		std::streamoff currentlength = ofs.tellp();
-		if (currentlength == filesize) goto _OK_;
-
-		if (CURLE_OK != curl_easy_setopt(m_pCURL, CURLOPT_RESUME_FROM_LARGE, (curl_off_t)currentlength))
-			goto _ERROR_;
-
-		int retcode = startdownload();
-
-		if (CURLE_OK == retcode) goto _OK_;
-
-		if (DOWNLOAD_STOP_PENDING == st) goto _STOP_;
-
-		else if (DOWNLOAD_PAUSE_PENDING == st)
+		m_curLength = ofs.tellp();
+		if (m_curLength == m_filesize)
 		{
-			st = DOWNLOAD_PAUSED;
-			DWORD waitResult = WaitForSingleObject(m_hEvt, INFINITE);
-			if (WAIT_OBJECT_0 == waitResult) continue;
-			else goto _STOP_;
+			m_status = DOWNLOAD_DONE;
+			break;
+		}
+
+		if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_RESUME_FROM_LARGE, (curl_off_t)m_curLength)))
+		{
+			m_status = DOWNLOAD_ERROR;
+			break;
+		}
+
+		if (CURLE_OK == (code = curl_easy_perform(m_pCURL)))
+		{
+			m_status = DOWNLOAD_DONE;
+			break;
+		}
+
+		if (m_status == DOWNLOAD_STOPPED)
+			break;
+
+
+		if (code == CURLE_OPERATION_TIMEDOUT)
+		{
+			continue;
 		}
 		else
 		{
-			if (loop++ > 100) goto _ERROR_;
-			Sleep(20);
+			m_status = DOWNLOAD_ERROR;
+			break;
 		}
 
+
+
 	} while (true);
-
-_OK_:
-	st = DOWNLOAD_DONE;
-	curl_easy_getinfo(m_pCURL, CURLINFO_RESPONSE_CODE, &nGetResPonse);
-	return true;
-
-_ERROR_:
-	st = DOWNLOAD_ERROR;
-	curl_easy_getinfo(m_pCURL, CURLINFO_RESPONSE_CODE, &nGetResPonse);
-	return false;
-
-_STOP_:
-	st = DOWNLOAD_STOPPED;
-	curl_easy_getinfo(m_pCURL, CURLINFO_RESPONSE_CODE, &nGetResPonse);
-	return false;
-}
-
-
-int Clibcurl::startdownload()
-{
-	return (int)curl_easy_perform(m_pCURL);
-}
-
-
-int Clibcurl::stopdownload()
-{
-	CloseHandle(m_hEvt);
-	m_hEvt = NULL;
-	st = DOWNLOAD_STOP_PENDING;
-	return curl_easy_pause(m_pCURL, CURLPAUSE_RECV);
-}
-
-int Clibcurl::pausedownload()
-{
-	ResetEvent(m_hEvt);
-	st = DOWNLOAD_PAUSE_PENDING;
-	return curl_easy_pause(m_pCURL, CURLPAUSE_RECV);
-}
-
-int Clibcurl::continuedownload()
-{
-	CURLcode code = curl_easy_pause(m_pCURL, CURLPAUSE_RECV_CONT);
-	st = DOWNLOAD_STARTED;
-	SetEvent(m_hEvt);
+	
 	return code;
 }
+
+
+long Curl::StopDownload()
+{
+	m_status = DOWNLOAD_STOPPED;
+	return curl_easy_pause(m_pCURL, CURLPAUSE_RECV);
+}
+
 
 //int progress_callback(void *clientp, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow)
 //{

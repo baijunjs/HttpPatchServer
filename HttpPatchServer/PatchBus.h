@@ -4,74 +4,209 @@
 #include <vector>
 #include "PatchIndex.h"
 #include "PatchFile.h"
+#include <sstream>
+
 
 namespace vrv
 {
 	namespace patch
 	{
 
-		typedef std::vector<PatchIndexPtr> PatchIndexVector;
-		typedef std::map<std::string, PatchIndexVector> PatchIndexMap;
-		typedef PatchIndexMap::const_iterator	PatchIndexCIter;
-		typedef std::vector<PatchFilePtr>		PatchFileVec;
+		struct IndexInfo
+		{
+			std::string szIndexName;
+			unsigned long dwCrc = 0;
+			size_t size = 0;
+			void serialize(SF::Archive &ar)
+			{
+				try
+				{
+					if (ar.isRead())
+					{
+						SF::IStream *is = ar.getIstream();
+						(*is) >> szIndexName >> dwCrc >> size;
+					}
+					else if (ar.isWrite())
+					{
+						SF::OStream* os = ar.getOstream();
+						(*os) << szIndexName << dwCrc << size;
+					}
+				}
+				catch (...)
+				{
+					ar.clearState();
+				}
+
+			}
+		};
+
+		typedef std::shared_ptr<IndexInfo> IndexInfoPtr;
+		typedef std::vector<IndexInfoPtr> IndexInfoVec;
+		struct PatchInfo
+		{
+			std::string szPatchName;
+			std::string szKbId;
+			std::string szMs;
+			std::string szDescrip;
+			std::string szPatchSize;
+			std::string szDatePublish;
+			std::string szRank;
+			std::string szUpdateId;
+			std::string szMd5;
+			std::string szLans;
+			std::string szUrl;
+			std::string MakeToolTipText()
+			{
+				std::stringstream ss;
+				ss << "补丁名称:" << szPatchName << std::endl
+					<< "KB:" << szKbId << std::endl
+					<< "MS:" << szMs << std::endl
+					<< "描述:" << szDescrip << std::endl
+					<< "大小:" << szPatchSize << std::endl
+					<< "日期:" << szDatePublish << std::endl
+					<< "等级:" << szRank << std::endl
+					<< "UpdateID:" << szUpdateId << std::endl
+					<< "MD5:" << szMd5 << std::endl
+					<< "语言:" << szLans << std::endl
+					<< "URL:" << szUrl << std::endl;
+				return ss.str();
+			}
+
+			void serialize(SF::Archive &ar)
+			{
+				try
+				{
+					if (ar.isRead())
+					{
+						SF::IStream *is = ar.getIstream();
+						(*is) >> szPatchName
+							>> szKbId
+							>> szMs
+							>> szDescrip
+							>> szPatchSize
+							>> szDatePublish
+							>> szRank
+							>> szUpdateId
+							>> szMd5
+							>> szLans
+							>> szUrl;
+
+					}
+					else if (ar.isWrite())
+					{
+						SF::OStream* os = ar.getOstream();
+						(*os) << szPatchName
+							<< szKbId
+							<< szMs
+							<< szDescrip
+							<< szPatchSize
+							<< szDatePublish
+							<< szRank
+							<< szUpdateId
+							<< szMd5
+							<< szLans
+							<< szUrl;
+					}
+				}
+				catch (...)
+				{
+					ar.clearState();
+				}
+
+			}
+		};
+		typedef std::shared_ptr<PatchInfo>	PatchInfoPtr;
+		typedef std::vector<PatchInfoPtr>	PatchInfoVec;
+		typedef PatchInfoVec::iterator	_patchiter;
+
+		struct PatchIndexVector
+		{
+			std::vector<PatchIndexPtr> patchindexes;
+			int GetIndexCount()
+			{
+				int x = 0;
+				for (size_t idx = 0; idx < patchindexes.size(); ++idx)
+				{
+					if (!patchindexes[idx]->m_szIndexPath.empty())
+						++x;
+
+					if (!patchindexes[idx]->m_szSubIndexPath.empty())
+						++x;
+				}
+				return x;
+			}
+			typedef std::vector<PatchIndexPtr>::iterator _iterator;
+		};
+		typedef std::shared_ptr<PatchIndexVector> PatchIndexVectorPtr;
+
+		struct ProductsMap
+		{
+			std::map<std::string, PatchIndexVectorPtr> Products;
+			typedef std::map<std::string, PatchIndexVectorPtr>::iterator _iterator;
+		};
+		typedef std::shared_ptr<ProductsMap> ProductsMapPtr;
+
+		struct FamiliesMap
+		{
+			std::map<std::string, ProductsMapPtr> ProductsFamily;
+			std::map<std::string, ProductsMapPtr> LanguagesFamily;
+			typedef std::map<std::string, ProductsMapPtr> _Myt;
+			typedef std::map<std::string, ProductsMapPtr>::iterator _iterator;
+		};
+		typedef std::shared_ptr<FamiliesMap> FamiliesMapPtr;
+
+		struct PublishersMap
+		{
+			std::map<std::string, FamiliesMapPtr> Publishers;
+			typedef std::map<std::string, FamiliesMapPtr>::iterator _iterator;
+		};
+		typedef std::shared_ptr<PublishersMap> PublishersMapPtr;
+
 		class CPatchBus
 		{
 		public:
 			CPatchBus();
 			~CPatchBus();
-			template <typename D>
-			bool download_main_index(D& d)
-			{
-#ifdef _DEBUG
-				szmain_index_url = "http://www.vrvsoft.com/update/patch/newpatch/PackIndex.dat";
-				szmain_save_path = R"(E:\Project\svn\HttpPatchDownLoader\Tools\PackIndex.dat)";
-#endif
-				std::string sztmplocalpath = szmain_save_path + "~";
-				d.setDownRate(100 * 1024);
-				if (!d.downloadfile(szmain_index_url, sztmplocalpath))
-					return false;
-
-				MoveFileEx(sztmplocalpath.c_str(), szmain_save_path.c_str(), MOVEFILE_REPLACE_EXISTING);
-				return true;
-			}
-
-			bool analyze_main_index(IPackIndex *);
-
-			/*template <typename D>
-			bool download_sub_index()
-			{
-				PatchIndexCIter itb = m_patchIndexes.begin();
-				for (; itb != m_patchIndexes.end(); ++itb)
-				{
-					const PatchIndexVector &patchindexvec = itb->second;
-
-					for (size_t index = 0; index < patchindexvec.size(); ++index)
-					{
-						PatchIndexPtr patchinfo = patchindexvec[index];
-						if (patchinfo)
-						{
-							patchinfo->download_sub_index<D>();
-						}
-					}
-				}
-				return true;
-			}*/
-
+			int CalcIndexCount();
+			bool analyze_main_index(IPackIndex *, std::string packindexPath);
 			bool loadProductIndex(ILoadIndex *);
 			bool loadLanuageIndex(ILoadIndex *);
 			bool fetchPatchFile(ILoadIndex *);
+			PublishersMapPtr GetPatchIndexMap()
+			{
+				return m_publishers;
+			}
 
+			void SetPackSha1(std::string &szpacksha)
+			{
+				m_szPackSha1 = szpacksha;
+			}
+
+			std::string GetPackSha1()
+			{
+				return m_szPackSha1;
+			}
+
+			vrv::patch::PatchInfoPtr GetPatchInfo(IPatchItem* pPatch);
+			PatchIndexVectorPtr FindLanguageIndexVec();
+			PatchIndexVectorPtr FindPatchIndexVecByProductName(std::string szProduct);
+			PatchIndexVectorPtr GetAllPatchIndexes();
 		private:
-			void getPackages(IPackCompany *);
-			void getProductPacks(IPACKAGE *);
-			void getPackFiles(IProductPack *, bool);
+			void getPackages(IPackCompany *, FamiliesMapPtr);
+			void getProductPacks(IPACKAGE *, ProductsMapPtr);
+			void getPackFiles(IProductPack *, PatchIndexVectorPtr);
 		private:
-			std::string szmain_index_url;
-			std::string szmain_save_path;
-			PatchIndexMap m_patchIndexes;
-			PatchFileVec  m_patches;
+			PublishersMapPtr m_publishers;
+			int m_iIndexCount;
+			std::string m_szPackSha1;
+		public:
+			IndexInfoVec m_taskErrorIndex;
+			PatchInfoVec m_taskErrorPatch;
 		};
+
+
 	}
 }
 
 
+extern vrv::patch::CPatchBus bus;
