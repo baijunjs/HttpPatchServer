@@ -109,7 +109,7 @@ long Curl::GetFileSize(size_t& size)
 		if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_CONNECTTIMEOUT, 5L)))
 			break;
 
-		if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_TIMEOUT, 5)))
+		if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_TIMEOUT, 5L)))
 			break;
 
 		if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_URL, m_szUrl.c_str())))
@@ -204,10 +204,10 @@ long Curl::StartDownload()
 		if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_HEADER, 0L)))
 			break;
 
-		if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_CONNECTTIMEOUT, 5)))
+		if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_CONNECTTIMEOUT, 5L)))
 			break;
 
-		if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_TIMEOUT, 5)))
+		if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_TIMEOUT, 5L)))
 			break;
 
 		//if (CURLE_OK != (code = curl_easy_setopt(m_pCURL, CURLOPT_MAX_SEND_SPEED_LARGE, curl_off_t(m_lupspeed))))
@@ -284,57 +284,3 @@ long Curl::StopDownload()
 	m_status = DOWNLOAD_STOPPED;
 	return curl_easy_pause(m_pCURL, CURLPAUSE_RECV);
 }
-
-
-//int progress_callback(void *clientp, curl_off_t dltotal, curl_off_t dlnow, curl_off_t ultotal, curl_off_t ulnow)
-//{
-//	CURL *easy_handle = static_cast<CURL *>(clientp);
-//	char timeFormat[9] = "Unknow";
-//
-//	// Defaults to bytes/second  
-//	double speed;
-//	string unit = "B";
-//
-//	curl_easy_getinfo(easy_handle, CURLINFO_SPEED_DOWNLOAD, &speed); // curl_get_info必须在curl_easy_perform之后调用  
-//
-//	if (speed != 0)
-//	{
-//		// Time remaining  
-//		double leftTime = (downloadFileLength - dlnow - resumeByte) / speed;
-//		int hours = leftTime / 3600;
-//		int minutes = (leftTime - hours * 3600) / 60;
-//		int seconds = leftTime - hours * 3600 - minutes * 60;
-//
-//#ifdef _WIN32  
-//		sprintf_s(timeFormat, 9, "%02d:%02d:%02d", hours, minutes, seconds);
-//#else  
-//		sprintf(timeFormat, "%02d:%02d:%02d", hours, minutes, seconds);
-//#endif  
-//	}
-//
-//	if (speed > 1024 * 1024 * 1024)
-//	{
-//		unit = "G";
-//		speed /= 1024 * 1024 * 1024;
-//	}
-//	else if (speed > 1024 * 1024)
-//	{
-//		unit = "M";
-//		speed /= 1024 * 1024;
-//	}
-//	else if (speed > 1024)
-//	{
-//		unit = "kB";
-//		speed /= 1024;
-//	}
-//
-//	printf("speed:%.2f%s/s", speed, unit.c_str());
-//
-//	if (dltotal != 0)
-//	{
-//		double progress = (dlnow + resumeByte) / downloadFileLength * 100;
-//		printf("\t%.2f%%\tRemaing time:%s\n", progress, timeFormat);
-//	}
-//
-//	return 0;
-//}

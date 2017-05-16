@@ -12,6 +12,7 @@
 
 RCF_BEGIN(MyService, "MyService")
 RCF_METHOD_V1(void, RequestPatchInfo, std::vector<vrv::patch::PatchInfo>&)
+RCF_METHOD_V1(void, RequestPatchInfo, vrv::patch::PatchInfo&)
 RCF_METHOD_V1(void, RequestIndexInfo, std::vector<vrv::patch::IndexInfo>&)
 RCF_METHOD_V2(void, DownloadFiles, std::string&, RCF::FileDownload&)
 RCF_METHOD_V2(void, DownloadIndexFile, std::string&, RCF::FileDownload&)

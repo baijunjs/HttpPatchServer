@@ -14,6 +14,7 @@
 #endif
 
 
+
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
 
 class CAboutDlg : public CDialogEx
@@ -107,17 +108,12 @@ BOOL CHttpPatchServerDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
-
-	//m_patchview.Create(IDD_DOWNLOADVIEW_DIALOG, this);
 	DHwnd(HwndObj14)->Attach((OLE_HANDLE)HandleToLong(m_patchview.GetSafeHwnd()));
-
-	//m_patchsetting.Create(IDD_DIALOG_SETTING, this);
 	DHwnd(HwndObj14)->Attach((OLE_HANDLE)HandleToLong(m_patchsetting.GetSafeHwnd()));
 	m_patchsetting.SetPatchView(&m_patchview);
 	m_patchview.ShowWindow(SW_SHOW);
 
 	DCheck(ChkMax)->SetValue(DUICHECKBOX_UNCHECKED);
-
 
 	AddTaskbarIcons();
 
@@ -181,37 +177,6 @@ void CHttpPatchServerDlg::OnBnClickedButton1()
 {
 	// TODO: 在此添加控件通知处理程序代码
 
-	std::thread patchthread([r = this]()->void
-	{
-		IPackIndex *indexobject = CPackInterface::getPackIndexObject();
-		ILoadIndex *loadobject = CPackInterface::getLoadIndexObject();
-		//do
-		//{
-		//	//if (!r->m_patchbus.download_main_index<Clibcurl>())
-		//	//	break;
-
-		//	if (!r->m_patchbus.analyze_main_index(indexobject))
-		//		break;
-
-		//	//if (!r->m_patchbus.download_sub_index<Clibcurl>())
-		//	//	break;
-
-		//	if (!r->m_patchbus.loadProductIndex(loadobject))
-		//		break;
-
-		//	if (!r->m_patchbus.loadLanuageIndex(loadobject))
-		//		break;
-
-		//	if (!r->m_patchbus.fetchPatchFile(loadobject))
-		//		break;
-
-		//} while (false);
-
-		indexobject->Release();
-		loadobject->Release();
-	});
-
-	patchthread.detach();
 }
 
 
@@ -252,31 +217,6 @@ LRESULT CHttpPatchServerDlg::OnButtonUp(WPARAM wparam, LPARAM lparam)
 	return 0;
 }
 
-//bool CHttpPatchServerDlg::InitDui()
-//{
-//
-//	m_pTabMain = (IDUITabCtrl *)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, _T("TabMain"), m_pDirectUI, TRUE);
-//	ASSERT(m_pTabMain);
-//
-//	m_pHwndSubWnd = (IDUIHwndObj *)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, _T("HwndObj14"), m_pDirectUI, TRUE);
-//	ASSERT(m_pHwndSubWnd);
-//
-//	m_pDUILogo = (IDUILogoObj *)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, _T("LogoWeb"), m_pDirectUI, TRUE);
-//	ASSERT(m_pDUILogo);
-//
-//	m_pDUIBtnClose = (ICmdButton *)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, _T("BtnClose"), m_pDirectUI, TRUE);
-//	ASSERT(m_pDUIBtnClose);
-//
-//	m_pDUIBtnMini = (ICmdButton *)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, _T("BtnMin"), m_pDirectUI, TRUE);
-//	ASSERT(m_pDUIBtnMini);
-//
-//	m_pDUIchkMax = (IDUICheckBox *)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, _T("ChkMax"), m_pDirectUI, TRUE);
-//	ASSERT(m_pDUIchkMax);
-//
-//	m_pDUIchkMax->SetValue(DUICHECKBOX_UNCHECKED);
-//
-//	return true;
-//}
 
 LRESULT CHttpPatchServerDlg::OnTabPageChanged(WPARAM wparam, LPARAM lparam)
 {
@@ -304,8 +244,20 @@ void CHttpPatchServerDlg::OnOK()
 void CHttpPatchServerDlg::OnCancel()
 {
 	// TODO: 在此添加专用代码和/或调用基类
-	CMessageBox msg;
-	if (IDOK == msg.ShowMessage("是否确定退出程序？", MB_OKCANCEL))
+	if (theApp._thread.joinable())
+	{
+		CMessageBox msg;
+		if (IDOK == msg.ShowMessage("是否确定退出程序？", MB_OKCANCEL))
+		{
+			m_patchview.OnClose();
+			m_patchsetting.OnClose();
+			Shell_NotifyIcon(NIM_DELETE, &m_NotifyIconData); //使右下角图标在程序运行的时候就被注册
+			IsAnswerOnOkAndOnCancel(TRUE);
+			CDUIDialog::OnCancel();
+			theApp._thread.join();
+		}
+	}
+	else
 	{
 		m_patchview.OnClose();
 		m_patchsetting.OnClose();

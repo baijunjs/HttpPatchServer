@@ -2,7 +2,7 @@
 //#include"..\\stdafx.h"
 #include "stdafx.h"
 #include <string.h>
-#define DW_EOL  "\n"
+#define DW_EOL  ""
 #define MAXLINE  2048   //每多少行增加一个换行
 
 static char base64tab[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"

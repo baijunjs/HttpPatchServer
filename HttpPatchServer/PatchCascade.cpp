@@ -48,65 +48,6 @@ BOOL CPatchCascade::InitSknPath()
 
 
 // CPatchCascade 消息处理程序
-//bool CPatchCascade::InitDui()
-//{
-	//m_pDuiCascade = (ISkinObjResBase*)AfxGetDuiRes()->CreateDirectUI("DUICascadeCfg", HandleToLong(m_hWnd));
-	//ASSERT(m_pDuiCascade);
-
-	//m_pEditDbIp = (IDUIEditCtrl*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "EditDbIp", m_pDuiCascade, TRUE);
-	//ASSERT(m_pEditDbIp);
-
-	//m_pEditDbName = (IDUIEditCtrl*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "EditDbSrc", m_pDuiCascade, TRUE);
-	//ASSERT(m_pEditDbName);
-
-	//m_pEditDbUser = (IDUIEditCtrl*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "EditDbUser", m_pDuiCascade, TRUE);
-	//ASSERT(m_pEditDbUser);
-
-	//m_pEditDbPwd = (IDUIEditCtrl*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "EditDbPwd", m_pDuiCascade, TRUE);
-	//ASSERT(m_pEditDbPwd);
-
-	//m_pChkCascade = (IDUICheckBox*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "ChkBox-Cascade", m_pDuiCascade, TRUE);
-	//ASSERT(m_pChkCascade);
-
-	//m_pEditServerIp = (IDUIEditCtrl*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "EditUpIp", m_pDuiCascade, TRUE);
-	//ASSERT(m_pEditServerIp);
-
-	//m_pEditServerPort = (IDUIEditCtrl*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "EditUpPort", m_pDuiCascade, TRUE);
-	//ASSERT(m_pEditServerPort);
-
-	//m_pRadioAll = (IRadioBox*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "RadioBox_AllTime", m_pDuiCascade, TRUE);
-	//ASSERT(m_pRadioAll);
-
-	//m_pRadioPerid = (IRadioBox*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "RadioBox_Period", m_pDuiCascade, TRUE);
-	//ASSERT(m_pEditDbUser);
-
-	//m_pRadioInteval = (IRadioBox*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "RadioBox_Interval", m_pDuiCascade, TRUE);
-	//ASSERT(m_pEditDbUser);
-
-	//m_pEditPerid = (IDUIEditCtrl*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "EditPerid", m_pDuiCascade, TRUE);
-	//ASSERT(m_pEditPerid);
-
-	//m_pEditBegin = (IDUIEditCtrl*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "EditBegin", m_pDuiCascade, TRUE);
-	//ASSERT(m_pEditBegin);
-
-	//m_pEditEnd = (IDUIEditCtrl*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "EditEnd", m_pDuiCascade, TRUE);
-	//ASSERT(m_pEditEnd);
-
-	//m_pChkFlux = (IDUICheckBox*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "ChkBox-Flux", m_pDuiCascade, TRUE);
-	//ASSERT(m_pChkFlux);
-
-	//m_pEditFluxSpeed = (IDUIEditCtrl*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "EditSpeed", m_pDuiCascade, TRUE);
-	//ASSERT(m_pEditFluxSpeed);
-
-	//m_pEditPath = (IDUIEditCtrl*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "EditPath", m_pDuiCascade, TRUE);
-	//ASSERT(m_pEditPath);
-
-	//m_pBtnCascade = (ICmdButton*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "BtnTest", m_pDuiCascade, TRUE);
-	//ASSERT(m_pBtnCascade);
-
-	//return true;
-//}
-
 int CPatchCascade::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CDUIDialog::OnCreate(lpCreateStruct) == -1)
@@ -145,7 +86,7 @@ BOOL CPatchCascade::OnInitDialog()
 }
 
 
-void CPatchCascade::GetIntervalTime(std::string &szTime, std::string &szBegin, std::string &szEnd)
+void GetIntervalTime(std::string &szTime, std::string &szBegin, std::string &szEnd)
 {
 	std::smatch sm;
 	std::regex rgx("(\\d{1,2}:\\d{1,2}:\\d{1,2})-(\\d{1,2}:\\d{1,2}:\\d{1,2})");

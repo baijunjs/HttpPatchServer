@@ -22,6 +22,7 @@ public:
 
 	int add(int a, int b);
 	void RequestPatchInfo(std::vector<vrv::patch::PatchInfo> &patches);
+	void RequestPatchInfo(vrv::patch::PatchInfo &patch);
 	void RequestIndexInfo(std::vector<vrv::patch::IndexInfo> &indexes);
 	void DownloadFiles(std::string& szFile, RCF::FileDownload &fileDownload);
 	void DownloadIndexFile(std::string& szFile, RCF::FileDownload &fileDownload);
@@ -58,7 +59,7 @@ public:
 	void Initlog();
 	BOOL InitAppConfig();
 	void ReadConfig();
-	void InitPatchClient();
+	bool InitPatchClient();
 	void InitPatchServer();
 	void StopByCurl();
 	void StopByRcf();

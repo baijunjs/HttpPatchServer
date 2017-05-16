@@ -7,6 +7,7 @@
 #include "afxdialogex.h"
 
 
+
 // CPatchView ¶Ô»°¿ò
 
 IMPLEMENT_DYNAMIC(CPatchView, CDUIDialog)

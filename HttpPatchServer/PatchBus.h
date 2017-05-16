@@ -2,10 +2,10 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <sstream>
 #include "PatchIndex.h"
 #include "PatchFile.h"
-#include <sstream>
-
+#include "rapidxml_utils.hpp"
 
 namespace vrv
 {
@@ -48,7 +48,7 @@ namespace vrv
 			std::string szKbId;
 			std::string szMs;
 			std::string szDescrip;
-			std::string szPatchSize;
+			std::string szPatchSize="0";
 			std::string szDatePublish;
 			std::string szRank;
 			std::string szUpdateId;
@@ -169,9 +169,6 @@ namespace vrv
 			~CPatchBus();
 			int CalcIndexCount();
 			bool analyze_main_index(IPackIndex *, std::string packindexPath);
-			bool loadProductIndex(ILoadIndex *);
-			bool loadLanuageIndex(ILoadIndex *);
-			bool fetchPatchFile(ILoadIndex *);
 			PublishersMapPtr GetPatchIndexMap()
 			{
 				return m_publishers;
@@ -186,6 +183,50 @@ namespace vrv
 			{
 				return m_szPackSha1;
 			}
+			bool AnalyzeIndex1xml(std::string &szIndex1xml, std::vector<PatchInfoPtr>& patches)
+			{
+				using namespace rapidxml;
+				xml_document<> doc;
+				try
+				{
+					file<> fp(szIndex1xml.c_str());
+					doc.parse<0>(fp.data());
+					auto root = doc.first_node();
+					if (root)
+					{
+						auto child = root->first_node();
+						while (child)
+						{
+							if (_stricmp(child->name(), "PATCHFILE") == 0)
+							{
+								PatchInfoPtr patchptr = std::make_shared<PatchInfo>();
+								auto subNode = child->first_node("updateID");
+								if (subNode) patchptr->szUpdateId = subNode->value();
+
+								//subNode = child->first_node("CRC");
+								//if (subNode) patchptr->szMd5 = subNode->value();
+
+								subNode = child->first_node("PatchPath");
+								if (subNode) patchptr->szPatchName = subNode->value();
+
+								patches.push_back(patchptr);
+							}
+							child = child->next_sibling();
+						}
+					}
+					else
+					{
+						throw parse_error("Root Node is nullptr", NULL);
+					}
+				}
+				catch (parse_error & e)
+				{
+					return false;
+				}
+
+				return true;
+			}
+
 
 			vrv::patch::PatchInfoPtr GetPatchInfo(IPatchItem* pPatch);
 			PatchIndexVectorPtr FindLanguageIndexVec();

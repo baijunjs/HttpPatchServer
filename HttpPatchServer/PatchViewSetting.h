@@ -38,7 +38,7 @@ public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	virtual BOOL OnInitDialog();
 	LRESULT OnTabPageChanged(WPARAM, LPARAM);
-	LRESULT OnApply(WPARAM wparam, LPARAM lparam);
+	LRESULT OnSMLButtonUp(WPARAM wparam, LPARAM lparam);
 	void SaveSetting();
 	void RestoreSetitng();
 	void SetPatchView(CWnd*);

@@ -6,10 +6,10 @@
 #define IDD_ABOUTBOX                    100
 #define IDS_ABOUTBOX                    101
 #define IDD_HTTPPATCHSERVER_DIALOG      102
-#define IDR_MAINFRAME                   128
 #define IDD_DOWNLOADVIEW_DIALOG         130
 #define IDD_DOWNLOAD_LISTVIEW           132
 #define IDI_APP_ICON                    135
+#define IDR_MAINFRAME                   135
 #define IDD_DIALOG_STATICS              136
 #define IDD_DIALOG_ERROR                138
 #define IDD_DIALOG_SETTING              140
@@ -18,7 +18,6 @@
 #define IDD_DIALOG_CASCADE              146
 #define IDD_DIALOG_MODE                 150
 #define IDD_DIALOG_OTHER                152
-#define IDD_DIALOG1                     154
 #define IDD_DIALOG_MSGBOX               154
 #define IDC_BUTTON1                     1000
 

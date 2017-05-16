@@ -25,6 +25,9 @@
     <Filter Include="DUI">
       <UniqueIdentifier>{2b7f7c09-e3fe-42b6-85d0-d6251e109271}</UniqueIdentifier>
     </Filter>
+    <Filter Include="rapidxml">
+      <UniqueIdentifier>{a505f41f-d13d-41e5-9990-c9b202c40db6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -55,9 +58,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="PackInterface.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="IDownload.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Clibcurl.h">
@@ -144,6 +144,21 @@
     <ClInclude Include="DUI\OfficeAll.h">
       <Filter>DUI</Filter>
     </ClInclude>
+    <ClInclude Include="rapidxml\rapidxml.hpp">
+      <Filter>rapidxml</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidxml\rapidxml_iterators.hpp">
+      <Filter>rapidxml</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidxml\rapidxml_print.hpp">
+      <Filter>rapidxml</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidxml\rapidxml_utils.hpp">
+      <Filter>rapidxml</Filter>
+    </ClInclude>
+    <ClInclude Include="ExceptionHandle.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HttpPatchServer.cpp">
@@ -214,6 +229,9 @@
     </ClCompile>
     <ClCompile Include="DUI\DUIDialog.cpp">
       <Filter>DUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ExceptionHandle.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

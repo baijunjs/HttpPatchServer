@@ -18,7 +18,6 @@ namespace vrvlog
 			{
 				log_ = spdlog::rotating_logger_mt("logger", file_name, 1024 * 1024 * 50, 2/*, true*/);
 				console_log_ = spdlog::stdout_logger_mt("console");
-				_init = true;
 			}
 			catch (std::exception&)
 			{
@@ -30,17 +29,6 @@ namespace vrvlog
 			}
 
 			return true;
-		}
-
-
-		bool enable_log()
-		{
-			return _init;
-		}
-
-		void enable_log(bool enable)
-		{
-			_init = enable;
 		}
 
 		std::shared_ptr<spdlog::logger> get_log()
@@ -56,7 +44,6 @@ namespace vrvlog
 		log() = default;
 		log(const log&) = delete;
 		log(log&&) = delete;
-		bool _init = false;
 		std::shared_ptr<spdlog::logger> log_;
 		std::shared_ptr<spdlog::logger> console_log_;
 	};
@@ -65,14 +52,14 @@ namespace vrvlog
 	template<typename... Args>
 	static inline void SPD_LOG_TRACE(const char* fmt, const Args&... args)
 	{
-		if (log::get().enable_log())
+		if (log::get().get_log())
 			log::get().get_log()->trace(fmt, args...);
 	}
 
 	template<typename... Args>
 	static inline void SPD_LOG_INFO(const char* fmt, const Args&... args)
 	{
-		if (log::get().enable_log())
+		if (log::get().get_log())
 			log::get().get_log()->info(fmt, args...);
 	}
 
@@ -85,21 +72,21 @@ namespace vrvlog
 	template<typename... Args>
 	static inline void SPD_LOG_WARN(const char* fmt, const Args&... args)
 	{
-		if (log::get().enable_log())
+		if (log::get().get_log())
 			log::get().get_log()->warn(fmt, args...);
 	}
 
 	template<typename... Args>
 	static inline void SPD_LOG_ERROR(const char* fmt, const Args&... args)
 	{
-		if (log::get().enable_log())
+		if (log::get().get_log())
 			log::get().get_log()->error(fmt, args...);
 	}
 
 	template<typename... Args>
 	static inline void SPD_LOG_CRITICAL(const char* fmt, const Args&... args)
 	{
-		if (log::get().enable_log())
+		if (log::get().get_log())
 			log::get().get_log()->critical(fmt, args...);
 	}
 
@@ -121,7 +108,7 @@ namespace vrvlog
 #ifdef NDEBUG
 
 #else
-		if (log::get().enable_log())
+		if (log::get().get_log())
 		{
 			log::get().get_log()->set_level(spdlog::level::debug);
 			log::get().get_log()->debug(fmt, args...);

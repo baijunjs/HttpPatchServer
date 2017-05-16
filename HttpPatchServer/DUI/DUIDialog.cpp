@@ -91,7 +91,7 @@ CString GetSysFolder ()
 }
 
 IDUIRes* CDUIDialog::m_pDUIRes = NULL ;
-DUI_LANGUAGE CDUIDialog::m_eLang = DUI_ZH_CN ;
+DUI_LANGUAGE CDUIDialog::m_eLang = DUI_ENGLISH;
 // CDUIDialog
 
 IMPLEMENT_DYNAMIC(CDUIDialog, CDialogEx)

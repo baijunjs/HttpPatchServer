@@ -1,8 +1,4 @@
 #pragma once
-#include "IDownload.h"
-
-
-
 
 enum Task_Status
 {

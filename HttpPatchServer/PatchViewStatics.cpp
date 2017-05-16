@@ -8,11 +8,14 @@
 #include "PatchBus.h"
 #include <sstream>
 #include "PatchView.h"
+#include "MessageBox.h"
 // CPatchViewStatics 对话框
 
 
 #define DUI_pStatisticView DList(ListViewDownCenter)
 
+#define CHECKPATCH			1
+extern bool g_bstop;
 
 IMPLEMENT_DYNAMIC(CPatchViewStatics, CDUIDialog)
 
@@ -33,33 +36,18 @@ void CPatchViewStatics::DoDataExchange(CDataExchange* pDX)
 }
 
 
+
 BEGIN_MESSAGE_MAP(CPatchViewStatics, CDUIDialog)
 	ON_WM_CREATE()
 	ON_WM_SHOWWINDOW()
-	ON_MESSAGE(DUISM_LBUTTONUP, &CPatchViewStatics::OnButtonDispatcher)
+	ON_WM_TIMER()
+	ON_MESSAGE(UM_STATICVIEW_INDEXITEM, &CPatchViewStatics::InsertIndexItem)
+	ON_MESSAGE(UM_STATICVIEW_PATCHITEM, &CPatchViewStatics::InsertProductsItems)
+	ON_MESSAGE(UM_STATICVIEW_CLEANITEMS, &CPatchViewStatics::CleanItems)
 END_MESSAGE_MAP()
 
 
 // CPatchViewStatics 消息处理程序
-
-
-//bool CPatchViewStatics::InitDui()
-//{
-//	m_pDuiStatic = (ISkinObjResBase*)AfxGetDuiRes()->CreateDirectUI("DUIDownStatics", HandleToLong(m_hWnd));
-//	ASSERT(m_pDuiStatic);
-//
-//	m_pStaticView = (IDUIListView*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "ListViewDownCenter", m_pDuiStatic, TRUE);
-//	ASSERT(m_pStaticView);
-//
-//	m_pProgressbar = (IDUIProgressbar*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "ProgressBar", m_pDuiStatic, TRUE);
-//	ASSERT(m_pProgressbar);
-//
-//	m_pbtnStart = (ICmdButton*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "BtnStart", m_pDuiStatic, TRUE);
-//	ASSERT(m_pbtnStart);
-//
-//	return true;
-//}
-
 
 BOOL CPatchViewStatics::InitSknPath()
 {
@@ -87,18 +75,9 @@ BOOL CPatchViewStatics::OnInitDialog()
 	CDUIDialog::OnInitDialog();
 
 	// TODO:  在此添加额外的初始化
-	//m_pProgressbar->SetPos(0);
-	//m_pProgressbar->SetVisible(FALSE, TRUE, TRUE);
-	//m_pStaticView->InsertColumn(0, "名称", 150);
-	//m_pStaticView->InsertColumn(1, "已下载/总数", 100);
-	//m_pStaticView->InsertColumn(2, "进度", 150);
-	//m_pStaticView->InsertColumn(3, "错误数", 100);
-	//m_pStaticView->InsertColumn(4, "消息", 300);
-	//m_pStaticView->SetColumnUserModule(2, m_pProgressbar);
 
-	InsertIndexItem();
-
-	InsertProductsItems();
+	InsertIndexItem(0, 0);
+	SetTimer(CHECKPATCH, 5000, NULL);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
@@ -106,22 +85,39 @@ BOOL CPatchViewStatics::OnInitDialog()
 
 
 
-void CPatchViewStatics::InsertIndexItem()
+LRESULT CPatchViewStatics::InsertIndexItem(WPARAM wparam, LPARAM lparam)
 {
-	int indexcount = bus.CalcIndexCount();
-	std::stringstream ss;
-	ss << "0/" << indexcount;
+	//级联模式索引个数是从上级获取的
+	if (appconfig.m_mode_cfg.mode == cascade_mode)
+	{
+		short nitem = DUI_pStatisticView->InsertItem(0, "索引", 0, TRUE);
+		IDUITVItem * pItem = (IDUITVItem *)DUI_pStatisticView->GetAt(nitem);
+		IDUIControlBase *pCtrlBase = pItem->GetCustomObj();
+		IDUIStatic* pTaskName = (IDUIStatic*)pCtrlBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskName"), TRUE);
+		IDUIStatic* pTaskSize = (IDUIStatic*)pCtrlBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskSize"), TRUE);
+		IDUIStatic* pTaskError = (IDUIStatic*)pCtrlBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskError"), TRUE);
+		pTaskName->SetText(_T("索引"));
+		pTaskSize->SetText("0/0");
+		pTaskError->SetText(_T("0"));
+	}
+	else if (appconfig.m_mode_cfg.mode == http_mode)
+	{
+		int indexcount = bus.CalcIndexCount();
+		std::stringstream ss;
+		ss << "0/" << indexcount;
 
-	short nitem = DUI_pStatisticView->InsertItem(0, "索引", 0, TRUE);
-	IDUITVItem * pItem = (IDUITVItem *)DUI_pStatisticView->GetAt(nitem);
-	IDUIControlBase *pCtrlBase = pItem->GetCustomObj();
-	IDUIStatic* pTaskName = (IDUIStatic*)pCtrlBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskName"), TRUE);
-	IDUIStatic* pTaskSize = (IDUIStatic*)pCtrlBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskSize"), TRUE);
-	IDUIStatic* pTaskError = (IDUIStatic*)pCtrlBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskError"), TRUE);
-	pTaskName->SetText(_T("索引"));
-	pTaskSize->SetText(ss.str());
-	pTaskError->SetText(_T("0"));
+		short nitem = DUI_pStatisticView->InsertItem(0, "索引", 0, TRUE);
+		IDUITVItem * pItem = (IDUITVItem *)DUI_pStatisticView->GetAt(nitem);
+		IDUIControlBase *pCtrlBase = pItem->GetCustomObj();
+		IDUIStatic* pTaskName = (IDUIStatic*)pCtrlBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskName"), TRUE);
+		IDUIStatic* pTaskSize = (IDUIStatic*)pCtrlBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskSize"), TRUE);
+		IDUIStatic* pTaskError = (IDUIStatic*)pCtrlBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskError"), TRUE);
+		pTaskName->SetText(_T("索引"));
+		pTaskSize->SetText(ss.str());
+		pTaskError->SetText(_T("0"));
+	}
 	DUI_pStatisticView->RefreshView();
+	return 0;
 }
 
 
@@ -129,17 +125,15 @@ void CPatchViewStatics::OnShowWindow(BOOL bShow, UINT nStatus)
 {
 	CDUIDialog::OnShowWindow(bShow, nStatus);
 	// TODO: 在此处添加消息处理程序代码
-	//if (bShow)
-		//m_pStaticView->RefreshView();
 }
 
-void CPatchViewStatics::DeleteAllItems()
+LRESULT CPatchViewStatics::CleanItems(WPARAM wparam, LPARAM lparam)
 {
 	DUI_pStatisticView->DeleteAllItems();
+	return 0;
 }
 
-
-void CPatchViewStatics::InsertProductsItems()
+LRESULT CPatchViewStatics::InsertProductsItems(WPARAM wparam, LPARAM lparam)
 {
 	int nIndex = DUI_pStatisticView->GetItemCount();
 	if (appconfig.m_mode_cfg.mode == cascade_mode)
@@ -154,7 +148,6 @@ void CPatchViewStatics::InsertProductsItems()
 		pTaskName->SetText("级联补丁");
 		pTaskSize->SetText("0/0");
 		pTaskError->SetText("0");
-		DUI_pStatisticView->RefreshView();
 	}
 	else if (appconfig.m_mode_cfg.mode == http_mode)
 	{
@@ -178,76 +171,119 @@ void CPatchViewStatics::InsertProductsItems()
 				pTaskError->SetText("0");
 				DUI_pStatisticView->RefreshView();
 			}
-
 			pProduct = strtok_s(NULL, ";", &nxtProduct);
 		}
 	}
+	DUI_pStatisticView->RefreshView();
+	return 0;
 }
 
-//void CPatchViewStatics::SetItemProgressbarPosition(short nItem, short pos)
-//{
-//	IDUITVItem *pItem = (IDUITVItem*)m_pStaticView->GetAt(nItem);
-//	IDUIUnitItem *pUnitItem = pItem->GetUnitItem(2);
-//	IDUIProgressbar * pDUIProgressBar = (IDUIProgressbar*)pUnitItem->GetControlBase();
-//	if (pDUIProgressBar)
-//		pDUIProgressBar->SetPos(pos);
-//}
 
-LRESULT CPatchViewStatics::OnButtonDispatcher(WPARAM wparam, LPARAM lparam)
+LRESULT CPatchViewStatics::OnSMLButtonUp(WPARAM wparam, LPARAM lparam)
 {
-	if (DBtn(BtnStart) == (ICmdButton*)wparam)
+	std::thread thread([=]()->void 
 	{
-		std::string szText = DBtn(BtnStart)->GetText();
-		if (szText == "启动")
+		if (DBtn(BtnStart) == (ICmdButton*)wparam)
 		{
-			if (appconfig.m_mode_cfg.mode == http_mode)
+			std::string szText = DBtn(BtnStart)->GetText();
+			if (szText == "启动")
 			{
-				OnHttpStart();
-			}
-			else
-			{
-				OnCasStart();
-			}
+				DBtn(BtnStart)->SetText("正在启动");
+				DBtn(BtnStart)->RedrawWindow(TRUE);
+				DBtn(BtnStart)->EnableObject(FALSE, TRUE);
 
-			DBtn(BtnStart)->SetText("停止");
-		}
-		else if (szText == "停止")
-		{
-			DBtn(BtnStart)->EnableObject(FALSE, TRUE);
-			DBtn(BtnStart)->SetText("正在停止");
-			if (appconfig.m_mode_cfg.mode == http_mode)
-			{
-				OnHttpStop();
-			}
-			else
-			{
-				OnCasStop();
-			}
+				//放在这里处理是最好的
+				if (theApp._thread.joinable())
+					theApp._thread.join();
 
+				::SendMessageTimeout(m_hWnd, UM_STATICVIEW_CLEANITEMS, 0, 0, SMTO_ABORTIFHUNG, 1500, 0);
+				::SendMessageTimeout(m_hWnd, UM_STATICVIEW_INDEXITEM, 0, 0, SMTO_ABORTIFHUNG, 1500, 0);
+				::SendMessageTimeout(m_hWnd, UM_STATICVIEW_PATCHITEM, 0, 0, SMTO_ABORTIFHUNG, 1500, 0);
+
+				if (appconfig.m_mode_cfg.mode == http_mode)
+				{
+					if (appconfig.m_http_cfg.m_szPatchPath.empty())
+					{
+						CMessageBox msg;
+						msg.ShowMessage("请选择补丁保存目录");
+						DBtn(BtnStart)->SetText("启动");
+						DBtn(BtnStart)->EnableObject(TRUE, TRUE);
+						return;
+					}
+					else
+					{
+						OnHttpStart();
+					}
+				}
+				else if (appconfig.m_mode_cfg.mode == cascade_mode)
+				{
+					if (appconfig.m_cascade_cfg.cascade)
+					{
+						OnCasStart();
+					}
+					else
+					{
+						CMessageBox msg;
+						msg.ShowMessage("Web平台未开启级联选项, 请配置后重新获取级联配置");
+						DBtn(BtnStart)->SetText("启动");
+						DBtn(BtnStart)->EnableObject(TRUE, TRUE);
+						return;
+					}
+				}
+
+			}
+			else if (szText == "停止")
+			{
+				int iRet = 1;
+				if (lparam == 0)
+				{
+					CMessageBox msg;
+					iRet = msg.ShowMessage("确定停止下载吗?", MB_OKCANCEL);
+				}
+
+				if (iRet == 1)
+				{
+					DBtn(BtnStart)->SetText("正在停止");
+					DBtn(BtnStart)->EnableObject(FALSE, TRUE);
+					if (appconfig.m_mode_cfg.mode == http_mode)
+					{
+						OnHttpStop();
+					}
+					else if (appconfig.m_mode_cfg.mode == cascade_mode)
+					{
+						OnCasStop();
+					}
+					DBtn(BtnStart)->SetText("启动");
+					DBtn(BtnStart)->EnableObject(TRUE, TRUE);
+				}
+
+			}
 		}
-	}
+	});
+	
+	thread.detach();
 	return 0;
 }
 
 
 void CPatchViewStatics::OnHttpStart()
 {
-	//AfxBeginThread([](LPVOID p)->unsigned int
-	theApp._thread = std::thread([p=this]()->void
+	DBtn(BtnStart)->SetText("停止");
+	DBtn(BtnStart)->EnableObject(TRUE, TRUE);
+	g_bstop = false;
+
+	theApp._thread = std::thread([p = this]()->void
 	{
 		CPatchViewStatics* pThis = (CPatchViewStatics*)p;
 		CPatchView * pParent = (CPatchView*)pThis->GetParent();
 		CPatchDownView *pDownView = (CPatchDownView *)pParent->GetDownView();
 		CPatchViewError *pErrorView = (CPatchViewError *)pParent->GetErrorView();
 		::SendMessage(pErrorView->m_hWnd, UM_ERRORVIEW_CLEANITEMS, 0, 0);
-
+		ICmdButton* pBtnStart = (ICmdButton*)pThis->GetObjPtr("BtnStart", TRUE);
 		IDUIListView* pListView = (IDUIListView*)pThis->GetObjPtr("ListViewDownCenter", TRUE);
 		int cnt = pListView->GetItemCount();
 		for (int i = 0; i < cnt; ++i)
 		{
-			//std::this_thread::sleep_for(std::chrono::seconds(2));
-
-			pThis->m_curitem = i;
 			IDUITVItem *pItem = (IDUITVItem *)pListView->GetAt(i);
 			if (0 == i)
 			{
@@ -296,81 +332,167 @@ void CPatchViewStatics::OnHttpStart()
 					CPackInterface::FreeLoadIndexObject(pLoad);
 
 					if (!pDownView->DownloadPatchesByCurl(pItem, patches))
-					{
-						
 						break;
-					}
 				}
 			}
 		}
+		pBtnStart->SetText("启动");
 	});
 }
 
 void CPatchViewStatics::OnHttpStop()
 {
-	std::thread thread([p = this]()->void
-	{
-		CPatchViewStatics* pThis = (CPatchViewStatics*)p;
-		theApp.StopByCurl();
-		if (theApp._thread.joinable())
-			theApp._thread.join();
-		ICmdButton* pBtn = (ICmdButton*)pThis->GetObjPtr("BtnStart", TRUE);
-		pBtn->SetText("停止");
-		pBtn->EnableObject(TRUE, TRUE);
-
-	});
-	thread.detach();
+	g_bstop = true;
+	theApp.StopByCurl();
 }
 
 
 void CPatchViewStatics::OnCasStart()
 {
-	theApp._thread = std::thread([p=this]()->void 
+	DBtn(BtnStart)->SetText("停止");
+	DBtn(BtnStart)->EnableObject(TRUE, TRUE);
+	g_bstop = false;
+
+	theApp._thread = std::thread([p = this]()->void
 	{
-		theApp.InitPatchClient();
 		CPatchViewStatics* pThis = (CPatchViewStatics*)p;
 		CPatchView * pParent = (CPatchView*)pThis->GetParent();
 		CPatchDownView *pDownView = (CPatchDownView *)pParent->GetDownView();
 		CPatchViewError *pErrorView = (CPatchViewError *)pParent->GetErrorView();
 		::SendMessage(pErrorView->m_hWnd, UM_ERRORVIEW_CLEANITEMS, 0, 0);
 		IDUIListView* pListView = (IDUIListView*)pThis->GetObjPtr("ListViewDownCenter", TRUE);
-		int cnt = pListView->GetItemCount();
-		for (int i = 0; i < cnt; ++i)
+		ICmdButton* pBtnStart = (ICmdButton*)pThis->GetObjPtr("BtnStart", TRUE);
+		if (!theApp.InitPatchClient())
 		{
-			//std::this_thread::sleep_for(std::chrono::seconds(2));
-
-			pThis->m_curitem = i;
-			IDUITVItem *pItem = (IDUITVItem *)pListView->GetAt(i);
-			if (0 == i)
+			if (!g_bstop)
 			{
-				if (!pDownView->DownloadIndexesByRcf(pItem))
-					break;
+				CMessageBox msg;
+				msg.ShowMessage("连接上级服务器异常,请检查上级服务器配置");
+			}
+			pBtnStart->SetText("启动");
+			return;
+		}
+
+		if (pListView->GetItemCount() > 0)
+		{
+			//索引Item
+			IDUITVItem *pItem = (IDUITVItem *)pListView->GetAt(0);
+			if (!pDownView->DownloadIndexesByRcf(pItem))
+				return;
+
+			//默认模式，先请求Index1.xml，根据Index1.xml下载补丁信息
+			if (appconfig.m_cascade_cfg.index1)
+			{
+				IDUITVItem *pItem = (IDUITVItem *)pListView->GetAt(1);
+				if (!pDownView->DownloadIndex1xmlByRcf(pItem))
+					return;
 			}
 			else
 			{
+				IDUITVItem *pItem = (IDUITVItem *)pListView->GetAt(1);
 				if (!pDownView->DownloadPatchesByRcf(pItem))
-					break;
+					return;
 			}
 		}
+		pBtnStart->SetText("启动");
+
 	});
 }
 
 void CPatchViewStatics::OnCasStop()
 {
-	std::thread thread([p = this]()->void
-	{
-		CPatchViewStatics* pThis = (CPatchViewStatics*)p;
-		theApp.StopByRcf();
-		if (theApp._thread.joinable())
-			theApp._thread.join();
-		ICmdButton* pBtn = (ICmdButton*)pThis->GetObjPtr("BtnStart", TRUE);
-		pBtn->SetText("停止");
-		pBtn->EnableObject(TRUE, TRUE);
-	});
-	thread.detach();
+	g_bstop = true;
+	theApp.StopByRcf();
 }
 
 CWnd* CPatchViewStatics::GetParent()
 {
 	return m_pParent;
+}
+
+void CPatchViewStatics::OnTimer(UINT_PTR nIDEvent)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+
+	CDUIDialog::OnTimer(nIDEvent);
+
+	__time64_t long_time;
+	_time64(&long_time);
+	static __time64_t dwLastTime = long_time;
+
+	timemode mTime = default_mode;
+	std::string szNetTime = "0";
+	if (appconfig.m_mode_cfg.mode == cascade_mode)
+	{
+		mTime = appconfig.m_cascade_cfg.mode;
+		szNetTime = appconfig.m_cascade_cfg.sznettime;
+	}
+	else if (appconfig.m_mode_cfg.mode == http_mode)
+	{
+		mTime = appconfig.m_http_cfg.mode;
+		szNetTime = appconfig.m_http_cfg.sznettime;
+	}
+
+	switch (mTime)
+	{
+	case default_mode:
+		dwLastTime = long_time;
+		break;
+	case period_mode:
+	{
+		std::stringstream ss;
+		__time64_t dwTick;
+		ss << szNetTime;
+		ss >> dwTick;
+
+		if (long_time - dwLastTime >= dwTick * 60)
+		{
+			std::string szText = DBtn(BtnStart)->GetText();
+			if (szText == "启动")
+				OnSMLButtonUp((WPARAM)DBtn(BtnStart), 0);
+			dwLastTime = long_time;
+		}
+	}
+	break;
+	case interval_mode:
+	{
+		int iDayoff = 0;
+		std::stringstream ss;
+		int iHour1, iMin1, iSec1, iHour2, iMin2, iSec2;
+		std::string szBegin, szEnd, szHour1, szMin1, szSec1, szHour2, szMin2, szSec2;
+		GetIntervalTime(szNetTime, szBegin, szEnd);
+		GetTime(szBegin, szHour1, szMin1, szSec1);
+		GetTime(szEnd, szHour2, szMin2, szSec2);
+		iHour1 = atoi(szHour1.c_str());
+		iMin1 = atoi(szMin1.c_str());
+		iSec1 = atoi(szSec1.c_str());
+		iHour2 = atoi(szHour2.c_str());
+		iMin2 = atoi(szMin2.c_str());
+		iSec2 = atoi(szSec2.c_str());
+
+		if (iHour1 > iHour2)
+			iDayoff = 1;
+		CTime tmTimeNow = CTime::GetCurrentTime();
+		CTime tmStart(tmTimeNow.GetYear(), tmTimeNow.GetMonth(), tmTimeNow.GetDay(), iHour1, iMin1, iSec1);
+		CTime tmEnd = CTime(tmTimeNow.GetYear(), tmTimeNow.GetMonth(), tmTimeNow.GetDay(), 0, 0, 0)
+			+ CTimeSpan(iDayoff, iHour2, iMin2, iSec2);
+		CTimeSpan x1 = tmTimeNow - tmStart, x2 = tmEnd - tmTimeNow;
+
+		std::string szText = DBtn(BtnStart)->GetText();
+		if (x1.GetTotalSeconds() >= 0 && x2.GetTotalSeconds() >= 0)
+		{
+			if (szText == "启动")
+				OnSMLButtonUp((WPARAM)DBtn(BtnStart), 0);
+		}
+		else
+		{
+			if (szText == "停止")
+				OnSMLButtonUp((WPARAM)DBtn(BtnStart), 1);
+		}
+		dwLastTime = long_time;
+	}
+	break;
+	default:
+		break;
+	}
 }

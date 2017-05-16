@@ -38,7 +38,6 @@
 #include <thread>
 #include "curl.h"
 #include "EDPPatchBase.h"
-#include "IDownload.h"
 #include "PackInterface.h"
 #include "AppConfig.h"
 #include "log.hpp"
@@ -59,6 +58,9 @@ enum  CUSTOM_MESSAGE
 	UM_ERRORVIEW_INDEXITEM,
 	UM_ERRORVIEW_PATCHITEM,
 	UM_ERRORVIEW_CLEANITEMS,
+	UM_STATICVIEW_CLEANITEMS,
+	UM_STATICVIEW_INDEXITEM,
+	UM_STATICVIEW_PATCHITEM,
 };
 
 
@@ -67,6 +69,8 @@ enum  CUSTOM_MESSAGE
 BOOL IsTimeValid(std::string &sztime);
 BOOL IsIpValid(std::string &szIp);
 BOOL GetFileSHA1(std::string szFile, OUT std::string &szSha);
+void GetIntervalTime(std::string &szTime, std::string &szBegin, std::string &szEnd);
+void GetTime(std::string& szTime, std::string &szHour, std::string &szMin, std::string &szSec);
 
 #ifdef _UNICODE
 #if defined _M_IX86

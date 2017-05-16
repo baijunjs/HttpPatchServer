@@ -16,6 +16,7 @@
 
 IDUITVItem* m_curItem;
 
+#define MESSAGE_TIMEOUT			1000
 
 bool g_bstop = false;
 
@@ -67,7 +68,7 @@ std::string ConvertSpeedUnit(unsigned long speed)
 	}
 	else if (dspeed > 1024)
 	{
-		szUnit = "kB";
+		szUnit = "KB";
 		dspeed /= 1024;
 	}
 	ss << std::setprecision(2) << std::setiosflags(ios::fixed | ios::showpoint) << dspeed << szUnit;
@@ -119,7 +120,7 @@ int CurlProgress(void *clientp, curl_off_t dltotal, curl_off_t dlnow, curl_off_t
 //
 //	printf("speed:%.2f%s/s", speed, unit.c_str());
 
-	if (dltotal != 0 && pCurl->GetTaskStatus() != DOWNLOAD_STOPPED)
+	if (dltotal != 0 && !g_bstop)
 	{
 		double p = (dlnow + pCurl->m_curLength) / (double)pCurl->m_filesize;
 		short pos = p * 100;
@@ -147,6 +148,10 @@ void onFileTransferProgress(const RCF::FileTransferProgress & progress)
 
 	double p = progress.mBytesTransferredSoFar / (double)progress.mBytesTotalToTransfer;
 	short pos = p * 100;
+
+	if (g_bstop)
+		throw RCF::Exception("停止下载");
+
 	if (m_curItem)
 	{
 		IDUIControlBase* pItemBase = (IDUIControlBase*)m_curItem->GetCustomObj();
@@ -158,8 +163,6 @@ void onFileTransferProgress(const RCF::FileTransferProgress & progress)
 		}
 	}
 
-	if (g_bstop)
-		throw RCF::Exception("停止下载");
 }
 
 
@@ -168,15 +171,6 @@ BOOL CPatchDownView::OnInitDialog()
 	CDUIDialog::OnInitDialog();
 
 	// TODO:  在此添加额外的初始化
-	//DProgress(ProgressBar)->SetVisible(FALSE, TRUE, TRUE);
-	//DUI_pDownView->InsertColumn(ColumnName, "名称", 200);
-	//DUI_pDownView->InsertColumn(ColumnSize, "大小", 100);
-	//DUI_pDownView->InsertColumn(ColumnProgress, "进度", 100);
-	//DUI_pDownView->InsertColumn(ColumnCrc, "MD5", 200);
-	//DUI_pDownView->InsertColumn(ColumnDate, "时间", 400);
-
-	//DUI_pDownView->SetColumnUserModule(ColumnProgress, DProgress(ProgressBar));
-	//DUI_pDownView->AddGroup(0, "索引");
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
@@ -241,18 +235,17 @@ void CPatchDownView::InsertErrorTaskToView(void *pTask, TASK_TYPE type)
 	CWnd *pErrorView = ((CPatchView*)m_pParent)->GetErrorView();
 	if (INDEX == type)
 	{
-		::SendMessage(pErrorView->m_hWnd, UM_ERRORVIEW_INDEXITEM, (WPARAM)pTask, type);
+		::SendMessageTimeout(pErrorView->m_hWnd, UM_ERRORVIEW_INDEXITEM, (WPARAM)pTask, type, SMTO_ABORTIFHUNG , 5000, 0);
 	}
 	else if (PATCH == type)
 	{
-		::SendMessage(pErrorView->m_hWnd, UM_ERRORVIEW_PATCHITEM, (WPARAM)pTask, type);
+		::SendMessageTimeout(pErrorView->m_hWnd, UM_ERRORVIEW_PATCHITEM, (WPARAM)pTask, type, SMTO_ABORTIFHUNG , 5000, 0);
 	}
 }
 
 
 bool CPatchDownView::DownloadIndexesByCurl(IDUITVItem *pTopItem, vrv::patch::PatchIndexVectorPtr indexes)
 {
-	g_bstop = false;
 	int taskdone = 0, taskerror = 0;
 	std::string szurlPrefix, sztoolpath;
 	int indxcount = indexes->GetIndexCount();
@@ -266,12 +259,12 @@ bool CPatchDownView::DownloadIndexesByCurl(IDUITVItem *pTopItem, vrv::patch::Pat
 	ss << "0/" << indxcount;
 	pTopSize->SetText(ss.str());
 	pTopError->SetText(_T("0"));
-	
-	::SendMessage(m_hWnd, UM_DOWNVIEW_CLEANITEMS, 0, 0);
+
+	::SendMessageTimeout(m_hWnd, UM_DOWNVIEW_CLEANITEMS, 0, 0, SMTO_ABORTIFHUNG , MESSAGE_TIMEOUT, 0);
 	size_t pos = appconfig.m_http_cfg.m_szIndexUrl.find_last_of("//");
 	if (pos == std::string::npos)
 	{
-		vrvlog::SPD_LOG_ERROR("URL:{0} 格式错误", appconfig.m_http_cfg.m_szIndexUrl);
+		vrvlog::SPD_LOG_ERROR("URL:{0} format error", appconfig.m_http_cfg.m_szIndexUrl);
 		return false;
 	}
 	szurlPrefix = appconfig.m_http_cfg.m_szIndexUrl.substr(0, pos + 1);
@@ -304,7 +297,7 @@ bool CPatchDownView::DownloadIndexesByCurl(IDUITVItem *pTopItem, vrv::patch::Pat
 			std::this_thread::sleep_for(std::chrono::milliseconds(500));
 			vrv::patch::IndexInfoPtr indexptr = TmpContainer[idx];
 			IDUITVItem *pItem = nullptr;
-			::SendMessage(m_hWnd, UM_DOWNVIEW_INDEXITEM, (WPARAM)indexptr.get(), (LPARAM)&pItem);
+			::SendMessageTimeout(m_hWnd, UM_DOWNVIEW_INDEXITEM, (WPARAM)indexptr.get(), (LPARAM)&pItem, SMTO_ABORTIFHUNG , MESSAGE_TIMEOUT, 0);
 			if (pItem == nullptr)
 			{
 				InsertErrorTaskToView(&indexptr, INDEX);
@@ -324,7 +317,7 @@ bool CPatchDownView::DownloadIndexesByCurl(IDUITVItem *pTopItem, vrv::patch::Pat
 				std::stringstream serr;
 				serr << ++taskerror;
 				pTopError->SetText(serr.str());
-				vrvlog::SPD_LOG_ERROR("索引目录创建失败 {0}", szIndexPath.c_str());
+				vrvlog::SPD_LOG_ERROR("Index path create failed {0}", szIndexPath.c_str());
 				InsertErrorTaskToView(&indexptr, INDEX);
 				continue;
 			}
@@ -367,13 +360,16 @@ bool CPatchDownView::DownloadIndexesByCurl(IDUITVItem *pTopItem, vrv::patch::Pat
 					if (0 == (code = theApp.m_curlptr->StartDownload()))
 					{
 						MoveFileExA(szTmpFile.c_str(), szIndexPath.c_str(), MOVEFILE_REPLACE_EXISTING);
-						vrvlog::SPD_LOG_INFO("{0} 下载成功", szIndexPath.c_str());
+						vrvlog::SPD_LOG_INFO("{0} download succeed", szIndexPath.c_str());
 					}
 				}
 
 				code == 0 ? ++taskdone : ++taskerror;
 				if (code)
+				{
 					InsertErrorTaskToView(&indexptr, INDEX);
+					vrvlog::SPD_LOG_ERROR("Index File: {0} download failed ({1})", szIndexPath.c_str(), code);
+				}
 			}
 
 			pItemDate->SetText(CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M:%S").GetString());
@@ -397,15 +393,16 @@ bool CPatchDownView::DownloadIndexesByCurl(IDUITVItem *pTopItem, vrv::patch::Pat
 	}
 
 	if (g_bstop)
+	{
+		vrvlog::SPD_LOG_INFO("Http download thread has been stopped.");
 		return false;
+	}
 
 	return true;
 }
 
 bool CPatchDownView::DownloadPatchesByCurl(IDUITVItem *pTopItem, vrv::patch::PatchInfoVec &patches)
 {
-	
-	g_bstop = false;
 	int taskdone = 0, taskerror = 0;
 	std::string szurlPrefix, szpatchpath;
 	int patchcount = patches.size();
@@ -420,7 +417,7 @@ bool CPatchDownView::DownloadPatchesByCurl(IDUITVItem *pTopItem, vrv::patch::Pat
 	pTopSize->SetText(ss.str());
 	pTopError->SetText(_T("0"));
 
-	::SendMessage(m_hWnd, UM_DOWNVIEW_CLEANITEMS, 0, 0);
+	::SendMessageTimeout(m_hWnd, UM_DOWNVIEW_CLEANITEMS, 0, 0, SMTO_ABORTIFHUNG, MESSAGE_TIMEOUT, 0);
 	szpatchpath = appconfig.m_http_cfg.m_szPatchPath;
 
 	vrv::patch::_patchiter iter = patches.begin();
@@ -430,7 +427,7 @@ bool CPatchDownView::DownloadPatchesByCurl(IDUITVItem *pTopItem, vrv::patch::Pat
 		vrv::patch::PatchInfoPtr patch = *iter;
 
 		IDUITVItem *pItem = nullptr;
-		::SendMessage(m_hWnd, UM_DOWNVIEW_PATCHITEM, (WPARAM)patch.get(), (LPARAM)&pItem);
+		::SendMessageTimeout(m_hWnd, UM_DOWNVIEW_PATCHITEM, (WPARAM)patch.get(), (LPARAM)&pItem, SMTO_ABORTIFHUNG , MESSAGE_TIMEOUT, 0);
 		if (pItem == nullptr)
 		{
 			InsertErrorTaskToView(&patch, PATCH);
@@ -456,7 +453,7 @@ bool CPatchDownView::DownloadPatchesByCurl(IDUITVItem *pTopItem, vrv::patch::Pat
 			std::stringstream serr;
 			serr << ++taskerror;
 			pTopError->SetText(serr.str());
-			vrvlog::SPD_LOG_ERROR("补丁目录创建失败 {0}", szfilePath.c_str());
+			vrvlog::SPD_LOG_ERROR("Patch path create failed {0}", szfilePath.c_str());
 			InsertErrorTaskToView(&patch, PATCH);
 			continue;
 		}
@@ -497,13 +494,16 @@ bool CPatchDownView::DownloadPatchesByCurl(IDUITVItem *pTopItem, vrv::patch::Pat
 				if (0 == (code = theApp.m_curlptr->StartDownload()))
 				{
 					MoveFileExA(szTmpFile.c_str(), szfilePath.c_str(), MOVEFILE_REPLACE_EXISTING);
-					vrvlog::SPD_LOG_INFO("{0} 下载成功", szfilePath.c_str());
+					vrvlog::SPD_LOG_INFO("{0} download succeed", szfilePath.c_str());
 				}
 			}
 
 			code == 0 ? ++taskdone : ++taskerror;
 			if (code)
+			{
 				InsertErrorTaskToView(&patch, PATCH);
+				vrvlog::SPD_LOG_ERROR("{0} download failed ({1})", patch->szUrl.c_str(), code);
+			}
 		}
 
 		pItemDate->SetText(CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M:%S").GetString());
@@ -527,8 +527,11 @@ bool CPatchDownView::DownloadPatchesByCurl(IDUITVItem *pTopItem, vrv::patch::Pat
 	}
 
 	if (g_bstop)
+	{
+		vrvlog::SPD_LOG_INFO("Http download thread has been stopped.");
 		return false;
-	
+	}
+
 	return true;
 }
 
@@ -539,8 +542,13 @@ LRESULT CPatchDownView::InsertPatchItem(WPARAM wparam, LPARAM lparam)
 	vrv::patch::PatchInfo* patch = (vrv::patch::PatchInfo*)wparam;
 	if (patch == nullptr)
 		return 0;
-	//int nIndex = pGroup->GetCount();
-	//IDUITVItem *_pItem = pGroup->AppendItem(nIndex, pIndex->szIndexName);
+	std::string szPatchName;
+	size_t pos = patch->szPatchName.find_last_of("\\");
+	if (pos == std::string::npos)
+		szPatchName = patch->szPatchName;
+	else
+		szPatchName = patch->szPatchName.substr(pos + 1);
+
 	int nIndex = DUI_pDownView->GetItemCount();
 	nIndex = DUI_pDownView->InsertItem(nIndex, patch->szPatchName, 0, TRUE);
 	IDUITVItem *pItem = (IDUITVItem *)DUI_pDownView->GetAt(nIndex);
@@ -550,20 +558,8 @@ LRESULT CPatchDownView::InsertPatchItem(WPARAM wparam, LPARAM lparam)
 	IDUIProgressbar *pProgress = (IDUIProgressbar *)pCtrlBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("ProgressBar"), TRUE);
 	IDUIStatic *pStcCrc = (IDUIStatic *)pCtrlBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskCrc"), TRUE);
 	IDUIStatic *pStcDate = (IDUIStatic *)pCtrlBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskDate"), TRUE);
-	/*IDUIUnitItem *pUnitName = pItem->GetUnitItem(ColumnName);
-	IDUIUnitItem *pUnitSize = pItem->GetUnitItem(ColumnSize);
-	IDUIUnitItem *pUnitCrc = pItem->GetUnitItem(ColumnCrc);
-	IDUIUnitItem *pUnitDate = pItem->GetUnitItem(ColumnDate);
-	pUnitName->SetUnitItemText(0, szIndexName);
-	pUnitSize->SetUnitItemText(0, "0");
-	pUnitCrc->SetUnitItemText(0, ss.str());
-	pUnitDate->SetUnitItemText(0, CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M:%S").GetString());*/
 
-	/*pItem->AppendItemText(ColumnName, szIndexName, "", TRUE);
-	pItem->AppendItemText(ColumnSize, "0", "", TRUE);
-	pItem->AppendItemText(ColumnCrc, ss.str(), "", TRUE);
-	pItem->AppendItemText(ColumnDate, CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M:%S").GetString(), "", TRUE);*/
-	pStcName->SetText(patch->szPatchName);
+	pStcName->SetText(szPatchName);
 	pStcName->DUISetToolTip(patch->MakeToolTipText());
 	unsigned long speed;
 	std::stringstream ss;
@@ -581,10 +577,6 @@ LRESULT CPatchDownView::InsertPatchItem(WPARAM wparam, LPARAM lparam)
 
 LRESULT CPatchDownView::InsertIndexItem(WPARAM wparam, LPARAM lparam)
 {
-	//IDUITVItemGroup *pGroup = DUI_pDownView->GetGroupByID(0);
-	//if (pGroup == nullptr)
-		//return -1;
-
 	vrv::patch::IndexInfo* pIndex = (vrv::patch::IndexInfo*)wparam;
 	if (pIndex == nullptr)
 		return 0;
@@ -596,11 +588,8 @@ LRESULT CPatchDownView::InsertIndexItem(WPARAM wparam, LPARAM lparam)
 	else
 		szIndexName = pIndex->szIndexName.substr(pos + 1);
 
-	std::stringstream ss,sa;
+	std::stringstream ss;
 	ss << pIndex->dwCrc;
-	sa << pIndex->size;
-	//int nIndex = pGroup->GetCount();
-	//IDUITVItem *_pItem = pGroup->AppendItem(nIndex, pIndex->szIndexName);
 	int nIndex = DUI_pDownView->GetItemCount();
 	nIndex = DUI_pDownView->InsertItem(nIndex, pIndex->szIndexName, 0, TRUE);
 	IDUITVItem *pItem = (IDUITVItem *)DUI_pDownView->GetAt(nIndex);
@@ -610,21 +599,9 @@ LRESULT CPatchDownView::InsertIndexItem(WPARAM wparam, LPARAM lparam)
 	IDUIProgressbar *pProgress = (IDUIProgressbar *)pCtrlBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("ProgressBar"), TRUE);
 	IDUIStatic *pStcCrc = (IDUIStatic *)pCtrlBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskCrc"), TRUE);
 	IDUIStatic *pStcDate = (IDUIStatic *)pCtrlBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskDate"), TRUE);
-	/*IDUIUnitItem *pUnitName = pItem->GetUnitItem(ColumnName);
-	IDUIUnitItem *pUnitSize = pItem->GetUnitItem(ColumnSize);
-	IDUIUnitItem *pUnitCrc = pItem->GetUnitItem(ColumnCrc);
-	IDUIUnitItem *pUnitDate = pItem->GetUnitItem(ColumnDate);
-	pUnitName->SetUnitItemText(0, szIndexName);
-	pUnitSize->SetUnitItemText(0, "0");
-	pUnitCrc->SetUnitItemText(0, ss.str());
-	pUnitDate->SetUnitItemText(0, CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M:%S").GetString());*/
 
-	/*pItem->AppendItemText(ColumnName, szIndexName, "", TRUE);
-	pItem->AppendItemText(ColumnSize, "0", "", TRUE);
-	pItem->AppendItemText(ColumnCrc, ss.str(), "", TRUE);
-	pItem->AppendItemText(ColumnDate, CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M:%S").GetString(), "", TRUE);*/
 	pStcName->SetText(szIndexName);
-	pStcSize->SetText(sa.str());
+	pStcSize->SetText(ConvertSpeedUnit(pIndex->size));
 	pStcCrc->SetText(ss.str());
 	pStcDate->SetText(CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M:%S").GetString());
 	DUI_pDownView->RefreshView();
@@ -670,12 +647,11 @@ bool CPatchDownView::DownloadIndexesByRcf(IDUITVItem *pTopItem)
 	}
 	catch (const RCF::Exception& e)
 	{
-		vrvlog::SPD_LOG_ERROR("Cascade request indexes failed, errorid({0}),what({1})", 
+		vrvlog::SPD_LOG_ERROR("Cascade request indexes failed, errorid({0}),what({1})",
 			e.getErrorId(), e.getWhat());
 		return false;
 	}
 
-	g_bstop = false;
 	int taskdone = 0, taskerror = 0;
 	std::string sztoolpath;
 	int indxcount = indexes.size();
@@ -690,19 +666,303 @@ bool CPatchDownView::DownloadIndexesByRcf(IDUITVItem *pTopItem)
 	pTopSize->SetText(ss.str());
 	pTopError->SetText(_T("0"));
 
-	::SendMessage(m_hWnd, UM_DOWNVIEW_CLEANITEMS, 0, 0);
+	::SendMessageTimeout(m_hWnd, UM_DOWNVIEW_CLEANITEMS, 0, 0, SMTO_ABORTIFHUNG , MESSAGE_TIMEOUT, 0);
 	sztoolpath = appconfig.m_cascade_cfg.szPatchPath + "\\Tools\\";
 
 	for (size_t idx = 0; idx < indexes.size() && !g_bstop; ++idx)
 	{
 		vrv::patch::IndexInfoPtr indexptr = std::make_shared<vrv::patch::IndexInfo>(indexes[idx]);
 
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		IDUITVItem *pItem = nullptr;
+		::SendMessageTimeout(m_hWnd, UM_DOWNVIEW_INDEXITEM, (WPARAM)indexptr.get(), (LPARAM)&pItem, SMTO_ABORTIFHUNG , MESSAGE_TIMEOUT, 0);
+		if (pItem == nullptr)
+		{
+			InsertErrorTaskToView(&indexptr, INDEX);
+			continue;
+		}
+
+		m_curItem = pItem;
+		IDUIControlBase* pItemBase = (IDUIControlBase*)pItem->GetCustomObj();
+		IDUIStatic *pItemSize = (IDUIStatic *)pItemBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskSize"), TRUE);
+		IDUIProgressbar *pItemProgress = (IDUIProgressbar *)pItemBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("ProgressBar"), TRUE);
+		IDUIStatic *pItemCrc = (IDUIStatic *)pItemBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskCrc"), TRUE);
+		IDUIStatic *pItemDate = (IDUIStatic *)pItemBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskDate"), TRUE);
+
+		std::string szIndexPath = sztoolpath + indexptr->szIndexName;
+		if (!MakeSureDirectoryExist(szIndexPath.c_str(), TRUE))
+		{
+			std::stringstream serr;
+			serr << ++taskerror;
+			pTopError->SetText(serr.str());
+			vrvlog::SPD_LOG_ERROR("Index path create failed ({0})", szIndexPath.c_str());
+			InsertErrorTaskToView(&indexptr, INDEX);
+			continue;
+		}
+
+
+		//pItemSize->SetText(ConvertSpeedUnit(indexptr->size));
+
+		if (GetFileCrc(szIndexPath.c_str()) == indexptr->dwCrc)
+		{
+			if (pItemProgress)
+				pItemProgress->SetPos(100);
+			++taskdone;
+		}
+		else
+		{
+			std::string szPath = szIndexPath.substr(0, szIndexPath.find_last_of("\\"));
+
+			theApp.client->getClientStub().setFileProgressCallback(&onFileTransferProgress);
+
+			if (appconfig.m_cascade_cfg.flux)
+				theApp.fileDownload->setTransferRateBps(appconfig.m_cascade_cfg.fluxspeed * 1024);
+
+			theApp.fileDownload->setDownloadToPath(szPath);
+
+			try
+			{
+				theApp.client->DownloadIndexFile(indexptr->szIndexName, *theApp.fileDownload);
+				std::string szLocalpath = theApp.fileDownload->getLocalPath();
+				++taskdone;
+			}
+			catch (RCF::Exception &e)
+			{
+				vrvlog::SPD_LOG_ERROR("Index File: {0} download failed ({1})", szIndexPath.c_str(), e.getErrorId());
+				InsertErrorTaskToView(&indexptr, INDEX);
+				++taskerror;
+			}
+
+			//code == 0 ? ++taskdone : ++taskerror;
+			//if (code)
+				//InsertErrorTaskToView(&indexptr, INDEX);
+		}
+
+		pItemDate->SetText(CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M:%S").GetString());
+
+		//::SendMessage(m_hWnd, UM_DOWNVIEW_REFRESH, 0, 0);
+		pItem->Refresh();
+
+		std::stringstream scount, serr;
+		scount << taskdone << "/" << indxcount;
+		pTopSize->SetText(scount.str());
+
+		serr << taskerror;
+		pTopError->SetText(serr.str());
+
+		if (pTopProgress)
+		{
+			short pos = (taskdone / (double)indxcount) * 100;
+			pTopProgress->SetPos(pos);
+		}
+	}
+
+	if (g_bstop)
+	{
+		vrvlog::SPD_LOG_INFO("Cascade download thread has been stopped.");
+		return false;
+	}
+
+	return true;
+}
+
+
+bool CPatchDownView::DownloadPatchesByRcf(IDUITVItem *pTopItem)
+{
+	std::vector<vrv::patch::PatchInfo> patches;
+	try
+	{
+		theApp.client->RequestPatchInfo(patches);
+	}
+	catch (const RCF::Exception& e)
+	{
+		vrvlog::SPD_LOG_ERROR("Cascade Patch info failed, errorid({0}),what({1})",
+			e.getErrorId(), e.getWhat());
+		return false;
+	}
+
+	int taskdone = 0, taskerror = 0;
+	std::string szpatchpath;
+	int indxcount = patches.size();
+
+	IDUIControlBase *pTopBase = pTopItem->GetCustomObj();
+	IDUIStatic *pTopSize = (IDUIStatic *)pTopBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskSize"), TRUE);
+	IDUIStatic *pTopError = (IDUIStatic *)pTopBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskError"), TRUE);
+	IDUIProgressbar *pTopProgress = (IDUIProgressbar *)pTopBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("ProgressBar"), TRUE);
+
+	std::stringstream ss;
+	ss << "0/" << indxcount;
+	pTopSize->SetText(ss.str());
+	pTopError->SetText(_T("0"));
+
+	::SendMessageTimeout(m_hWnd, UM_DOWNVIEW_CLEANITEMS, 0, 0, SMTO_ABORTIFHUNG , MESSAGE_TIMEOUT, 0);
+	szpatchpath = appconfig.m_cascade_cfg.szPatchPath + "\\";
+
+	for (size_t idx = 0; idx < patches.size() && !g_bstop; ++idx)
+	{
+		vrv::patch::PatchInfoPtr patchptr = std::make_shared<vrv::patch::PatchInfo>(patches[idx]);
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		IDUITVItem *pItem = nullptr;
+		::SendMessageTimeout(m_hWnd, UM_DOWNVIEW_PATCHITEM, (WPARAM)patchptr.get(), (LPARAM)&pItem, SMTO_ABORTIFHUNG , MESSAGE_TIMEOUT, 0);
+		if (pItem == nullptr)
+		{
+			InsertErrorTaskToView(&patchptr, PATCH);
+			continue;
+		}
+
+		m_curItem = pItem;
+		IDUIControlBase* pItemBase = (IDUIControlBase*)pItem->GetCustomObj();
+		IDUIStatic *pItemSize = (IDUIStatic *)pItemBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskSize"), TRUE);
+		IDUIProgressbar *pItemProgress = (IDUIProgressbar *)pItemBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("ProgressBar"), TRUE);
+		IDUIStatic *pItemCrc = (IDUIStatic *)pItemBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskCrc"), TRUE);
+		IDUIStatic *pItemDate = (IDUIStatic *)pItemBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskDate"), TRUE);
+
+		std::string szPatchFile = szpatchpath + patchptr->szPatchName;
+		if (!MakeSureDirectoryExist(szPatchFile.c_str(), TRUE))
+		{
+			std::stringstream serr;
+			serr << ++taskerror;
+			pTopError->SetText(serr.str());
+			vrvlog::SPD_LOG_ERROR("Patch path create failed ({0})", szPatchFile.c_str());
+			InsertErrorTaskToView(&patchptr, PATCH);
+			continue;
+		}
+
+		//size_t size;
+		//std::stringstream ss;
+		//ss << patchptr->szPatchSize;
+		//ss >> size;
+		//pItemSize->SetText(ConvertSpeedUnit(size));
+
+		std::string szSha;
+		if (GetFileSHA1(szPatchFile.c_str(), szSha) &&
+			szSha == patchptr->szMd5)
+		{
+			++taskdone;
+			if (pItemProgress)
+				pItemProgress->SetPos(100);
+		}
+		else
+		{
+			std::string szPath = szPatchFile.substr(0, szPatchFile.find_last_of("\\"));
+			try
+			{
+				theApp.client->getClientStub().setFileProgressCallback(&onFileTransferProgress);
+
+				if (appconfig.m_cascade_cfg.flux)
+					theApp.fileDownload->setTransferRateBps(appconfig.m_cascade_cfg.fluxspeed * 1024);
+
+				theApp.fileDownload->setDownloadToPath(szPath);
+				theApp.client->DownloadPatchFile(patchptr->szPatchName, *theApp.fileDownload);
+				std::string szLocalpath = theApp.fileDownload->getLocalPath();
+				++taskdone;
+			}
+			catch (RCF::Exception &e)
+			{
+				vrvlog::SPD_LOG_ERROR("Patch File: {0} download failed ({1})", szPatchFile.c_str(), e.getErrorId());
+				InsertErrorTaskToView(&patchptr, PATCH);
+				++taskerror;
+
+			}
+
+			//code == 0 ? ++taskdone : ++taskerror;
+			//if (code)
+			//InsertErrorTaskToView(&indexptr, INDEX);
+		}
+
+		pItemDate->SetText(CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M:%S").GetString());
+
+		//::SendMessage(m_hWnd, UM_DOWNVIEW_REFRESH, 0, 0);
+		pItem->Refresh();
+
+		std::stringstream scount, serr;
+		scount << taskdone << "/" << indxcount;
+		pTopSize->SetText(scount.str());
+
+		serr << taskerror;
+		pTopError->SetText(serr.str());
+
+		if (pTopProgress)
+		{
+			short pos = (taskdone / (double)indxcount) * 100;
+			pTopProgress->SetPos(pos);
+		}
+	}
+
+	if (g_bstop)
+	{
+		vrvlog::SPD_LOG_INFO("Cascade download thread has been stopped.");
+		return false;
+	}
+
+	return true;
+}
+
+bool CPatchDownView::DownloadIndex1xmlByRcf(IDUITVItem *pTopItem)
+{
+	int taskdone = 0, taskerror = 0;
+	vrv::patch::PatchInfoVec patches;
+	std::string szPatchPath = appconfig.m_cascade_cfg.szPatchPath;
+	while (!g_bstop)
+	try
+	{
+		std::this_thread::sleep_for(std::chrono::seconds(2));
+		theApp.client->getClientStub().setFileProgressCallback(&onFileTransferProgress);
+		if (appconfig.m_cascade_cfg.flux)
+			theApp.fileDownload->setTransferRateBps(appconfig.m_cascade_cfg.fluxspeed * 1024);
+		theApp.fileDownload->setDownloadToPath(szPatchPath);
+		theApp.client->DownloadIndex1xml(*theApp.fileDownload);
+		if (!bus.AnalyzeIndex1xml(szPatchPath + "\\index1.xml", patches))
+		{
+			vrvlog::SPD_LOG_CRITICAL("Analyze index1.xml failed");
+			DeleteFileA((szPatchPath + "\\index1.xml").c_str());
+		}
+		else
+			break;
+	}
+	catch (RCF::Exception& e)
+	{
+		vrvlog::SPD_LOG_ERROR("Download index1.xml failed ({0} {1})", 
+			e.getErrorId(), e.getWhat());
+	}
+
+	if (!g_bstop)
+	{
+		int indxcount = patches.size();
+
+		IDUIControlBase *pTopBase = pTopItem->GetCustomObj();
+		IDUIStatic *pTopSize = (IDUIStatic *)pTopBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskSize"), TRUE);
+		IDUIStatic *pTopError = (IDUIStatic *)pTopBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskError"), TRUE);
+		IDUIProgressbar *pTopProgress = (IDUIProgressbar *)pTopBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("ProgressBar"), TRUE);
+
+		std::stringstream ss;
+		ss << "0/" << indxcount;
+		pTopSize->SetText(ss.str());
+		pTopError->SetText(_T("0"));
+
+		::SendMessageTimeout(m_hWnd, UM_DOWNVIEW_CLEANITEMS, 0, 0, SMTO_ABORTIFHUNG , MESSAGE_TIMEOUT, 0);
+		szPatchPath = appconfig.m_cascade_cfg.szPatchPath + "\\";
+
+		for (size_t idx = 0; idx < patches.size() && !g_bstop; ++idx)
+		{
+			vrv::patch::PatchInfoPtr patchptr = patches[idx];
+			try
+			{
+				theApp.client->RequestPatchInfo(*patchptr);
+			}
+			catch (RCF::Exception& e)
+			{
+				vrvlog::SPD_LOG_WARN("Get patch file info failed ({0} {1})", 
+					patches[idx]->szPatchName, e.getErrorId());
+			}
+
 			std::this_thread::sleep_for(std::chrono::milliseconds(500));
 			IDUITVItem *pItem = nullptr;
-			::SendMessage(m_hWnd, UM_DOWNVIEW_INDEXITEM, (WPARAM)indexptr.get(), (LPARAM)&pItem);
+			::SendMessageTimeout(m_hWnd, UM_DOWNVIEW_PATCHITEM, (WPARAM)patchptr.get(), (LPARAM)&pItem, SMTO_ABORTIFHUNG , MESSAGE_TIMEOUT, 0);
 			if (pItem == nullptr)
 			{
-				InsertErrorTaskToView(&indexptr, INDEX);
+				InsertErrorTaskToView(&patchptr, PATCH);
 				continue;
 			}
 
@@ -713,53 +973,53 @@ bool CPatchDownView::DownloadIndexesByRcf(IDUITVItem *pTopItem)
 			IDUIStatic *pItemCrc = (IDUIStatic *)pItemBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskCrc"), TRUE);
 			IDUIStatic *pItemDate = (IDUIStatic *)pItemBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskDate"), TRUE);
 
-			std::string szIndexPath = sztoolpath + indexptr->szIndexName;
-			if (!MakeSureDirectoryExist(szIndexPath.c_str(), TRUE))
+			std::string szPatchFile = szPatchPath + patchptr->szPatchName;
+			if (!MakeSureDirectoryExist(szPatchFile.c_str(), TRUE))
 			{
 				std::stringstream serr;
 				serr << ++taskerror;
 				pTopError->SetText(serr.str());
-				vrvlog::SPD_LOG_ERROR("Index path create failed ({0})", szIndexPath.c_str());
-				InsertErrorTaskToView(&indexptr, INDEX);
+				vrvlog::SPD_LOG_ERROR("Patch path create failed ({0})", szPatchFile.c_str());
+				InsertErrorTaskToView(&patchptr, PATCH);
 				continue;
 			}
 
-
-			pItemSize->SetText(ConvertSpeedUnit(indexptr->size));
-
-			if (GetFileCrc(szIndexPath.c_str()) == indexptr->dwCrc)
+			std::string szSha;
+			if (GetFileSHA1(szPatchFile.c_str(), szSha) &&
+				szSha == patchptr->szMd5)
 			{
+				++taskdone;
 				if (pItemProgress)
 					pItemProgress->SetPos(100);
-				++taskdone;
 			}
 			else
 			{
-				std::string szPath = szIndexPath.substr(0, szIndexPath.find_last_of("\\"));
+				std::string szPath = szPatchFile.substr(0, szPatchFile.find_last_of("\\"));
 
-				theApp.client->getClientStub().setFileProgressCallback(&onFileTransferProgress);
-
-				if (appconfig.m_cascade_cfg.flux)
-					theApp.fileDownload->setTransferRateBps(appconfig.m_cascade_cfg.fluxspeed * 1024);
-
-				theApp.fileDownload->setDownloadToPath(szPath);
-
-				try 
+				try
 				{
-					theApp.client->DownloadIndexFile(indexptr->szIndexName, *theApp.fileDownload);
+					theApp.client->getClientStub().setFileProgressCallback(&onFileTransferProgress);
+
+					if (appconfig.m_cascade_cfg.flux)
+						theApp.fileDownload->setTransferRateBps(appconfig.m_cascade_cfg.fluxspeed * 1024);
+
+					theApp.fileDownload->setDownloadToPath(szPath);
+
+					theApp.client->DownloadPatchFile(patchptr->szPatchName, *theApp.fileDownload);
 					std::string szLocalpath = theApp.fileDownload->getLocalPath();
 					++taskdone;
 				}
 				catch (RCF::Exception &e)
 				{
-					vrvlog::SPD_LOG_ERROR("Cascade download indexes failed, errorid({0}),what({1})", 
-							e.getErrorId(), e.getWhat());
-					InsertErrorTaskToView(&indexptr, INDEX);
+					vrvlog::SPD_LOG_ERROR("Patch File: {0} download failed ({1})", szPatchFile.c_str(), e.getErrorId());
+					InsertErrorTaskToView(&patchptr, PATCH);
 					++taskerror;
+
 				}
+
 				//code == 0 ? ++taskdone : ++taskerror;
 				//if (code)
-					//InsertErrorTaskToView(&indexptr, INDEX);
+				//InsertErrorTaskToView(&indexptr, INDEX);
 			}
 
 			pItemDate->SetText(CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M:%S").GetString());
@@ -779,16 +1039,15 @@ bool CPatchDownView::DownloadIndexesByRcf(IDUITVItem *pTopItem)
 				short pos = (taskdone / (double)indxcount) * 100;
 				pTopProgress->SetPos(pos);
 			}
+		}
+
 	}
 
 	if (g_bstop)
+	{
+		vrvlog::SPD_LOG_INFO("Cascade download thread has been stopped.");
 		return false;
+	}
 
-	return true;
-}
-
-
-bool CPatchDownView::DownloadPatchesByRcf(IDUITVItem *pTopItem)
-{
 	return true;
 }

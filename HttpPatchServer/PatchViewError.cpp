@@ -89,13 +89,20 @@ LRESULT CPatchViewError::InsertPatchItem(WPARAM wparam, LPARAM lparam)
 	if (patchptr == nullptr)
 		return 0;
 
+	std::string szPatchName;
+	size_t pos = patchptr->szPatchName.find_last_of("\\");
+	if (pos == std::string::npos)
+		szPatchName = patchptr->szPatchName;
+	else
+		szPatchName = patchptr->szPatchName.substr(pos + 1);
+
 	int nIndex = DUI_pErrorView->InsertItem(0, patchptr->szPatchName, 0, TRUE);
 	IDUITVItem *pItem = (IDUITVItem *)DUI_pErrorView->GetAt(nIndex);
 	IDUIControlBase* pCtrlBase = (IDUIControlBase*)pItem->GetCustomObj();
 	IDUIStatic *pStcName = (IDUIStatic *)pCtrlBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskName"), TRUE);
 	IDUIStatic *pStcDate = (IDUIStatic *)pCtrlBase->GetObjectByCaption(DUIOBJTYPE_PLUGIN, _T("TaskDate"), TRUE);
 	pItem->SetData((OLE_HANDLE)patchptr.get());
-	pStcName->SetText(patchptr->szPatchName);
+	pStcName->SetText(szPatchName);
 	pStcName->SetTooltip(patchptr->MakeToolTipText());
 	pStcDate->SetText(CTime::GetCurrentTime().Format("%Y-%m-%d %H:%M:%S").GetString());
 	DUI_pErrorView->RefreshView();

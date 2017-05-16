@@ -60,8 +60,8 @@ protected:
 public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	virtual BOOL OnInitDialog();
-	void GetIntevalTime(std::string& src, std::string &szbH, std::string &szbM,
-		std::string &szeH, std::string &szeM);
+	//void GetIntevalTime(std::string& src, std::string &szbH, std::string &szbM,
+		//std::string &szeH, std::string &szeM);
 	void InitControlData();
 	void EnbaleControl();
 	BOOL OnApply();

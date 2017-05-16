@@ -30,7 +30,6 @@ void CPatchViewSetting::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CPatchViewSetting, CDUIDialog)
 	ON_WM_CREATE()
 	ON_MESSAGE(DUI_TABMSG_SELCHANGED, &CPatchViewSetting::OnTabPageChanged)
-	ON_MESSAGE(DUISM_LBUTTONUP, &CPatchViewSetting::OnApply)
 	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
@@ -48,25 +47,6 @@ BOOL CPatchViewSetting::InitSknPath()
 	return TRUE;
 }
 
-//bool CPatchViewSetting::InitDui()
-//{
-//	m_pDuiSetting = (ISkinObjResBase*)AfxGetDuiRes()->CreateDirectUI("DUICfigView", HandleToLong(m_hWnd));
-//	ASSERT(m_pDuiSetting);
-//
-//	m_pTabSetting = (IDUITabCtrl*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "SettingTabCtrl", m_pDuiSetting, TRUE);
-//	ASSERT(m_pTabSetting);
-//
-//	m_pHwndOwner = (IDUIHwndObj*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "HwndSubObj", m_pDuiSetting, TRUE);
-//	ASSERT(m_pHwndOwner);
-//
-//	m_pBtnApply = (ICmdButton*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "BtnApply", m_pDuiSetting, TRUE);
-//	ASSERT(m_pBtnApply);
-//
-//	m_pBtnCancel = (ICmdButton*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "BtnCancel", m_pDuiSetting, TRUE);
-//	ASSERT(m_pBtnCancel);
-//
-//	return true;
-//}
 
 int CPatchViewSetting::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
@@ -108,7 +88,7 @@ LRESULT CPatchViewSetting::OnTabPageChanged(WPARAM wparam, LPARAM lparam)
 	return 0;
 }
 
-LRESULT CPatchViewSetting::OnApply(WPARAM wparam, LPARAM lparam)
+LRESULT CPatchViewSetting::OnSMLButtonUp(WPARAM wparam, LPARAM lparam)
 {
 	if (DBtn(BtnApply) == (ICmdButton*)wparam)
 	{

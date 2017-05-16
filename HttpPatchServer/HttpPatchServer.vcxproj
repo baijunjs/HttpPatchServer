@@ -22,23 +22,23 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{E56B5311-BC95-49CB-8F51-50275987D50B}</ProjectGuid>
     <RootNamespace>HttpPatchServer</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>7.0</WindowsTargetPlatformVersion>
     <Keyword>MFCProj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v141_xp</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v141_xp</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -76,14 +76,16 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(BOOST);.\spdinclude;.\curl;.\RCF;.\DUI;.\CSHA1-2.1-Source;$(IncludePath)</IncludePath>
-    <LibraryPath>$(BOOST)\bin\vc14_x86\lib;.\lib;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+    <IncludePath>$(BOOST);.\spdinclude;.\curl;.\RCF;.\DUI;.\CSHA1-2.1-Source;.\rapidxml;$(IncludePath)</IncludePath>
+    <LibraryPath>$(BOOST)\bin\vc14_x86\lib;.\lib;$(VC_LibraryPath_x86);$(WindowsSDK_71A_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(BOOST);.\spdinclude;.\curl;.\RCF;.\DUI;.\CSHA1-2.1-Source;.\rapidxml;$(VC_IncludePath);$(WindowsSdk_71A_IncludePath);</IncludePath>
+    <LibraryPath>$(BOOST)\bin\vc14_x86\lib;.\lib;$(VC_LibraryPath_x86);$(WindowsSdk_71A_LibraryPath_x86);</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -93,7 +95,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;RCF_FEATURE_FILETRANSFER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;RCF_FEATURE_FILETRANSFER;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -139,13 +141,14 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;RCF_FEATURE_FILETRANSFER;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>false</SDLCheck>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>libcurl.lib;RCF.lib</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -203,10 +206,10 @@
     <ClInclude Include="DUI\KernelAll.h" />
     <ClInclude Include="DUI\OfficeAll.h" />
     <ClInclude Include="EDPPatchBase.h" />
+    <ClInclude Include="ExceptionHandle.h" />
     <ClInclude Include="FileTransforRequest.h" />
     <ClInclude Include="HttpPatchServer.h" />
     <ClInclude Include="HttpPatchServerDlg.h" />
-    <ClInclude Include="IDownload.h" />
     <ClInclude Include="MessageBox.h" />
     <ClInclude Include="PackInterface.h" />
     <ClInclude Include="PatchBus.h" />
@@ -222,6 +225,10 @@
     <ClInclude Include="PatchViewSetting.h" />
     <ClInclude Include="PatchViewStatics.h" />
     <ClInclude Include="PathDownloadListView.h" />
+    <ClInclude Include="rapidxml\rapidxml.hpp" />
+    <ClInclude Include="rapidxml\rapidxml_iterators.hpp" />
+    <ClInclude Include="rapidxml\rapidxml_print.hpp" />
+    <ClInclude Include="rapidxml\rapidxml_utils.hpp" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SqlConfig.h" />
     <ClInclude Include="stdafx.h" />
@@ -233,8 +240,10 @@
     <ClCompile Include="Crc.cpp" />
     <ClCompile Include="CSHA1-2.1-Source\SHA1.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="DUI\DUIDialog.cpp" />
+    <ClCompile Include="ExceptionHandle.cpp" />
     <ClCompile Include="HttpPatchServer.cpp" />
     <ClCompile Include="HttpPatchServerDlg.cpp" />
     <ClCompile Include="MessageBox.cpp" />

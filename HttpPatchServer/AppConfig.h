@@ -60,6 +60,7 @@ struct cascade_option
 	int fluxspeed;
 	std::string szPatchPath;
 	int localserverport;
+	bool index1;
 };
 
 enum LANS

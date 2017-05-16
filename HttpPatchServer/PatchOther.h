@@ -19,13 +19,6 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
 
-	//bool InitDui();
-	//ISkinObjResBase		*m_pDuiOther;
-	//IDUICheckBox		*m_pChkLog;
-	//IDUIComboBox		*m_pLogLevel;
-	//IDUIComboBox		*m_pComboLans;
-	//IDUIStatic			*m_pLansLabel;
-
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

@@ -8,19 +8,14 @@
 #include "sha1.h"
 #include "Base64.h"
 #include <boost/make_shared.hpp>
-
+#include <iomanip>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
 
-
 extern bool g_bstop;
-
-
-
-
 
 void onServerFileDownload(RCF::RcfSession & session, const RCF::FileDownloadInfo & uploadInfo)
 {
@@ -29,28 +24,6 @@ void onServerFileDownload(RCF::RcfSession & session, const RCF::FileDownloadInfo
 	// How far has the download progressed.
 	boost::uint32_t currentFile = uploadInfo.mCurrentFile;
 	boost::uint64_t currentFilePos = uploadInfo.mCurrentPos;
-	std::string a = session.getRequestUserData();
-	if (a.compare("1") == 0)
-	{
-		session.cancelDownload();
-	}
-	//boost::any &value = session.getUserData();
-	//if (value.type() == typeid(int))
-	//{
-	//	int i = boost::any_cast<int>(value);
-	//	if (i == 1)
-	//	{
-	//		session.cancelDownload();
-	//	}
-	//}
-	//if (uploadInfo.mCancel == true)
-	//{
-	//	throw RCF::Exception();
-	//}
-
-	// To cancel the download, throw an exception.
-	// ...
-	//throw RCF::Exception();
 }
 
 
@@ -66,20 +39,15 @@ RCF::RcfInitDeinit rcfInit;
 
 // CHttpPatchServerApp 构造
 
-//IDUIRes *AfxGetDuiRes()
-//{
-//	return theApp.m_pDuiRes;
-//}
-
 LPCSTR AfxGetAppTitle()
 {
-	//return theApp.m_szWindowText.c_str();
 	return "";
 }
 
 
 BOOL GetFileSHA1(std::string szFile, OUT std::string &szSha)
 {
+	size_t stlen = 0;
 	char szSHA1Value[0x80] = { 0 };
 	char szBase64Out[0x80] = { 0 };
 	CSHA1 calcSha;
@@ -89,18 +57,13 @@ BOOL GetFileSHA1(std::string szFile, OUT std::string &szSha)
 		if (calcSha.ReportHash(szSHA1Value, calcSha.REPORT_DIGIT))
 		{
 			calcSha.GetHash((unsigned char *)szSHA1Value);
-			size_t stOutLength = 0;
-			encode_base64(szSHA1Value, 20, szBase64Out, 0x80, &stOutLength);
+			encode_base64(szSHA1Value, 20, szBase64Out, 0x80, &stlen);
 			szSha = szBase64Out;
-			if (szSha.back() == '\n')
-				szSha.pop_back();
-
 			return TRUE;
 		}
 	}
 	return FALSE;
 }
-
 
 // 唯一的一个 CHttpPatchServerApp 对象
 
@@ -111,9 +74,6 @@ CHttpPatchServerApp::CHttpPatchServerApp()
 {
 	// 支持重新启动管理器
 	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_RESTART;
-	//m_pDuiRes = nullptr;
-
-
 	// TODO: 在此处添加构造代码，
 	// 将所有重要的初始化放置在 InitInstance 中
 
@@ -137,28 +97,49 @@ void CHttpPatchServerApp::Initlog()
 
 void CHttpPatchServerApp::InitPatchServer()
 {
-	server = std::make_shared<RCF::RcfServer>(RCF::TcpEndpoint("0.0.0.0",
-		appconfig.m_cascade_cfg.localserverport));
-	server->bind<MyService>(myservice);
-	server->setOnFileDownloadProgress(&onServerFileDownload);
-	server->getServerTransport().setConnectionLimit(50);
-	RCF::ThreadPoolPtr tpPtr = boost::make_shared<RCF::ThreadPool>(1, 10);
-	server->setThreadPool(tpPtr);
-	server->start();
+	try
+	{
+		server = std::make_shared<RCF::RcfServer>(RCF::TcpEndpoint("0.0.0.0",
+			appconfig.m_cascade_cfg.localserverport));
+		server->bind<MyService>(myservice);
+		server->setOnFileDownloadProgress(&onServerFileDownload);
+		server->getServerTransport().setConnectionLimit(50);
+		RCF::ThreadPoolPtr tpPtr = boost::make_shared<RCF::ThreadPool>(1, 10);
+		server->setThreadPool(tpPtr);
+		server->start();
+	}
+	catch (RCF::Exception &e)
+	{
+		vrvlog::SPD_LOG_CRITICAL("Init rcf server failed ({0})", e.getErrorId());
+		exit(-1);
+	}
+
 }
 
 
-void CHttpPatchServerApp::InitPatchClient()
+bool CHttpPatchServerApp::InitPatchClient()
 {
 	int port;
 	std::stringstream ss;
 	ss << appconfig.m_cascade_cfg.szupserverport;
 	ss >> port;
 	client = std::make_shared<RcfClient<MyService>>(RCF::TcpEndpoint(appconfig.m_cascade_cfg.szupserverip, port));
-	client->getClientStub().setRemoteCallTimeoutMs(60000);
-	client->getClientStub().setConnectTimeoutMs(10000);
+	client->getClientStub().setRemoteCallTimeoutMs(120000);
+	client->getClientStub().setConnectTimeoutMs(20000);
 	client->getClientStub().setTransferWindowS(1);
 	fileDownload = std::make_shared<RCF::FileDownload>();
+	//测试远端服务器能否正常连接
+	try
+	{
+		int c = theApp.client->add(1, 2);
+	}
+	catch (RCF::Exception& e)
+	{
+		vrvlog::SPD_LOG_ERROR("Remote call failed {0} {1}",
+			e.getErrorId(), e.getWhat());
+		return false;
+	}
+	return true;
 }
 
 
@@ -198,7 +179,7 @@ BOOL CHttpPatchServerApp::InitAppConfig()
 		std::string &szconfig = appconfig.m_szConfigFile;
 
 		WritePrivateProfileStringA("PATCH", "URL", "http://www.vrvsoft.com/update/patch/newpatch/PackIndex.dat", szconfig.c_str());
-		WritePrivateProfileStringA("PATCH", "PATH", "请选择补丁目录", szconfig.c_str());
+		WritePrivateProfileStringA("PATCH", "PATH", "", szconfig.c_str());
 		WritePrivateProfileStringA("PATCH", "PRODUCTS", "", szconfig.c_str());
 		WritePrivateProfileStringA("PATCH", "LAN", "", szconfig.c_str());
 
@@ -225,17 +206,17 @@ BOOL CHttpPatchServerApp::InitAppConfig()
 		WritePrivateProfileStringA("CASCADE", "FLUXSPEED", "0", szconfig.c_str());
 		WritePrivateProfileStringA("CASCADE", "PATH", "", szconfig.c_str());
 		WritePrivateProfileStringA("CASCADE", "LOCALPORT", "6998", szconfig.c_str());
+		WritePrivateProfileStringA("CASCADE", "INDEX1", "1", szconfig.c_str());
 
 		WritePrivateProfileStringA("SWITCHMODE", "MODE", "0", szconfig.c_str());
 
 		WritePrivateProfileStringA("DEBUG", "LOG", "1", szconfig.c_str());
 		WritePrivateProfileStringA("DEBUG", "LEVEL", "4", szconfig.c_str());
 		WritePrivateProfileStringA("LANGUAGE", "DEFAULT", "ZHCN", szconfig.c_str());
+
 	}
 
-	CTime tmNow = CTime::GetCurrentTime();
-	CString szTime = tmNow.Format("%Y%m%d%H%M%S");
-	appconfig.m_szLogPath = szTempPath + "\\" + szTime.GetString();
+	appconfig.m_szLogPath = szTempPath + "\\log";
 
 	return TRUE;
 }
@@ -315,6 +296,8 @@ void  CHttpPatchServerApp::ReadConfig()
 	appconfig.m_cascade_cfg.szPatchPath = szBuff;
 
 	appconfig.m_cascade_cfg.localserverport = GetPrivateProfileIntA("CASCADE", "LOCALPORT", 6998, szconfig.c_str());
+	appconfig.m_cascade_cfg.index1 = GetPrivateProfileIntA("CASCADE", "INDEX1", 1, szconfig.c_str());
+
 
 	appconfig.m_mode_cfg.mode = (switchmode)GetPrivateProfileIntA("SWITCHMODE", "MODE", 0, szconfig.c_str());
 
@@ -329,33 +312,6 @@ void  CHttpPatchServerApp::ReadConfig()
 
 }
 
-//BOOL CHttpPatchServerApp::InitDUI()
-//{
-//	std::string szDuiDllPath = appconfig.m_szAppPath + "\\DirectUI.dll";
-//	std::string szDuiPath = appconfig.m_szAppPath + "\\skin\\PatchDown.dui";
-//	std::string szSknPath = appconfig.m_szAppPath + "\\skin\\PatchDown.skn";
-//	HMODULE hDuiDll = LoadLibraryA(szDuiDllPath.c_str());
-//	if (NULL == hDuiDll)
-//	{
-//		vrvlog::SPD_LOG_CRITICAL("DirectUI.dll load failed {0}, exit", GetLastError());
-//		return FALSE;
-//	}
-//	OpenSkinA = (Fun_OpenSkinA)GetProcAddress(hDuiDll, "OpenSkinA");
-//	FreeSkin = (Fun_FreeSkin)GetProcAddress(hDuiDll, "FreeSkin");
-//	if (NULL == OpenSkinA || NULL == FreeSkin)
-//	{
-//		vrvlog::SPD_LOG_CRITICAL("OpenSkinA or FreeSkin exports failed, exit");
-//		return FALSE;
-//	}
-//
-//	m_pDuiRes = OpenSkinA(const_cast<char*>(szDuiPath.c_str()), const_cast<char*>(szSknPath.c_str()), FALSE, FALSE, TRUE);
-//	if (NULL == m_pDuiRes)
-//	{
-//		vrvlog::SPD_LOG_CRITICAL("OpenSkinA {0} failed, exit", szSknPath.c_str());
-//		return FALSE;
-//	}
-//	return TRUE;
-//}
 
 BOOL CHttpPatchServerApp::InitInstance()
 {
@@ -401,8 +357,6 @@ BOOL CHttpPatchServerApp::InitInstance()
 
 	InitPatchServer();
 
-	InitPatchClient();
-
 	if (!CPackInterface::init())
 		return FALSE;
 
@@ -447,8 +401,6 @@ int CHttpPatchServerApp::ExitInstance()
 	// TODO: 在此添加专用代码和/或调用基类
 	curl_global_cleanup();
 	server->stop();
-	if (_thread.joinable())
-		_thread.join();
 	//if(FreeSkin)
 		//FreeSkin();
 	return CWinApp::ExitInstance();
@@ -458,7 +410,6 @@ int CHttpPatchServerApp::ExitInstance()
 
 void CHttpPatchServerApp::StopByCurl()
 {
-	g_bstop = true;
 	if (theApp.m_curlptr)
 		theApp.m_curlptr->StopDownload();
 }
@@ -466,7 +417,6 @@ void CHttpPatchServerApp::StopByCurl()
 
 void CHttpPatchServerApp::StopByRcf()
 {
-	g_bstop = true;
 	try
 	{
 		if (theApp.client)
@@ -517,10 +467,35 @@ void  CPatchServiceImpl::RequestPatchInfo(std::vector<vrv::patch::PatchInfo> &pa
 	else if (appconfig.m_mode_cfg.mode == cascade_mode)
 		szPatchpath = appconfig.m_cascade_cfg.szPatchPath;
 
-	TravelPatchPath(szPatchpath, patches);
+	TravelPatchPath(szPatchpath + "\\chinese", patches);
+	TravelPatchPath(szPatchpath + "\\english", patches);
 }
 
-void  CPatchServiceImpl::RequestIndexInfo(std::vector<vrv::patch::IndexInfo> &indexes)
+
+void CPatchServiceImpl::RequestPatchInfo(vrv::patch::PatchInfo &patch)
+{
+	std::string szPath;
+	if (appconfig.m_mode_cfg.mode == http_mode)
+		szPath = appconfig.m_http_cfg.m_szPatchPath;
+
+	else if (appconfig.m_mode_cfg.mode == cascade_mode)
+		szPath = appconfig.m_cascade_cfg.szPatchPath;
+
+	std::string szPatchFile = szPath + "\\" + patch.szPatchName;
+	std::stringstream ss;
+	std::ifstream ifs(szPatchFile);
+	if (ifs.is_open())
+	{
+		ifs.seekg(0, ifs.end);
+		std::streamoff len = ifs.tellg();
+		ss << len;
+		patch.szPatchSize = ss.str();
+	}
+
+	GetFileSHA1(patch.szPatchName, patch.szMd5);
+}
+
+void CPatchServiceImpl::RequestIndexInfo(std::vector<vrv::patch::IndexInfo> &indexes)
 {
 	std::lock_guard<std::mutex> locker(mtxforindex);
 
@@ -540,27 +515,45 @@ void  CPatchServiceImpl::DownloadFiles(std::string& szFile, RCF::FileDownload &f
 
 void  CPatchServiceImpl::DownloadIndexFile(std::string& szFile, RCF::FileDownload &fileDownload)
 {
-	std::lock_guard<std::mutex> locker(mtxforindex);
-	std::string szIndexFile = szToolpath + "\\" + szFile;
+	std::string szPath;
+	if (appconfig.m_mode_cfg.mode == http_mode)
+		szPath = appconfig.m_http_cfg.m_szPatchPath + "\\Tools";
+
+	else if (appconfig.m_mode_cfg.mode == cascade_mode)
+		szPath = appconfig.m_cascade_cfg.szPatchPath + "\\Tools";
+
+	std::string szIndexFile = szPath + "\\" + szFile;
 	fileDownload = RCF::FileDownload(szIndexFile);
 }
 
 void  CPatchServiceImpl::DownloadPatchFile(std::string& szFile, RCF::FileDownload &fileDownload)
 {
-	std::lock_guard<std::mutex> locker(mtxforpatch);
-	std::string szPatchFile = szPatchpath + "\\" + szFile;
+	std::string szPath;
+	if (appconfig.m_mode_cfg.mode == http_mode)
+		szPath = appconfig.m_http_cfg.m_szPatchPath;
+
+	else if (appconfig.m_mode_cfg.mode == cascade_mode)
+		szPath = appconfig.m_cascade_cfg.szPatchPath;
+
+	std::string szPatchFile = szPath + "\\" + szFile;
 	fileDownload = RCF::FileDownload(szPatchFile);
 }
 
 void  CPatchServiceImpl::DownloadIndex1xml(RCF::FileDownload &fileDownload)
 {
-	std::lock_guard<std::mutex> locker(mtxforpatch);
-	std::string szIndex1Xml = szPatchpath + "\\" + "index1.xml";
-	std::string szIndex1Zip = szPatchpath + "\\" + "index1.zip";
+	std::string szPath;
+	if (appconfig.m_mode_cfg.mode == http_mode)
+		szPath = appconfig.m_http_cfg.m_szPatchPath;
+
+	else if (appconfig.m_mode_cfg.mode == cascade_mode)
+		szPath = appconfig.m_cascade_cfg.szPatchPath;
+
+	std::string szIndex1Xml = szPath + "\\" + "index1.xml";
+	std::string szIndex1Zip = szPath + "\\" + "index1.zip";
 	if (PathFileExistsA(szIndex1Zip.c_str()))
 		fileDownload = RCF::FileDownload(szIndex1Xml);
 	else
-		throw RCF::Exception(szIndex1Zip + " not exsits");
+		throw RCF::Exception(RCF::_RcfError_FileOpen(szIndex1Zip));
 }
 
 void  CPatchServiceImpl::TravelIndexPath(std::string &szPath, std::vector<vrv::patch::IndexInfo> &indexes)
@@ -581,7 +574,7 @@ void  CPatchServiceImpl::TravelIndexPath(std::string &szPath, std::vector<vrv::p
 		else
 		{
 			std::string szName = data.name;
-			if (szName.back() != '~')
+			if (!szName.empty() && szName.back() != '~')
 			{
 				vrv::patch::IndexInfo indexInfo;
 				indexInfo.size = data.size;
@@ -599,10 +592,13 @@ void  CPatchServiceImpl::TravelIndexPath(std::string &szPath, std::vector<vrv::p
 void  CPatchServiceImpl::GetIndexInfo(std::string &szFile, vrv::patch::IndexInfo& indexinfo)
 {
 	std::ifstream ifs(szFile);
-	ifs.seekg(0, ifs.end);
-	std::streamoff len = ifs.tellg();
-	indexinfo.size = len;
-	indexinfo.szIndexName = szFile;
+	if (ifs.is_open())
+	{
+		ifs.seekg(0, ifs.end);
+		std::streamoff len = ifs.tellg();
+		indexinfo.size = len;
+		indexinfo.szIndexName = szFile;
+	}
 	indexinfo.dwCrc = GetFileCrc(szFile.c_str());
 }
 
@@ -617,15 +613,14 @@ void  CPatchServiceImpl::TravelPatchPath(std::string &szPath, std::vector<vrv::p
 	{
 		if (data.attrib & _A_SUBDIR)
 		{
-			if (_stricmp(data.name, "Tools")
-				&& _stricmp(data.name, ".")
+			if (_stricmp(data.name, ".")
 				&& _stricmp(data.name, ".."))
 				TravelPatchPath(szPath + "\\" + data.name, patches);
 		}
 		else
 		{
 			std::string szName = data.name;
-			if (szName.back() != '~')
+			if (!szName.empty() && szName.back() != '~')
 			{
 				std::stringstream ss;
 				ss << data.size;
@@ -646,10 +641,14 @@ void  CPatchServiceImpl::GetPatchInfo(std::string &szFile, vrv::patch::PatchInfo
 {
 	std::stringstream ss;
 	std::ifstream ifs(szFile);
-	ifs.seekg(0, ifs.end);
-	std::streamoff len = ifs.tellg();
-	ss << len;
-	patchInfo.szPatchSize = ss.str();
-	patchInfo.szPatchName = szFile;
+	if (ifs.is_open())
+	{
+		ifs.seekg(0, ifs.end);
+		std::streamoff len = ifs.tellg();
+		ss << len;
+		patchInfo.szPatchSize = ss.str();
+		patchInfo.szPatchName = szFile;
+	}
+
 	GetFileSHA1(patchInfo.szPatchName, patchInfo.szMd5);
 }

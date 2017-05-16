@@ -20,15 +20,6 @@ namespace vrv
 		{
 		}
 
-
-		//template <typename D>
-		//bool CPatchBus::download_main_index(D &downloader)
-		//{
-		//	//TODO:
-		//	//downloader.setprogressfun();
-		//	return true;
-		//}
-
 		bool CPatchBus::analyze_main_index(IPackIndex *packindex, std::string szPackIndex)
 		{
 			if (packindex == nullptr)
@@ -227,152 +218,50 @@ namespace vrv
 		PatchIndexVectorPtr CPatchBus::GetAllPatchIndexes()
 		{
 			PatchIndexVectorPtr PatchIndexes = std::make_shared<PatchIndexVector>();
-			vrv::patch::PublishersMap::_iterator iter = m_publishers->Publishers.begin();
 			if (m_publishers)
 			{
-				for (; iter != m_publishers->Publishers.end(); ++iter)
+				vrv::patch::PublishersMap::_iterator iter = m_publishers->Publishers.begin();
+				if (m_publishers)
 				{
-					std::string szPublisher = iter->first;
-					vrv::patch::FamiliesMapPtr families = iter->second;
-					vrv::patch::FamiliesMap::_iterator _iter = families->ProductsFamily.begin();
-					for (; _iter != families->ProductsFamily.end(); ++_iter)
+					for (; iter != m_publishers->Publishers.end(); ++iter)
 					{
-						std::string szFamily = _iter->first;
-						vrv::patch::ProductsMapPtr products = _iter->second;
-						vrv::patch::ProductsMap::_iterator _iter_ = products->Products.begin();
-						for (; _iter_ != products->Products.end(); ++_iter_)
+						std::string szPublisher = iter->first;
+						vrv::patch::FamiliesMapPtr families = iter->second;
+						vrv::patch::FamiliesMap::_iterator _iter = families->ProductsFamily.begin();
+						for (; _iter != families->ProductsFamily.end(); ++_iter)
 						{
-							std::string szProductName = _iter_->first;
-							PatchIndexVectorPtr tmp = _iter_->second;
-							PatchIndexes->patchindexes.insert(PatchIndexes->patchindexes.end(),
-								tmp->patchindexes.begin(), tmp->patchindexes.end());
+							std::string szFamily = _iter->first;
+							vrv::patch::ProductsMapPtr products = _iter->second;
+							vrv::patch::ProductsMap::_iterator _iter_ = products->Products.begin();
+							for (; _iter_ != products->Products.end(); ++_iter_)
+							{
+								std::string szProductName = _iter_->first;
+								PatchIndexVectorPtr tmp = _iter_->second;
+								PatchIndexes->patchindexes.insert(PatchIndexes->patchindexes.end(),
+									tmp->patchindexes.begin(), tmp->patchindexes.end());
+							}
 						}
-					}
 
-					_iter = families->LanguagesFamily.begin();
-					for (; _iter != families->LanguagesFamily.end(); ++_iter)
-					{
-						std::string szFamily = _iter->first;
-						vrv::patch::ProductsMapPtr products = _iter->second;
-						vrv::patch::ProductsMap::_iterator _iter_ = products->Products.begin();
-						for (; _iter_ != products->Products.end(); ++_iter_)
+						_iter = families->LanguagesFamily.begin();
+						for (; _iter != families->LanguagesFamily.end(); ++_iter)
 						{
-							std::string szProductName = _iter_->first;
-							PatchIndexVectorPtr tmp = _iter_->second;
-							PatchIndexes->patchindexes.insert(PatchIndexes->patchindexes.end(),
-								tmp->patchindexes.begin(), tmp->patchindexes.end());
+							std::string szFamily = _iter->first;
+							vrv::patch::ProductsMapPtr products = _iter->second;
+							vrv::patch::ProductsMap::_iterator _iter_ = products->Products.begin();
+							for (; _iter_ != products->Products.end(); ++_iter_)
+							{
+								std::string szProductName = _iter_->first;
+								PatchIndexVectorPtr tmp = _iter_->second;
+								PatchIndexes->patchindexes.insert(PatchIndexes->patchindexes.end(),
+									tmp->patchindexes.begin(), tmp->patchindexes.end());
+							}
 						}
-					}
 
+					}
 				}
 			}
 			return PatchIndexes;
 		}
-
-		bool CPatchBus::loadLanuageIndex(ILoadIndex *loadobject)
-		{
-			//TODO:获取选择的语言列表
-			//std::string lanuages = "en;zhcn";
-			//char *token = nullptr, *next = nullptr;
-			//token = strtok_s(const_cast<char*>(lanuages.c_str()), ";", &next);
-			//while (token)
-			//{
-			//	std::string szLanuage = token;
-			//	std::transform(szLanuage.begin(), szLanuage.end(), szLanuage.begin(), toupper);
-			//	PatchIndexCIter finditer = m_patchIndexes.find(szLanuage);
-			//	if (finditer != m_patchIndexes.end())
-			//	{
-			//		for (size_t index = 0; index < finditer->second.size(); ++index)
-			//		{
-			//			if (finditer->second[index]->m_bLanguage == true)
-			//			{
-			//				std::string szIndexName = finditer->second[index]->m_szIndexPath;
-			//				//索引目录
-			//				std::string szIndexPath = R"(E:\Project\svn\HttpPatchDownLoader\Tools\)";
-			//				std::string szlocalIndex = szIndexPath + szIndexName;
-			//				loadobject->SetLanguagePack(szlocalIndex.c_str());
-			//			}
-			//		}
-			//	}
-
-			//	token = strtok_s(NULL, ";", &next);
-			//}
-			return true;
-		}
-
-		bool CPatchBus::loadProductIndex(ILoadIndex *loadobject)
-		{
-			//TODO:获取选择的产品列表
-			//std::string products = "Win7;Win8;";
-
-			//char *token = nullptr, *next = nullptr;
-			//token = strtok_s(const_cast<char*>(products.c_str()), ";", &next);
-			//while (token)
-			//{
-			//	std::string szProduct = token;
-			//	std::transform(szProduct.begin(), szProduct.end(), szProduct.begin(), toupper);
-			//	PatchIndexCIter finditer = m_patchIndexes.find(szProduct);
-			//	if (finditer != m_patchIndexes.end())
-			//	{
-			//		for (size_t index = 0; index < finditer->second.size(); ++index)
-			//		{
-			//			if (finditer->second[index]->m_bLanguage == false)
-			//			{
-			//				std::string szIndexName = finditer->second[index]->m_szIndexPath;
-			//				std::string szSubIndexName = finditer->second[index]->m_szSubIndexPath;
-			//				//索引目录
-			//				std::string szIndexPath = R"(E:\Project\svn\HttpPatchDownLoader\Tools\)";
-			//				std::string szlocalIndex = szIndexPath + szIndexName;
-			//				loadobject->SetProductPack(szlocalIndex.c_str());
-			//				if (!szSubIndexName.empty())
-			//				{
-			//					std::string szlocalSubIndex = szIndexPath + szSubIndexName;
-			//					loadobject->SetProductPack(szlocalSubIndex.c_str());
-			//				}
-			//			}
-			//		}
-			//	}
-
-			//	token = strtok_s(NULL, ";", &next);
-			//}
-			return true;
-		}
-
-		bool CPatchBus::fetchPatchFile(ILoadIndex *loadobject)
-		{
-			/*TOptionCondition option;
-			option.nUseIntranetPatch = 0;
-			option.nMinLoad = 100;
-
-			loadobject->SetOption(option);
-			DWORD hResult = loadobject->LoadFile();
-			if (S_OK != hResult) return false;
-
-			INT nPatchCount = loadobject->GetCount();
-
-			for (INT nCountIndex = 0; nCountIndex < nPatchCount; ++nCountIndex)
-			{
-				IPatchItem *pItem = loadobject->GetPatchByIndex(nCountIndex);
-				if (pItem)
-				{
-					PatchFilePtr patch = std::make_shared<CPatchFile>();
-					patch->szPatchName = pItem->GetFileName();
-					patch->szPatchKB = pItem->GetPatchKBID();
-					patch->szPatchMS = pItem->GetBulletins();
-					patch->szDescription = pItem->GetLeakDescription();
-					patch->szPatchSize = pItem->GetPatchSize();
-					patch->szDatePublish = pItem->GetPublishTime();
-					patch->szPatchRank = pItem->GetPatchLevel();
-					patch->szUpdateID = pItem->GetUpdateID();
-					patch->szMD5 = pItem->GetPatchMD5();
-					patch->szLanguage = pItem->GetLanguages();
-					patch->szPatchURL = pItem->GetUrl();
-					m_patches.push_back(patch);
-				}
-			}*/
-			return true;
-		}
-
 	}
 }
 

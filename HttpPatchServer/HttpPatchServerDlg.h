@@ -40,7 +40,6 @@ public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg LRESULT OnTabPageChanged(WPARAM, LPARAM);
 	afx_msg LRESULT OnAddIconToTaskbar(WPARAM wParam, LPARAM lParam);
-
 	void AddTaskbarIcons();
 	BOOL InitSknPath();
 public:

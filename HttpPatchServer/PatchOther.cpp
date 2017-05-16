@@ -132,19 +132,22 @@ BOOL CPatchOther::OnApply()
 
 	if (appconfig.m_other_cfg.enable)
 	{
-		if (vrvlog::log::get().enable_log())
+		if (!vrvlog::log::get().get_log())
+			vrvlog::log::get().init(appconfig.m_szLogPath);
+
+		if (vrvlog::log::get().get_log())
 		{
 			vrvlog::log::get().get_log()->flush_on((spdlog::level::level_enum)appconfig.m_other_cfg.level);
 			vrvlog::log::get().get_log()->set_level((spdlog::level::level_enum)appconfig.m_other_cfg.level);
 		}
-		else
-		{
-			theApp.Initlog();
-		}
 	}
 	else
 	{
-		vrvlog::log::get().enable_log(false);
+		if (vrvlog::log::get().get_log())
+		{
+			vrvlog::log::get().get_log()->flush_on(spdlog::level::off);
+			vrvlog::log::get().get_log()->set_level(spdlog::level::off);
+		}
 	}
 
 	return TRUE;

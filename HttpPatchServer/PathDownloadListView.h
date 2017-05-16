@@ -56,4 +56,5 @@ public:
 	void InsertErrorTaskToView(void *pTask, TASK_TYPE type);
 	bool DownloadIndexesByRcf(IDUITVItem *pTopItem);
 	bool DownloadPatchesByRcf(IDUITVItem *pTopItem);
+	bool DownloadIndex1xmlByRcf(IDUITVItem *pTopItem);
 };

@@ -46,72 +46,6 @@ END_MESSAGE_MAP()
 
 // CPatchNetSetting 消息处理程序
 
-
-//bool CPatchNetSetting::InitDui()
-//{
-//	m_pDuiDownSetting = (ISkinObjResBase*)AfxGetDuiRes()->CreateDirectUI("DUIHttpCfg", HandleToLong(m_hWnd));
-//	ASSERT(m_pDuiDownSetting);
-//
-//	m_pEditUrl = (IDUIEditCtrl*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "EditUrl", m_pDuiDownSetting, TRUE);
-//	ASSERT(m_pEditUrl);
-//
-//	m_pEditPath = (IDUIEditCtrl*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "EditPath", m_pDuiDownSetting, TRUE);
-//	ASSERT(m_pEditPath);
-//
-//	m_pCmdBtnTest = (ICmdButton*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "BtnTest", m_pDuiDownSetting, TRUE);
-//	ASSERT(m_pCmdBtnTest);
-//
-//	m_pCmdBtnBrowser = (ICmdButton*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "BtnBrowser", m_pDuiDownSetting, TRUE);
-//	ASSERT(m_pCmdBtnBrowser);
-//
-//	m_pProductsTree = (IDUISimpleTree*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "ProductTree", m_pDuiDownSetting, TRUE);
-//	ASSERT(m_pProductsTree);
-//
-//	m_pLansTree = (IDUISimpleTree*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "LanTree", m_pDuiDownSetting, TRUE);
-//	ASSERT(m_pLansTree);
-//
-//	m_pRadioAll = (IRadioBox*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "RadioBox_AllTime", m_pDuiDownSetting, TRUE);
-//	ASSERT(m_pRadioAll);
-//
-//	m_pRadioPerid = (IRadioBox*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "RadioBox_Period", m_pDuiDownSetting, TRUE);
-//	ASSERT(m_pRadioPerid);
-//
-//	m_pRadioInteval = (IRadioBox*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "RadioBox_Interval", m_pDuiDownSetting, TRUE);
-//	ASSERT(m_pRadioInteval);
-//
-//	m_pEditPerid = (IDUIEditCtrl*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "EditPerid", m_pDuiDownSetting, TRUE);
-//	ASSERT(m_pEditPerid);
-//
-//	m_pEditBegin = (IDUIEditCtrl*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "EditBegin", m_pDuiDownSetting, TRUE);
-//	ASSERT(m_pEditBegin);
-//
-//	m_pEditEnd = (IDUIEditCtrl*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "EditEnd", m_pDuiDownSetting, TRUE);
-//	ASSERT(m_pEditEnd);
-//
-//	m_pChkFlux = (IDUICheckBox*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "ChkBox-Flux", m_pDuiDownSetting, TRUE);
-//	ASSERT(m_pChkFlux);
-//
-//	m_pEditFluxSpeed = (IDUIEditCtrl*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "EditSpeed", m_pDuiDownSetting, TRUE);
-//	ASSERT(m_pEditFluxSpeed);
-//
-//	m_pChkProxy = (IDUICheckBox*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "ChkBox-NetProxy", m_pDuiDownSetting, TRUE);
-//	ASSERT(m_pChkProxy);
-//
-//	m_pEditIp = (IDUIEditCtrl*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "EditIp", m_pDuiDownSetting, TRUE);
-//	ASSERT(m_pEditIp);
-//
-//	m_pEditPort = (IDUIEditCtrl*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "EditPort", m_pDuiDownSetting, TRUE);
-//	ASSERT(m_pEditPort);
-//
-//	m_pEditUser = (IDUIEditCtrl*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "EditUser", m_pDuiDownSetting, TRUE);
-//	ASSERT(m_pEditUser);
-//
-//	m_pEditPwd = (IDUIEditCtrl*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "EditPwd", m_pDuiDownSetting, TRUE);
-//	ASSERT(m_pEditPwd);
-//
-//	return true;
-//}
-
 BOOL CPatchNetSetting::InitSknPath()
 {
 	CDUIDialog::InitSknPath();
@@ -128,32 +62,27 @@ int CPatchNetSetting::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 
 	// TODO:  在此添加您专用的创建代码
-	//if (!InitDui())
-	//	return -1;
 
 	return 0;
 }
 
-void CPatchNetSetting::GetIntevalTime(std::string& src, std::string &szbH, std::string &szbM, 
-	std::string &szeH, std::string &szeM)
+void GetTime(std::string& szTime, std::string &szHour, std::string &szMin, std::string &szSec)
 {
-	std::regex rgx("(\\d{1,2}):(\\d{0,2})-(\\d{1,2}):(\\d{0,2})");
+	std::regex rgx("(\\d{1,2}):(\\d{0,2}):(\\d{0,2})");
 	std::smatch sm;
-	if (std::regex_match(src, sm, rgx))
+	if (std::regex_match(szTime, sm, rgx))
 	{
-		if (sm.size() >= 5)
+		if (sm.size() >= 4)
 		{
-			szbH = sm[1];
-			szbM = sm[2];
-			szeH = sm[3];
-			szeM = sm[4];
+			szHour = sm[1];
+			szMin = sm[2];
+			szSec = sm[3];
 		}
 	}
 
-	if (szbH.empty()) szbH = "00";
-	if (szbM.empty()) szbM = "00";
-	if (szeH.empty()) szeH = "00";
-	if (szeM.empty()) szeM = "00";
+	if (szHour.empty()) szHour = "00";
+	if (szMin.empty()) szMin = "00";
+	if (szSec.empty()) szSec = "00";
 }
 
 CWnd * CPatchNetSetting::GetParent()
@@ -182,11 +111,10 @@ void CPatchNetSetting::InitControlData()
 		DRadio(RadioBox_Interval)->SetValue(DUIRADIOBOX_CHECKED, TRUE);
 		{
 			std::string szbegin, szend;
-			std::string szbegH, szbegM, szendH, szendM;
-			GetIntevalTime(appconfig.m_http_cfg.sznettime, szbegH, szbegM,
-				szendH, szendM);
-			szbegin = szbegH + ":" + szbegM;
-			szend = szendH + ":" + szendM;
+			//std::string szbegH, szbegM, szbegS, szendH, szendM, szendS;
+			GetIntervalTime(appconfig.m_http_cfg.sznettime, szbegin, szend);
+			//szbegin = szbegH + ":" + szbegM;
+			//szend = szendH + ":" + szendM;
 			DEdit(EditBegin)->SetText(szbegin);
 			DEdit(EditEnd)->SetText(szend);
 			DEdit(EditBegin)->DUISetToolTip(szbegin);
@@ -268,7 +196,7 @@ BOOL CPatchNetSetting::OnInitDialog()
 
 BOOL IsTimeValid(std::string &sztime)
 {
-	std::regex rgx("(\\d{1,2}):(\\d{0,2})");
+	std::regex rgx("(\\d{1,2}):(\\d{0,2}):(\\d{0,2})");
 	std::smatch sm;
 	if (std::regex_match(sztime, sm, rgx))
 	{
@@ -276,14 +204,17 @@ BOOL IsTimeValid(std::string &sztime)
 		{
 			std::string szHour = sm[1];
 			std::string szMin = sm[2];
+			std::string szSec = sm[3];
+
 			int iHour = atoi(szHour.c_str());
 			int iMin = atoi(szMin.c_str());
+			int iSec = atoi(szMin.c_str());
 			if ((iHour >= 0 && iHour < 24)
-				&& (iMin >= 0 && iMin <= 59))
+				&& (iMin >= 0 && iMin <= 59)
+				&& (iSec >= 0 && iSec <= 59))
 			{
 				return TRUE;
 			}
-
 		}
 	}
 
@@ -350,13 +281,13 @@ BOOL CPatchNetSetting::OnApply()
 		if (!IsTimeValid(szbegin))
 		{
 			CMessageBox msg;
-			msg.ShowMessage("\"按时间下载\"指定开始时间范围无效(00:00~23:59)");
+			msg.ShowMessage("\"按时间下载\"指定开始时间范围无效(00:00:00~23:59:00)");
 			return FALSE;
 		}
 		if (!IsTimeValid(szend))
 		{
 			CMessageBox msg;
-			msg.ShowMessage("\"按时间下载\"指定结束时间范围无效(00:00~23:59)");
+			msg.ShowMessage("\"按时间下载\"指定结束时间范围无效(00:00:00~23:59:00)");
 			return FALSE;
 		}
 		sztime = szbegin + "-" + szend;
@@ -415,17 +346,17 @@ BOOL CPatchNetSetting::OnApply()
 	CPatchViewStatics *pStaticView = (CPatchViewStatics *)pPatchView->GetStaticView();
 	CPatchDownView *pDownView = (CPatchDownView*)pPatchView->GetDownView();
 
-	if (GetFileSHA1(szPackPath, szPackSha))
-	{
+	//if (GetFileSHA1(szPackPath, szPackSha))
+	//{
 
-		if (szPackSha != bus.GetPackSha1() || szproducts != szlastProducts)
-		{
-			pStaticView->DeleteAllItems();
-			pStaticView->InsertIndexItem();
-			pStaticView->InsertProductsItems();
-			bus.SetPackSha1(szPackSha);
-		}
-	}
+	//	if (szPackSha != bus.GetPackSha1() || szproducts != szlastProducts)
+	//	{
+	//		pStaticView->DeleteAllItems();
+	//		pStaticView->InsertIndexItem();
+	//		pStaticView->InsertProductsItems();
+	//		bus.SetPackSha1(szPackSha);
+	//	}
+	//}
 
 
 	std::string &szcfgfile = appconfig.m_szConfigFile;
@@ -903,7 +834,6 @@ void CPatchNetSetting::RestoreTreeCheckItems(tree whichtree)
 		TravelTree(pTree, hchild, szXX);
 		hchild = pTree->GetNextSiblingItem(hchild);
 	}
-
 	pTree->RedrawWindow(TRUE);
 }
 
