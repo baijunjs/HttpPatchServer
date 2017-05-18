@@ -23,15 +23,7 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
-	//bool InitDui();
 	BOOL InitSknPath();
-
-
-	//ISkinObjResBase			*m_pDuiSetting;
-	//IDUITabCtrl				*m_pTabSetting;
-	//IDUIHwndObj				*m_pHwndOwner;
-	//ICmdButton				*m_pBtnApply;
-	//ICmdButton				*m_pBtnCancel;
 
 	DECLARE_MESSAGE_MAP()
 public:
@@ -47,4 +39,6 @@ public:
 	CPatchOther				m_patchOtherSetting;
 	CWnd*					m_pPatchView;
 	afx_msg void OnClose();
+	void InitControlLang();
+
 };

@@ -180,6 +180,8 @@ public:
 	/*/
 	HBITMAP GetImageHandle ( LPCTSTR lpszImageFile ) ;
 
+	static BOOL ChangeSkin(std::tstring szSknFile);
+
 	static int     GetLangId () ;
 
 	static BOOL    SetLangId ( int nLang, BOOL IsChange=FALSE ) ;
@@ -208,6 +210,7 @@ private:
 	CString GetDirectUIDllName() ;
 
 	inline int IsUseSkinCtrl () ;
+
 
 public:
 	CString m_strDUIIniFile ;     // ≈‰÷√Œƒº˛

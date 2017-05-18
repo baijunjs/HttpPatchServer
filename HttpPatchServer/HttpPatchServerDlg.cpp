@@ -117,6 +117,8 @@ BOOL CHttpPatchServerDlg::OnInitDialog()
 
 	AddTaskbarIcons();
 
+	InitControlLang();
+
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -247,7 +249,7 @@ void CHttpPatchServerDlg::OnCancel()
 	if (theApp._thread.joinable())
 	{
 		CMessageBox msg;
-		if (IDOK == msg.ShowMessage("是否确定退出程序？", MB_OKCANCEL))
+		if (IDOK == msg.ShowMessage(g_lang.GetText(10061), MB_OKCANCEL))
 		{
 			m_patchview.OnClose();
 			m_patchsetting.OnClose();
@@ -284,7 +286,7 @@ void CHttpPatchServerDlg::AddTaskbarIcons()
 	m_NotifyIconData.hIcon = AfxGetApp()->LoadIcon(IDI_APP_ICON);
 	m_NotifyIconData.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP;
 	m_NotifyIconData.uCallbackMessage = UM_CUSTOM_TRAY;
-	strcpy_s(m_NotifyIconData.szTip, 128, AfxGetAppTitle());//_T(WND_SHOW_TEXT));
+	_tcscpy_s(m_NotifyIconData.szTip, 128, AfxGetAppTitle());//_T(WND_SHOW_TEXT));
 	Shell_NotifyIcon(NIM_ADD, &m_NotifyIconData); //使右下角图标在程序运行的时候就被注册
 }
 
@@ -298,4 +300,14 @@ LRESULT CHttpPatchServerDlg::OnTrayIcon(WPARAM wparam, LPARAM lparam)
 		break;
 	}
 	return 0;
+}
+
+void CHttpPatchServerDlg::InitControlLang()
+{
+	long nItems = DTab(TabMain)->GetItemCount();
+	IDUITabCtrlItem *pItem1 = DTab(TabMain)->GetItemByIndex(0);
+	IDUITabCtrlItem *pItem2 = DTab(TabMain)->GetItemByIndex(1);
+	pItem1->SetText(g_lang.GetText(10001));
+	pItem2->SetText(g_lang.GetText(10005));
+	DTab(TabMain)->RedrawWindow(TRUE);
 }

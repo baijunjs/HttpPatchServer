@@ -27,7 +27,6 @@ public:
 #endif
 
 private:
-	//bool InitListViewDui();
 	BOOL InitSknPath();
 
 protected:
@@ -41,20 +40,18 @@ private:
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	//void InsertPatchIndexItem(vrv::patch::CPatchIndex*);
 	LRESULT CleanItems(WPARAM, LPARAM);
-	//void SetItemProgressbarPosition(short nItem, short pos);
 	LRESULT RefreshListView(WPARAM wapram, LPARAM lparam);
 	CWnd* GetParent();
 	LRESULT InsertIndexItem(WPARAM wpram, LPARAM lparam);
 	LRESULT InsertPatchItem(WPARAM wparam, LPARAM lparam);
 
-	bool DownloadIndexesByCurl(IDUITVItem *pTopItem, vrv::patch::PatchIndexVectorPtr indexes);
-	bool DownloadPatchesByCurl(IDUITVItem *pTopItem, vrv::patch::PatchInfoVec &patches);
-	//void SetTaskStatusTip(IDUITVItem *pItem, Task_Status st, long lcode);
+	bool DownloadIndexesByCurl(HWND topHwnd, int topIndex, vrv::patch::PatchIndexVectorPtr indexes);
+	bool DownloadPatchesByCurl(HWND topHwnd, int topIndex, vrv::patch::PatchInfoVec &patches);
 	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 	void InsertErrorTaskToView(void *pTask, TASK_TYPE type);
-	bool DownloadIndexesByRcf(IDUITVItem *pTopItem);
-	bool DownloadPatchesByRcf(IDUITVItem *pTopItem);
-	bool DownloadIndex1xmlByRcf(IDUITVItem *pTopItem);
+	bool DownloadIndexesByRcf(HWND topHwnd, int topIndex);
+	bool DownloadPatchesByRcf(HWND topHwnd, int topIndex);
+	bool DownloadIndex1xmlByRcf(HWND topHwnd, int topIndex);
+	LRESULT OnSetText(WPARAM, LPARAM);
 };

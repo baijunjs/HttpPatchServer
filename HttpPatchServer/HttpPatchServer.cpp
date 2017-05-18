@@ -39,31 +39,33 @@ RCF::RcfInitDeinit rcfInit;
 
 // CHttpPatchServerApp 构造
 
-LPCSTR AfxGetAppTitle()
+LPCTSTR AfxGetAppTitle()
 {
-	return "";
+	return _T("");
 }
 
 
-BOOL GetFileSHA1(std::string szFile, OUT std::string &szSha)
+BOOL GetFileSHA1(std::tstring szFile, OUT std::tstring &szSha)
 {
 	size_t stlen = 0;
-	char szSHA1Value[0x80] = { 0 };
-	char szBase64Out[0x80] = { 0 };
+	TCHAR szSHA1Value[0x80] = { 0 };
+	CHAR szHash[20] = { 0 };
+	CHAR szBase64Out[0x80] = { 0 };
 	CSHA1 calcSha;
 	if (calcSha.HashFile(szFile.c_str()))
 	{
 		calcSha.Final();
 		if (calcSha.ReportHash(szSHA1Value, calcSha.REPORT_DIGIT))
 		{
-			calcSha.GetHash((unsigned char *)szSHA1Value);
-			encode_base64(szSHA1Value, 20, szBase64Out, 0x80, &stlen);
-			szSha = szBase64Out;
+			calcSha.GetHash((unsigned char *)szHash);
+			encode_base64((const char*)szHash, 20, (char*)szBase64Out, 0x80 , &stlen);
+			szSha = (const TCHAR*)_bstr_t(szBase64Out);
 			return TRUE;
 		}
 	}
 	return FALSE;
 }
+
 
 // 唯一的一个 CHttpPatchServerApp 对象
 
@@ -86,7 +88,7 @@ void CHttpPatchServerApp::Initlog()
 {
 	if (appconfig.m_other_cfg.enable)
 	{
-		if (vrvlog::log::get().init(appconfig.m_szLogPath))
+		if (vrvlog::log::get().init((const char*)_bstr_t(appconfig.m_szLogPath.c_str())))
 		{
 			vrvlog::log::get().get_log()->flush_on((spdlog::level::level_enum)appconfig.m_other_cfg.level);
 			vrvlog::log::get().get_log()->set_level((spdlog::level::level_enum)appconfig.m_other_cfg.level);
@@ -120,10 +122,11 @@ void CHttpPatchServerApp::InitPatchServer()
 bool CHttpPatchServerApp::InitPatchClient()
 {
 	int port;
-	std::stringstream ss;
+	std::tstringstream ss;
 	ss << appconfig.m_cascade_cfg.szupserverport;
 	ss >> port;
-	client = std::make_shared<RcfClient<MyService>>(RCF::TcpEndpoint(appconfig.m_cascade_cfg.szupserverip, port));
+	std::tstring &szip = appconfig.m_cascade_cfg.szupserverip;
+	client = std::make_shared<RcfClient<MyService>>(RCF::TcpEndpoint((const char*)_bstr_t(szip.c_str()), port));
 	client->getClientStub().setRemoteCallTimeoutMs(120000);
 	client->getClientStub().setConnectTimeoutMs(20000);
 	client->getClientStub().setTransferWindowS(1);
@@ -148,75 +151,73 @@ bool CHttpPatchServerApp::InitPatchClient()
 
 BOOL CHttpPatchServerApp::GetAppRootPath()
 {
-	CHAR szAppPath[MAX_PATH] = { 0 };
-	if (GetModuleFileNameA(NULL, szAppPath, MAX_PATH) == 0)
+	TCHAR szAppPath[MAX_PATH] = { 0 };
+	if (GetModuleFileName(NULL, szAppPath, MAX_PATH) == 0)
 		return FALSE;
-	CHAR * pTail = strrchr(szAppPath, '\\');
+	TCHAR * pTail = _tcsrchr(szAppPath, _T('\\'));
 	if (NULL != pTail)
-		strcpy_s(pTail, 1, "");
+		_tcscpy_s(pTail, 1, _T(""));
 	appconfig.m_szAppPath = szAppPath;
 	return TRUE;
 }
 
 BOOL CHttpPatchServerApp::InitAppConfig()
 {
-	CHAR szPath[MAX_PATH] = { 0 };
-	if (!SHGetSpecialFolderPathA(NULL, szPath, CSIDL_APPDATA, TRUE))
-	{
+	TCHAR szPath[MAX_PATH] = { 0 };
+	if (!SHGetSpecialFolderPath(NULL, szPath, CSIDL_APPDATA, TRUE))
 		return FALSE;
-	}
 
-	std::string szTempPath = szPath;
-	szTempPath.append("\\PatchServer");
-	if (!PathFileExistsA(szTempPath.c_str()))
+	std::tstring szTempPath = szPath;
+	szTempPath.append(_T("\\PatchServer"));
+	if (!PathFileExists(szTempPath.c_str()))
 	{
-		CreateDirectoryA(szTempPath.c_str(), NULL);
+		CreateDirectory(szTempPath.c_str(), NULL);
 	}
 
-	appconfig.m_szConfigFile = szTempPath + "\\setup.ini";
-	if (!PathFileExistsA(appconfig.m_szConfigFile.c_str()))
+	appconfig.m_szConfigFile = szTempPath + _T("\\setup.ini");
+	if (!PathFileExists(appconfig.m_szConfigFile.c_str()))
 	{
-		std::string &szconfig = appconfig.m_szConfigFile;
+		std::tstring &szconfig = appconfig.m_szConfigFile;
 
-		WritePrivateProfileStringA("PATCH", "URL", "http://www.vrvsoft.com/update/patch/newpatch/PackIndex.dat", szconfig.c_str());
-		WritePrivateProfileStringA("PATCH", "PATH", "", szconfig.c_str());
-		WritePrivateProfileStringA("PATCH", "PRODUCTS", "", szconfig.c_str());
-		WritePrivateProfileStringA("PATCH", "LAN", "", szconfig.c_str());
+		WritePrivateProfileString(_T("PATCH"), _T("URL"), _T("http://www.vrvsoft.com/update/patch/newpatch/PackIndex.dat"), szconfig.c_str());
+		WritePrivateProfileString(_T("PATCH"), _T("PATH"), _T("C:\\vrv\\RegionManage\\Distribute\\Patch"), szconfig.c_str());
+		WritePrivateProfileString(_T("PATCH"), _T("PRODUCTS"), _T(""), szconfig.c_str());
+		WritePrivateProfileString(_T("PATCH"), _T("LAN"), _T(""), szconfig.c_str());
 
-		WritePrivateProfileStringA("NET", "TIMEMODE", "0", szconfig.c_str());
-		WritePrivateProfileStringA("NET", "NETTIME", "", szconfig.c_str());
-		WritePrivateProfileStringA("NET", "FLUX", "0", szconfig.c_str());
-		WritePrivateProfileStringA("NET", "FLUXSPEED", "0", szconfig.c_str());
-		WritePrivateProfileStringA("NET", "PROXY", "0", szconfig.c_str());
-		WritePrivateProfileStringA("NET", "PROXYIP", "", szconfig.c_str());
-		WritePrivateProfileStringA("NET", "PROXYPORT", "", szconfig.c_str());
-		WritePrivateProfileStringA("NET", "PROXYUSER", "", szconfig.c_str());
-		WritePrivateProfileStringA("NET", "PROXYPWD", "", szconfig.c_str());
+		WritePrivateProfileString(_T("NET"), _T("TIMEMODE"), _T("0"), szconfig.c_str());
+		WritePrivateProfileString(_T("NET"), _T("NETTIME"), _T(""), szconfig.c_str());
+		WritePrivateProfileString(_T("NET"), _T("FLUX"), _T("0"), szconfig.c_str());
+		WritePrivateProfileString(_T("NET"), _T("FLUXSPEED"), _T("0"), szconfig.c_str());
+		WritePrivateProfileString(_T("NET"), _T("PROXY"), _T("0"), szconfig.c_str());
+		WritePrivateProfileString(_T("NET"), _T("PROXYIP"), _T(""), szconfig.c_str());
+		WritePrivateProfileString(_T("NET"), _T("PROXYPORT"), _T(""), szconfig.c_str());
+		WritePrivateProfileString(_T("NET"), _T("PROXYUSER"), _T(""), szconfig.c_str());
+		WritePrivateProfileString(_T("NET"), _T("PROXYPWD"), _T(""), szconfig.c_str());
 
-		WritePrivateProfileStringA("CASCADE", "DBIP", "", szconfig.c_str());
-		WritePrivateProfileStringA("CASCADE", "DBSRC", "", szconfig.c_str());
-		WritePrivateProfileStringA("CASCADE", "DBUSER", "", szconfig.c_str());
-		WritePrivateProfileStringA("CASCADE", "DBPWD", "", szconfig.c_str());
-		WritePrivateProfileStringA("CASCADE", "CASCADE", "0", szconfig.c_str());
-		WritePrivateProfileStringA("CASCADE", "UPSERVERIP", "", szconfig.c_str());
-		WritePrivateProfileStringA("CASCADE", "UPSERVERPORT", "", szconfig.c_str());
-		WritePrivateProfileStringA("CASCADE", "TIMEMODE", "0", szconfig.c_str());
-		WritePrivateProfileStringA("CASCADE", "NETTIME", "", szconfig.c_str());
-		WritePrivateProfileStringA("CASCADE", "FLUX", "0", szconfig.c_str());
-		WritePrivateProfileStringA("CASCADE", "FLUXSPEED", "0", szconfig.c_str());
-		WritePrivateProfileStringA("CASCADE", "PATH", "", szconfig.c_str());
-		WritePrivateProfileStringA("CASCADE", "LOCALPORT", "6998", szconfig.c_str());
-		WritePrivateProfileStringA("CASCADE", "INDEX1", "1", szconfig.c_str());
+		WritePrivateProfileString(_T("CASCADE"), _T("DBIP"), _T(""), szconfig.c_str());
+		WritePrivateProfileString(_T("CASCADE"), _T("DBSRC"), _T(""), szconfig.c_str());
+		WritePrivateProfileString(_T("CASCADE"), _T("DBUSER"), _T(""), szconfig.c_str());
+		WritePrivateProfileString(_T("CASCADE"), _T("DBPWD"), _T(""), szconfig.c_str());
+		WritePrivateProfileString(_T("CASCADE"), _T("CASCADE"), _T("0"), szconfig.c_str());
+		WritePrivateProfileString(_T("CASCADE"), _T("UPSERVERIP"), _T(""), szconfig.c_str());
+		WritePrivateProfileString(_T("CASCADE"), _T("UPSERVERPORT"), _T(""), szconfig.c_str());
+		WritePrivateProfileString(_T("CASCADE"), _T("TIMEMODE"), _T("0"), szconfig.c_str());
+		WritePrivateProfileString(_T("CASCADE"), _T("NETTIME"), _T(""), szconfig.c_str());
+		WritePrivateProfileString(_T("CASCADE"), _T("FLUX"), _T("0"), szconfig.c_str());
+		WritePrivateProfileString(_T("CASCADE"), _T("FLUXSPEED"), _T("0"), szconfig.c_str());
+		WritePrivateProfileString(_T("CASCADE"), _T("PATH"), _T(""), szconfig.c_str());
+		WritePrivateProfileString(_T("CASCADE"), _T("LOCALPORT"), _T("6998"), szconfig.c_str());
+		WritePrivateProfileString(_T("CASCADE"), _T("INDEX1"), _T("1"), szconfig.c_str());
 
-		WritePrivateProfileStringA("SWITCHMODE", "MODE", "0", szconfig.c_str());
+		WritePrivateProfileString(_T("SWITCHMODE"), _T("MODE"), _T("0"), szconfig.c_str());
 
-		WritePrivateProfileStringA("DEBUG", "LOG", "1", szconfig.c_str());
-		WritePrivateProfileStringA("DEBUG", "LEVEL", "4", szconfig.c_str());
-		WritePrivateProfileStringA("LANGUAGE", "DEFAULT", "ZHCN", szconfig.c_str());
+		WritePrivateProfileString(_T("DEBUG"), _T("LOG"), _T("1"), szconfig.c_str());
+		WritePrivateProfileString(_T("DEBUG"), _T("LEVEL"), _T("4"), szconfig.c_str());
+		WritePrivateProfileString(_T("LANGUAGE"), _T("DEFAULT"), _T("EN"), szconfig.c_str());
 
 	}
 
-	appconfig.m_szLogPath = szTempPath + "\\log";
+	appconfig.m_szLogPath = szTempPath + _T("\\log");
 
 	return TRUE;
 }
@@ -226,90 +227,97 @@ void  CHttpPatchServerApp::ReadConfig()
 {
 #define MAX_LEN			500
 
-	std::string &szconfig = appconfig.m_szConfigFile;
-	CHAR szBuff[500] = { 0 };
-	GetPrivateProfileStringA("PATCH", "URL", "http://www.vrvsoft.com/update/patch/newpatch/PackIndex.dat", szBuff, MAX_LEN, szconfig.c_str());
+	std::tstring &szconfig = appconfig.m_szConfigFile;
+	TCHAR szBuff[500] = { 0 };
+	GetPrivateProfileString(_T("PATCH"), _T("URL"), _T("http://www.vrvsoft.com/update/patch/newpatch/PackIndex.dat"), szBuff, MAX_LEN, szconfig.c_str());
 	appconfig.m_http_cfg.m_szIndexUrl = szBuff;
 
-	GetPrivateProfileStringA("PATCH", "PATH", "", szBuff, MAX_LEN, szconfig.c_str());
+	GetPrivateProfileString(_T("PATCH"), _T("PATH"), _T("C:\\vrv\\RegionManage\\Distribute\\Patch"), szBuff, MAX_LEN, szconfig.c_str());
 	appconfig.m_http_cfg.m_szPatchPath = szBuff;
 
-	GetPrivateProfileStringA("PATCH", "PRODUCTS", "", szBuff, MAX_LEN, szconfig.c_str());
+	GetPrivateProfileString(_T("PATCH"), _T("PRODUCTS"), _T(""), szBuff, MAX_LEN, szconfig.c_str());
 	appconfig.m_http_cfg.m_szProducts = szBuff;
 
-	GetPrivateProfileStringA("PATCH", "LAN", "", szBuff, MAX_LEN, szconfig.c_str());
+	GetPrivateProfileString(_T("PATCH"), _T("LAN"), _T(""), szBuff, MAX_LEN, szconfig.c_str());
 	appconfig.m_http_cfg.m_szLans = szBuff;
 
-	appconfig.m_http_cfg.mode = (timemode)GetPrivateProfileIntA("NET", "TIMEMODE", 0, szconfig.c_str());
+	appconfig.m_http_cfg.mode = (timemode)GetPrivateProfileInt(_T("NET"), _T("TIMEMODE"), 0, szconfig.c_str());
 
-	GetPrivateProfileStringA("NET", "NETTIME", "", szBuff, MAX_LEN, szconfig.c_str());
+	GetPrivateProfileString(_T("NET"), _T("NETTIME"), _T(""), szBuff, MAX_LEN, szconfig.c_str());
 	appconfig.m_http_cfg.sznettime = szBuff;
 
-	appconfig.m_http_cfg.flux = (bool)GetPrivateProfileIntA("NET", "FLUX", 0, szconfig.c_str());
+	appconfig.m_http_cfg.flux = (bool)GetPrivateProfileInt(_T("NET"), _T("FLUX"), 0, szconfig.c_str());
 
-	appconfig.m_http_cfg.fluxspeed = GetPrivateProfileIntA("NET", "FLUXSPEED", 0, szconfig.c_str());
+	appconfig.m_http_cfg.fluxspeed = GetPrivateProfileInt(_T("NET"), _T("FLUXSPEED"), 0, szconfig.c_str());
 
-	appconfig.m_http_cfg.proxy = GetPrivateProfileIntA("NET", "PROXY", 0, szconfig.c_str());
+	appconfig.m_http_cfg.proxy = GetPrivateProfileInt(_T("NET"), _T("PROXY"), 0, szconfig.c_str());
 
-	GetPrivateProfileStringA("NET", "PROXYIP", "", szBuff, MAX_LEN, szconfig.c_str());
+	GetPrivateProfileString(_T("NET"), _T("PROXYIP"), _T(""), szBuff, MAX_LEN, szconfig.c_str());
 	appconfig.m_http_cfg.szip = szBuff;
 
-	GetPrivateProfileStringA("NET", "PROXYPORT", "", szBuff, MAX_LEN, szconfig.c_str());
+	GetPrivateProfileString(_T("NET"), _T("PROXYPORT"), _T(""), szBuff, MAX_LEN, szconfig.c_str());
 	appconfig.m_http_cfg.szport = szBuff;
 
-	GetPrivateProfileStringA("NET", "PROXYUSER", "", szBuff, MAX_LEN, szconfig.c_str());
+	GetPrivateProfileString(_T("NET"), _T("PROXYUSER"), _T(""), szBuff, MAX_LEN, szconfig.c_str());
 	appconfig.m_http_cfg.szuser = szBuff;
 
-	GetPrivateProfileStringA("NET", "PROXYPWD", "", szBuff, MAX_LEN, szconfig.c_str());
+	GetPrivateProfileString(_T("NET"), _T("PROXYPWD"), _T(""), szBuff, MAX_LEN, szconfig.c_str());
 	appconfig.m_http_cfg.szpwd = szBuff;
 
-	GetPrivateProfileStringA("CASCADE", "DBIP", "", szBuff, MAX_LEN, szconfig.c_str());
+	GetPrivateProfileString(_T("CASCADE"), _T("DBIP"), _T(""), szBuff, MAX_LEN, szconfig.c_str());
 	appconfig.m_cascade_cfg.szdbip = szBuff;
 
-	GetPrivateProfileStringA("CASCADE", "DBSRC", "", szBuff, MAX_LEN, szconfig.c_str());
+	GetPrivateProfileString(_T("CASCADE"), _T("DBSRC"), _T(""), szBuff, MAX_LEN, szconfig.c_str());
 	appconfig.m_cascade_cfg.szdbsrc = szBuff;
 
-	GetPrivateProfileStringA("CASCADE", "DBUSER", "", szBuff, MAX_LEN, szconfig.c_str());
+	GetPrivateProfileString(_T("CASCADE"), _T("DBUSER"), _T(""), szBuff, MAX_LEN, szconfig.c_str());
 	appconfig.m_cascade_cfg.szdbuser = szBuff;
 
-	GetPrivateProfileStringA("CASCADE", "DBPWD", "", szBuff, MAX_LEN, szconfig.c_str());
+	GetPrivateProfileString(_T("CASCADE"), _T("DBPWD"), _T(""), szBuff, MAX_LEN, szconfig.c_str());
 	appconfig.m_cascade_cfg.szdbpwd = szBuff;
 
-	appconfig.m_cascade_cfg.cascade = (bool)GetPrivateProfileIntA("CASCADE", "CASCADE", 0, szconfig.c_str());
+	appconfig.m_cascade_cfg.cascade = (bool)GetPrivateProfileInt(_T("CASCADE"), _T("CASCADE"), 0, szconfig.c_str());
 
-	GetPrivateProfileStringA("CASCADE", "UPSERVERIP", "", szBuff, MAX_LEN, szconfig.c_str());
+	GetPrivateProfileString(_T("CASCADE"), _T("UPSERVERIP"), _T(""), szBuff, MAX_LEN, szconfig.c_str());
 	appconfig.m_cascade_cfg.szupserverip = szBuff;
 
-	GetPrivateProfileStringA("CASCADE", "UPSERVERPORT", "", szBuff, MAX_LEN, szconfig.c_str());
+	GetPrivateProfileString(_T("CASCADE"), _T("UPSERVERPORT"), _T(""), szBuff, MAX_LEN, szconfig.c_str());
 	appconfig.m_cascade_cfg.szupserverport = szBuff;
 
-	appconfig.m_cascade_cfg.mode = (timemode)GetPrivateProfileIntA("CASCADE", "TIMEMODE", 0, szconfig.c_str());
+	appconfig.m_cascade_cfg.mode = (timemode)GetPrivateProfileInt(_T("CASCADE"), _T("TIMEMODE"), 0, szconfig.c_str());
 
-	GetPrivateProfileStringA("CASCADE", "NETTIME", "", szBuff, MAX_LEN, szconfig.c_str());
+	GetPrivateProfileString(_T("CASCADE"), _T("NETTIME"), _T(""), szBuff, MAX_LEN, szconfig.c_str());
 	appconfig.m_cascade_cfg.sznettime = szBuff;
 
-	appconfig.m_cascade_cfg.flux = (bool)GetPrivateProfileIntA("CASCADE", "FLUX", 0, szconfig.c_str());
+	appconfig.m_cascade_cfg.flux = (bool)GetPrivateProfileInt(_T("CASCADE"), _T("FLUX"), 0, szconfig.c_str());
 
-	appconfig.m_cascade_cfg.fluxspeed = GetPrivateProfileIntA("CASCADE", "FLUXSPEED", 0, szconfig.c_str());
+	appconfig.m_cascade_cfg.fluxspeed = GetPrivateProfileInt(_T("CASCADE"), _T("FLUXSPEED"), 0, szconfig.c_str());
 
-	GetPrivateProfileStringA("CASCADE", "PATH", "", szBuff, MAX_LEN, szconfig.c_str());
+	GetPrivateProfileString(_T("CASCADE"), _T("PATH"), _T(""), szBuff, MAX_LEN, szconfig.c_str());
 	appconfig.m_cascade_cfg.szPatchPath = szBuff;
 
-	appconfig.m_cascade_cfg.localserverport = GetPrivateProfileIntA("CASCADE", "LOCALPORT", 6998, szconfig.c_str());
-	appconfig.m_cascade_cfg.index1 = GetPrivateProfileIntA("CASCADE", "INDEX1", 1, szconfig.c_str());
+	appconfig.m_cascade_cfg.localserverport = GetPrivateProfileInt(_T("CASCADE"), _T("LOCALPORT"), 6998, szconfig.c_str());
+	appconfig.m_cascade_cfg.index1 = GetPrivateProfileInt(_T("CASCADE"), _T("INDEX1"), 1, szconfig.c_str());
 
 
-	appconfig.m_mode_cfg.mode = (switchmode)GetPrivateProfileIntA("SWITCHMODE", "MODE", 0, szconfig.c_str());
+	appconfig.m_mode_cfg.mode = (switchmode)GetPrivateProfileInt(_T("SWITCHMODE"), _T("MODE"), 0, szconfig.c_str());
 
-	appconfig.m_other_cfg.enable = (bool)GetPrivateProfileIntA("DEBUG", "LOG", 1, szconfig.c_str());
-	appconfig.m_other_cfg.level = GetPrivateProfileIntA("DEBUG", "LEVEL", 4, szconfig.c_str());
+	appconfig.m_other_cfg.enable = (bool)GetPrivateProfileInt(_T("DEBUG"), _T("LOG"), 1, szconfig.c_str());
+	appconfig.m_other_cfg.level = GetPrivateProfileInt(_T("DEBUG"), _T("LEVEL"), 4, szconfig.c_str());
 
-	GetPrivateProfileStringA("LANGUAGE", "DEFAULT", "ZHCN", szBuff, MAX_LEN, szconfig.c_str());
-	if (_stricmp(szBuff, "ZHCN") == 0)
+	GetPrivateProfileString(_T("LANGUAGE"), _T("DEFAULT"), _T("EN"), szBuff, MAX_LEN, szconfig.c_str());
+	if (_tcsicmp(szBuff, _T("ZHCN")) == 0)
 		appconfig.m_other_cfg.lang = ZHCN;
 	else
 		appconfig.m_other_cfg.lang = EN;
 
+}
+
+void CHttpPatchServerApp::InitLanguage()
+{
+	std::tstring szLangPro = appconfig.m_szAppPath + _T("\\Skin\\lang.ini");
+	language lang = (language)appconfig.m_other_cfg.lang;
+	g_lang.ReadProfile(szLangPro, lang);
 }
 
 
@@ -357,6 +365,8 @@ BOOL CHttpPatchServerApp::InitInstance()
 
 	InitPatchServer();
 
+	InitLanguage();
+
 	if (!CPackInterface::init())
 		return FALSE;
 
@@ -375,8 +385,8 @@ BOOL CHttpPatchServerApp::InitInstance()
 	}
 	else if (nResponse == -1)
 	{
-		TRACE(traceAppMsg, 0, "警告: 对话框创建失败，应用程序将意外终止。\n");
-		TRACE(traceAppMsg, 0, "警告: 如果您在对话框上使用 MFC 控件，则无法 #define _AFX_NO_MFC_CONTROLS_IN_DIALOGS。\n");
+		TRACE(traceAppMsg, 0, _T("警告: 对话框创建失败，应用程序将意外终止。\n"));
+		TRACE(traceAppMsg, 0, _T("警告: 如果您在对话框上使用 MFC 控件，则无法 #define _AFX_NO_MFC_CONTROLS_IN_DIALOGS。\n"));
 	}
 
 	// 删除上面创建的 shell 管理器。
@@ -400,7 +410,8 @@ int CHttpPatchServerApp::ExitInstance()
 {
 	// TODO: 在此添加专用代码和/或调用基类
 	curl_global_cleanup();
-	server->stop();
+	if (server)
+		server->stop();
 	//if(FreeSkin)
 		//FreeSkin();
 	return CWinApp::ExitInstance();
@@ -431,19 +442,19 @@ void CHttpPatchServerApp::StopByRcf()
 
 BOOL MakeSureDirectoryExist(const TCHAR *pszPath, BOOL bFilePath)
 {
-	std::string szPath = pszPath;
+	std::tstring szPath = pszPath;
 	if (bFilePath)
 		szPath = szPath.substr(0, szPath.find_last_of('\\'));
 
-	if (!PathIsDirectoryA(szPath.c_str()))
+	if (!PathIsDirectory(szPath.c_str()))
 	{
-		std::string szParentPath;
-		std::string szFullPath = szPath;
-		auto pos = szFullPath.find_last_of("\\");
-		if (pos != std::string::npos)
+		std::tstring szParentPath;
+		std::tstring szFullPath = szPath;
+		auto pos = szFullPath.find_last_of(_T("\\"));
+		if (pos != std::tstring::npos)
 			szParentPath = szFullPath.substr(0, pos);
 		if (MakeSureDirectoryExist(szParentPath.c_str(), FALSE))
-			return CreateDirectoryA(szPath.c_str(), NULL);
+			return CreateDirectory(szPath.c_str(), NULL);
 		else
 			return FALSE;
 	}
@@ -467,22 +478,22 @@ void  CPatchServiceImpl::RequestPatchInfo(std::vector<vrv::patch::PatchInfo> &pa
 	else if (appconfig.m_mode_cfg.mode == cascade_mode)
 		szPatchpath = appconfig.m_cascade_cfg.szPatchPath;
 
-	TravelPatchPath(szPatchpath + "\\chinese", patches);
-	TravelPatchPath(szPatchpath + "\\english", patches);
+	TravelPatchPath(szPatchpath + _T("\\chinese"), patches);
+	TravelPatchPath(szPatchpath + _T("\\english"), patches);
 }
 
 
 void CPatchServiceImpl::RequestPatchInfo(vrv::patch::PatchInfo &patch)
 {
-	std::string szPath;
+	std::tstring szPath;
 	if (appconfig.m_mode_cfg.mode == http_mode)
 		szPath = appconfig.m_http_cfg.m_szPatchPath;
 
 	else if (appconfig.m_mode_cfg.mode == cascade_mode)
 		szPath = appconfig.m_cascade_cfg.szPatchPath;
 
-	std::string szPatchFile = szPath + "\\" + patch.szPatchName;
-	std::stringstream ss;
+	std::tstring szPatchFile = szPath + _T("\\") + patch.szPatchName;
+	std::tstringstream ss;
 	std::ifstream ifs(szPatchFile);
 	if (ifs.is_open())
 	{
@@ -500,96 +511,95 @@ void CPatchServiceImpl::RequestIndexInfo(std::vector<vrv::patch::IndexInfo> &ind
 	std::lock_guard<std::mutex> locker(mtxforindex);
 
 	if (appconfig.m_mode_cfg.mode == http_mode)
-		szToolpath = appconfig.m_http_cfg.m_szPatchPath + "\\Tools";
+		szToolpath = appconfig.m_http_cfg.m_szPatchPath + _T("\\Tools");
 
 	else if (appconfig.m_mode_cfg.mode == cascade_mode)
-		szToolpath = appconfig.m_cascade_cfg.szPatchPath + "\\Tools";
+		szToolpath = appconfig.m_cascade_cfg.szPatchPath + _T("\\Tools");
 
 	TravelIndexPath(szToolpath, indexes);
 }
 
-void  CPatchServiceImpl::DownloadFiles(std::string& szFile, RCF::FileDownload &fileDownload)
+void  CPatchServiceImpl::DownloadFiles(std::tstring& szFile, RCF::FileDownload &fileDownload)
 {
-	fileDownload = RCF::FileDownload(szFile);
+	fileDownload = RCF::FileDownload((const char*)_bstr_t(szFile.c_str()));
 }
 
-void  CPatchServiceImpl::DownloadIndexFile(std::string& szFile, RCF::FileDownload &fileDownload)
+void  CPatchServiceImpl::DownloadIndexFile(std::tstring& szFile, RCF::FileDownload &fileDownload)
 {
-	std::string szPath;
+	std::tstring szPath;
 	if (appconfig.m_mode_cfg.mode == http_mode)
-		szPath = appconfig.m_http_cfg.m_szPatchPath + "\\Tools";
+		szPath = appconfig.m_http_cfg.m_szPatchPath + _T("\\Tools");
 
 	else if (appconfig.m_mode_cfg.mode == cascade_mode)
-		szPath = appconfig.m_cascade_cfg.szPatchPath + "\\Tools";
+		szPath = appconfig.m_cascade_cfg.szPatchPath + _T("\\Tools");
 
-	std::string szIndexFile = szPath + "\\" + szFile;
-	fileDownload = RCF::FileDownload(szIndexFile);
+	std::tstring szIndexFile = szPath + _T("\\") + szFile;
+	fileDownload = RCF::FileDownload((const char*)_bstr_t(szIndexFile.c_str()));
 }
 
-void  CPatchServiceImpl::DownloadPatchFile(std::string& szFile, RCF::FileDownload &fileDownload)
+void  CPatchServiceImpl::DownloadPatchFile(std::tstring& szFile, RCF::FileDownload &fileDownload)
 {
-	std::string szPath;
+	std::tstring szPath;
 	if (appconfig.m_mode_cfg.mode == http_mode)
 		szPath = appconfig.m_http_cfg.m_szPatchPath;
 
 	else if (appconfig.m_mode_cfg.mode == cascade_mode)
 		szPath = appconfig.m_cascade_cfg.szPatchPath;
 
-	std::string szPatchFile = szPath + "\\" + szFile;
-	fileDownload = RCF::FileDownload(szPatchFile);
+	std::tstring szPatchFile = szPath + _T("\\") + szFile;
+	fileDownload = RCF::FileDownload((const char*)_bstr_t(szPatchFile.c_str()));
 }
 
 void  CPatchServiceImpl::DownloadIndex1xml(RCF::FileDownload &fileDownload)
 {
-	std::string szPath;
+	std::tstring szPath;
 	if (appconfig.m_mode_cfg.mode == http_mode)
 		szPath = appconfig.m_http_cfg.m_szPatchPath;
 
 	else if (appconfig.m_mode_cfg.mode == cascade_mode)
 		szPath = appconfig.m_cascade_cfg.szPatchPath;
 
-	std::string szIndex1Xml = szPath + "\\" + "index1.xml";
-	std::string szIndex1Zip = szPath + "\\" + "index1.zip";
-	if (PathFileExistsA(szIndex1Zip.c_str()))
-		fileDownload = RCF::FileDownload(szIndex1Xml);
+	std::tstring szIndex1Xml = szPath + _T("\\index1.xml");
+	std::tstring szIndex1Zip = szPath + _T("\\index1.zip");
+	if (PathFileExists(szIndex1Zip.c_str()))
+		fileDownload = RCF::FileDownload((const char*)_bstr_t(szIndex1Xml.c_str()));
 	else
-		throw RCF::Exception(RCF::_RcfError_FileOpen(szIndex1Zip));
+		throw RCF::Exception(RCF::_RcfError_FileOpen((const char*)_bstr_t(szIndex1Zip.c_str())));
 }
 
-void  CPatchServiceImpl::TravelIndexPath(std::string &szPath, std::vector<vrv::patch::IndexInfo> &indexes)
+void  CPatchServiceImpl::TravelIndexPath(std::tstring &szPath, std::vector<vrv::patch::IndexInfo> &indexes)
 {
-	std::string szFindPath = szPath + "\\*.*";
-	_finddata32_t data = { 0 };
-	intptr_t handle = _findfirst32(szFindPath.c_str(), &data);
-	if (handle == 0)
+	std::tstring szFindPath = szPath + _T("\\*.*");
+	_tfinddata32_t data = { 0 };
+	intptr_t handle = _tfindfirst32(szFindPath.c_str(), &data);
+	if (handle == -1)
 		return;
 	do
 	{
 		if (data.attrib & _A_SUBDIR)
 		{
-			if (_stricmp(data.name, ".")
-				&& _stricmp(data.name, ".."))
-				TravelIndexPath(szPath + "\\" + data.name, indexes);
+			if (_tcsicmp(data.name, _T(".")) && _tcsicmp(data.name, _T("..")))
+				TravelIndexPath(szPath + _T("\\") + data.name, indexes);
 		}
 		else
 		{
-			std::string szName = data.name;
+			std::tstring szName = data.name;
 			if (!szName.empty() && szName.back() != '~')
 			{
 				vrv::patch::IndexInfo indexInfo;
 				indexInfo.size = data.size;
-				indexInfo.szIndexName = szPath + "\\" + data.name;
+				indexInfo.szIndexName = szPath + _T("\\") + data.name;
 				indexInfo.dwCrc = GetFileCrc(indexInfo.szIndexName.c_str());
 				indexInfo.szIndexName = indexInfo.szIndexName.substr(szToolpath.length() + 1);
 				indexes.push_back(indexInfo);
 			}
 		}
 
-	} while (!_findnext32(handle, &data));
+	} while (!_tfindnext32(handle, &data));
 	_findclose(handle);
 }
 
-void  CPatchServiceImpl::GetIndexInfo(std::string &szFile, vrv::patch::IndexInfo& indexinfo)
+void  CPatchServiceImpl::GetIndexInfo(std::tstring &szFile, vrv::patch::IndexInfo& indexinfo)
 {
 	std::ifstream ifs(szFile);
 	if (ifs.is_open())
@@ -602,44 +612,43 @@ void  CPatchServiceImpl::GetIndexInfo(std::string &szFile, vrv::patch::IndexInfo
 	indexinfo.dwCrc = GetFileCrc(szFile.c_str());
 }
 
-void  CPatchServiceImpl::TravelPatchPath(std::string &szPath, std::vector<vrv::patch::PatchInfo> &patches)
+void  CPatchServiceImpl::TravelPatchPath(std::tstring &szPath, std::vector<vrv::patch::PatchInfo> &patches)
 {
-	std::string szFindPath = szPath + "\\*.*";
-	_finddata32_t data = { 0 };
-	intptr_t handle = _findfirst32(szFindPath.c_str(), &data);
-	if (handle == 0)
+	std::tstring szFindPath = szPath + _T("\\*.*");
+	_tfinddata32_t data = { 0 };
+	intptr_t handle = _tfindfirst32(szFindPath.c_str(), &data);
+	if (handle == -1)
 		return;
 	do
 	{
 		if (data.attrib & _A_SUBDIR)
 		{
-			if (_stricmp(data.name, ".")
-				&& _stricmp(data.name, ".."))
-				TravelPatchPath(szPath + "\\" + data.name, patches);
+			if (_tcsicmp(data.name, _T(".")) && _tcsicmp(data.name, _T("..")))
+				TravelPatchPath(szPath + _T("\\") + data.name, patches);
 		}
 		else
 		{
-			std::string szName = data.name;
+			std::tstring szName = data.name;
 			if (!szName.empty() && szName.back() != '~')
 			{
-				std::stringstream ss;
+				std::tstringstream ss;
 				ss << data.size;
 				vrv::patch::PatchInfo patchInfo;
 				patchInfo.szPatchSize = ss.str();
-				patchInfo.szPatchName = szPath + "\\" + data.name;
+				patchInfo.szPatchName = szPath + _T("\\") + data.name;
 				GetFileSHA1(patchInfo.szPatchName, patchInfo.szMd5);
 				patchInfo.szPatchName = patchInfo.szPatchName.substr(szPatchpath.length() + 1);
 				patches.push_back(patchInfo);
 			}
 		}
 
-	} while (!_findnext32(handle, &data));
+	} while (!_tfindnext32(handle, &data));
 	_findclose(handle);
 }
 
-void  CPatchServiceImpl::GetPatchInfo(std::string &szFile, vrv::patch::PatchInfo& patchInfo)
+void  CPatchServiceImpl::GetPatchInfo(std::tstring &szFile, vrv::patch::PatchInfo& patchInfo)
 {
-	std::stringstream ss;
+	std::tstringstream ss;
 	std::ifstream ifs(szFile);
 	if (ifs.is_open())
 	{

@@ -8,15 +8,15 @@ public:
 	~CSqlConfig();
 public:
 	BOOL InitDBValue(LPCSTR pszIp, LPCSTR pszDb, LPCSTR pszUser, LPCSTR pszPwd);
-	std::string GetPatchPath();
+	std::tstring GetPatchPath();
 	BOOL EnableUplink();
-	std::string UplinkIp();
-	std::string UplinkPort();
+	std::tstring UplinkIp();
+	std::tstring UplinkPort();
 	int CycleType();
-	std::string GetPeriod();
-	std::string GetTime();
+	std::tstring GetPeriod();
+	std::tstring GetTime();
 	BOOL EnableFluxCtrl();
-	std::string GetFluxValue();
+	std::tstring GetFluxValue();
 private:
 	_ConnectionPtr	m_pConnection;
 };

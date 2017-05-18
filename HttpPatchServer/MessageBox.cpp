@@ -35,27 +35,6 @@ END_MESSAGE_MAP()
 
 // CMessageBox 消息处理程序
 
-
-//bool CMessageBox::InitDui()
-//{
-//	m_pDuiMsgBox = (ISkinObjResBase*)AfxGetDuiRes()->CreateDirectUI("DUIMessage", HandleToLong(m_hWnd));
-//	ASSERT(m_pDuiMsgBox);
-//
-//	m_pBtnOk = (ICmdButton*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "BtnOk", m_pDuiMsgBox, TRUE);
-//	ASSERT(m_pBtnOk);
-//
-//	m_pBtnCancel = (ICmdButton*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "BtnCancel", m_pDuiMsgBox, TRUE);
-//	ASSERT(m_pBtnCancel);
-//
-//	m_pBtnYes = (ICmdButton*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "BtnYes", m_pDuiMsgBox, TRUE);
-//	ASSERT(m_pBtnYes);
-//
-//	m_pMessage = (IDUIStatic*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "StaticMessage", m_pDuiMsgBox, TRUE);
-//	ASSERT(m_pMessage);
-//
-//	return true;
-//}
-
 int CMessageBox::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CDUIDialog::OnCreate(lpCreateStruct) == -1)
@@ -75,7 +54,7 @@ BOOL CMessageBox::InitSknPath()
 }
 
 
-int CMessageBox::ShowMessage(LPCSTR msg, UINT flag)
+int CMessageBox::ShowMessage(std::tstring &msg, UINT flag)
 {
 	m_uflag = flag;
 	m_szMessage = msg;
@@ -86,6 +65,8 @@ int CMessageBox::ShowMessage(LPCSTR msg, UINT flag)
 BOOL CMessageBox::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
+
+	InitControlLang();
 
 	// TODO:  在此添加额外的初始化
 	if (m_uflag == MB_OK)
@@ -119,4 +100,17 @@ LRESULT CMessageBox::OnButtonDispatcher(WPARAM wparam, LPARAM lparam)
 		OnCancel();
 
 	return 0;
+}
+
+
+void CMessageBox::InitControlLang()
+{
+	DBtn(BtnYes)->SetText(g_lang.GetText(10054));
+	DBtn(BtnYes)->RedrawWindow(TRUE);
+
+	DBtn(BtnOk)->SetText(g_lang.GetText(10054));
+	DBtn(BtnOk)->RedrawWindow(TRUE);
+	
+	DBtn(BtnCancel)->SetText(g_lang.GetText(10055));
+	DBtn(BtnCancel)->RedrawWindow(TRUE);
 }

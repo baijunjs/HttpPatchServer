@@ -24,20 +24,20 @@ public:
 	void RequestPatchInfo(std::vector<vrv::patch::PatchInfo> &patches);
 	void RequestPatchInfo(vrv::patch::PatchInfo &patch);
 	void RequestIndexInfo(std::vector<vrv::patch::IndexInfo> &indexes);
-	void DownloadFiles(std::string& szFile, RCF::FileDownload &fileDownload);
-	void DownloadIndexFile(std::string& szFile, RCF::FileDownload &fileDownload);
-	void DownloadPatchFile(std::string& szFile, RCF::FileDownload &fileDownload);
+	void DownloadFiles(std::tstring& szFile, RCF::FileDownload &fileDownload);
+	void DownloadIndexFile(std::tstring& szFile, RCF::FileDownload &fileDownload);
+	void DownloadPatchFile(std::tstring& szFile, RCF::FileDownload &fileDownload);
 	void DownloadIndex1xml(RCF::FileDownload &fileDownload);
 
 private:
-	void TravelIndexPath(std::string &szPath, std::vector<vrv::patch::IndexInfo> &indexes);
-	void GetIndexInfo(std::string &szFile, vrv::patch::IndexInfo& indexinfo);
-	void TravelPatchPath(std::string &szPath, std::vector<vrv::patch::PatchInfo> &patches);
-	void GetPatchInfo(std::string &szFile, vrv::patch::PatchInfo& patchInfo);
+	void TravelIndexPath(std::tstring &szPath, std::vector<vrv::patch::IndexInfo> &indexes);
+	void GetIndexInfo(std::tstring &szFile, vrv::patch::IndexInfo& indexinfo);
+	void TravelPatchPath(std::tstring &szPath, std::vector<vrv::patch::PatchInfo> &patches);
+	void GetPatchInfo(std::tstring &szFile, vrv::patch::PatchInfo& patchInfo);
 
 private:
-	std::string szPatchpath;
-	std::string szToolpath;
+	std::tstring szPatchpath;
+	std::tstring szToolpath;
 	std::mutex mtxforindex;
 	std::mutex mtxforpatch;
 };
@@ -63,6 +63,7 @@ public:
 	void InitPatchServer();
 	void StopByCurl();
 	void StopByRcf();
+	void InitLanguage();
 	std::thread _thread;
 
 	std::shared_ptr<RCF::RcfServer> server;
@@ -80,6 +81,5 @@ public:
 
 
 extern CHttpPatchServerApp theApp;
-//IDUIRes *AfxGetDuiRes();
-LPCSTR AfxGetAppTitle();
+LPCTSTR AfxGetAppTitle();
 BOOL MakeSureDirectoryExist(const TCHAR * szDirectoryPath, BOOL bFilePath);

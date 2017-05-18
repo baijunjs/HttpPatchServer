@@ -33,14 +33,14 @@ DWORD CRC32 (DWORD dwCRC,
 	return (dwCRC);
 } 
 
-DWORD GetFileCrc(const char * pszFilePath)
+DWORD GetFileCrc(const TCHAR* pszFilePath)
 {
 	DWORD dwCrc = 0;
 	
 	InitCRC(CRCTab);
 	
 	DWORD dwMaximumSizeHigh, dwMaximumSizeLow;
-	HANDLE hFile = CreateFileA(pszFilePath,
+	HANDLE hFile = CreateFile(pszFilePath,
 		GENERIC_READ,
 		FILE_SHARE_READ,
 		NULL,
@@ -83,7 +83,7 @@ DWORD GetFileCrc(const char * pszFilePath)
 
 #ifdef _DEBUG
 	FILE* _fp = NULL;
-	fopen_s(&_fp, pszFilePath, "rb");
+	_tfopen_s(&_fp, pszFilePath, _T("rb"));
 	if (_fp)
 	{
 		fseek(_fp, 0, SEEK_END);

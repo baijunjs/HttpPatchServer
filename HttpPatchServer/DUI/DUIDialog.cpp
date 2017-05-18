@@ -91,7 +91,7 @@ CString GetSysFolder ()
 }
 
 IDUIRes* CDUIDialog::m_pDUIRes = NULL ;
-DUI_LANGUAGE CDUIDialog::m_eLang = DUI_ENGLISH;
+DUI_LANGUAGE CDUIDialog::m_eLang = DUI_ZH_CN;
 // CDUIDialog
 
 IMPLEMENT_DYNAMIC(CDUIDialog, CDialogEx)
@@ -492,4 +492,14 @@ tstring  CDUIDialog::GetDUIStr ( tstring strID, int nLang )
 	}
 
 	return strText ;
+}
+
+BOOL CDUIDialog::ChangeSkin(std::tstring szSknFile)
+{
+	VARIANT_BOOL bret = VARIANT_FALSE;
+	if (m_pDUIRes)
+	{
+		m_pDUIRes->ChangeSkn(szSknFile, &bret);
+	}
+	return bret;
 }

@@ -248,8 +248,10 @@ bool CSHA1::ReportHashStl(std::basic_string<TCHAR>& strOut, REPORT_TYPE rtReport
 
 bool CSHA1::GetHash(UINT_8* pbDest20) const
 {
-	if(pbDest20 == NULL) return false;
-	memcpy(pbDest20, m_digest, 20);
+	if(pbDest20 == NULL)
+		return false;
+	for (int i = 0; i < 20; ++i)
+		pbDest20[i] = m_digest[i];
 	return true;
 }
 

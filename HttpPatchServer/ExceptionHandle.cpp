@@ -1,8 +1,9 @@
 #include "StdAfx.h"
 #include "ExceptionHandle.h"
 #include <DbgHelp.h>
+#include <strsafe.h>
 
-//#pragma comment(lib,"Dbghelp.lib")
+#pragma comment(lib,"Dbghelp.lib")
 
 CExceptionHandle g_ExceptionHandle;
 
@@ -29,39 +30,72 @@ CExceptionHandle::~CExceptionHandle(void)
 
 
 LONG WINAPI CExceptionHandle::UnhandledExceptionFilter(
-									 __in          struct _EXCEPTION_POINTERS* ExceptionInfo
+									 __in          struct _EXCEPTION_POINTERS* pExceptionPointers
 									 )
 {
 
-	HANDLE hFile = GetDmpFileHandle();
-	if (hFile == INVALID_HANDLE_VALUE)
-		return 1;
-	MINIDUMP_EXCEPTION_INFORMATION mei = {0};
-	mei.ExceptionPointers = ExceptionInfo;
-	mei.ThreadId = GetCurrentThreadId();
-	mei.ClientPointers = TRUE;
-	HMODULE hModule = LoadLibraryA("DbgHelp.dll");
-	if (hModule)
-	{
-		_TMiniDumpWriteDump MiniDumpWriteDump = (_TMiniDumpWriteDump)GetProcAddress(hModule, "MiniDumpWriteDump");
-		if (MiniDumpWriteDump)
-			MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), hFile, MiniDumpNormal, &mei, NULL, NULL);
-		CloseHandle(hFile);
-	}
+	SetErrorMode(SEM_NOGPFAULTERRORBOX);
 
-	return 0;
-}
+	//收集信息
+	CString strBuild;
+	strBuild.Format(_T("Build: %s %s"), __DATE__, __TIME__);
+	CString strError;
+	HMODULE hModule;
+	TCHAR szModuleName[MAX_PATH] = {0};
+	GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS, (LPCTSTR)pExceptionPointers->ExceptionRecord->ExceptionAddress, &hModule);
+	GetModuleFileName(hModule, szModuleName, ARRAYSIZE(szModuleName));
+	strError.AppendFormat(_T("%s %d , %d ,%d."), szModuleName, pExceptionPointers->ExceptionRecord->ExceptionCode, 
+		pExceptionPointers->ExceptionRecord->ExceptionFlags, 
+		pExceptionPointers->ExceptionRecord->ExceptionAddress);
 
-HANDLE CExceptionHandle::GetDmpFileHandle()
-{
-	std::string szDumpFile = appconfig.m_szAppPath + "\\patchdown.dmp";
-	HANDLE hFile = CreateFileA(
-		szDumpFile.c_str(),
-		GENERIC_WRITE,
-		0,
-		NULL,
-		CREATE_ALWAYS,
-		FILE_ATTRIBUTE_NORMAL,
-		NULL);
-	return hFile;
+	PathRemoveFileSpec(szModuleName);
+
+	//生成 mini crash dump
+	BOOL bMiniDumpSuccessful;
+	TCHAR szPath[MAX_PATH];
+	TCHAR szFileName[MAX_PATH];
+	TCHAR* szAppName = _T("PathDown");
+	TCHAR* szVersion = _T("v1.0");
+	DWORD dwBufferSize = MAX_PATH;
+	HANDLE hDumpFile;
+	SYSTEMTIME stLocalTime;
+	MINIDUMP_EXCEPTION_INFORMATION ExpParam;
+	GetLocalTime(&stLocalTime);
+	GetTempPath(dwBufferSize, szPath);
+	StringCchPrintf(szFileName, MAX_PATH, _T("%s%s"), szPath, szAppName);
+	CreateDirectory(szFileName, NULL);
+	StringCchPrintf(szFileName, MAX_PATH, _T("%s\\%s-%ld-%ld.dmp"),
+		szModuleName, szAppName, GetCurrentProcessId(), GetCurrentThreadId());
+	hDumpFile = CreateFile(szFileName, GENERIC_READ | GENERIC_WRITE,
+		FILE_SHARE_WRITE | FILE_SHARE_READ, 0, CREATE_ALWAYS, 0, 0);
+
+	MINIDUMP_USER_STREAM UserStream[2];
+	MINIDUMP_USER_STREAM_INFORMATION UserInfo;
+	UserInfo.UserStreamCount = 1;
+	UserInfo.UserStreamArray = UserStream;
+	UserStream[0].Type = CommentStreamW;
+	UserStream[0].BufferSize = strBuild.GetLength() * sizeof(TCHAR);
+	UserStream[0].Buffer = strBuild.GetBuffer();
+	UserStream[1].Type = CommentStreamW;
+	UserStream[1].BufferSize = strError.GetLength() * sizeof(TCHAR);
+	UserStream[1].Buffer = strError.GetBuffer();
+
+	ExpParam.ThreadId = GetCurrentThreadId();
+	ExpParam.ExceptionPointers = pExceptionPointers;
+	ExpParam.ClientPointers = TRUE;
+
+	int MiniDumpWithDataSegs = (int) MiniDumpNormal
+		| MiniDumpWithHandleData
+		| MiniDumpWithUnloadedModules
+		| MiniDumpWithIndirectlyReferencedMemory
+		| MiniDumpScanMemory
+		| MiniDumpWithProcessThreadData
+		| MiniDumpWithThreadInfo;
+
+	bMiniDumpSuccessful = MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(),
+		hDumpFile, (MINIDUMP_TYPE)MiniDumpWithDataSegs, &ExpParam, NULL, NULL);
+	// 上传mini dump 到自己服务器（略）
+
+
+	return EXCEPTION_CONTINUE_SEARCH; //或者 EXCEPTION_EXECUTE_HANDLER 关闭程序
 }

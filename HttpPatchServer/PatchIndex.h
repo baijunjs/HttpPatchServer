@@ -18,9 +18,9 @@ namespace vrv
 			bool load_language_index(ILoadIndex *loadindex);
 
 		public:
-			std::string m_szIndexName;
-			std::string m_szIndexPath;
-			std::string m_szSubIndexPath;
+			std::tstring m_szIndexName;
+			std::tstring m_szIndexPath;
+			std::tstring m_szSubIndexPath;
 			unsigned long dwIndexCrc;
 			unsigned long dwSubIndexCrc;
 			bool m_bExist;

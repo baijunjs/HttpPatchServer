@@ -64,6 +64,7 @@ BOOL CPatchViewSetting::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  在此添加额外的初始化
+	InitControlLang();
 	DHwnd(HwndSubObj)->Attach(HandleToLong(m_patchMode.GetSafeHwnd()));
 	DHwnd(HwndSubObj)->Attach(HandleToLong(m_patchOtherSetting.GetSafeHwnd()));
 	m_patchMode.ShowWindow(SW_SHOWNORMAL);
@@ -131,4 +132,16 @@ void CPatchViewSetting::OnClose()
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 
 	CDUIDialog::OnClose();
+}
+
+
+void CPatchViewSetting::InitControlLang()
+{
+	DStatic(StaticTitle)->SetText(g_lang.GetText(10005));
+	IDUITabCtrlItem *pItem1 = DTab(SettingTabCtrl)->GetItemByIndex(0);
+	IDUITabCtrlItem *pItem2 = DTab(SettingTabCtrl)->GetItemByIndex(1);
+	pItem1->SetText(g_lang.GetText(10006));
+	pItem2->SetText(g_lang.GetText(10007));
+	DBtn(BtnApply)->SetText(g_lang.GetText(10035));
+	DBtn(BtnCancel)->SetText(g_lang.GetText(10036));
 }

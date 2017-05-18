@@ -45,20 +45,13 @@ public:
 public:
 	vrv::patch::CPatchBus  m_patchbus;
 
+	void InitControlLang();
 
 protected:
 	LRESULT OnButtonUp(WPARAM, LPARAM);
 
 private:
 	NOTIFYICONDATA			m_NotifyIconData;
-	//ICmdButton*				m_pDUIBtnClose;
-	//ICmdButton*				m_pDUIBtnMini;
-	//IDUICheckBox *			m_pDUIchkMax;
-
-	//IDUITabCtrl *			m_pTabMain;
-	//IDUIHwndObj *			m_pHwndSubWnd;
-
-	//IDUILogoObj*			m_pDUILogo;
 	CPatchView				m_patchview;		//下载中心
 	CPatchViewSetting		m_patchsetting;		//设置中心
 

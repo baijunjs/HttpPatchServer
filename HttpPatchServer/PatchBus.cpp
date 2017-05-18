@@ -20,12 +20,12 @@ namespace vrv
 		{
 		}
 
-		bool CPatchBus::analyze_main_index(IPackIndex *packindex, std::string szPackIndex)
+		bool CPatchBus::analyze_main_index(IPackIndex *packindex, std::tstring szPackIndex)
 		{
 			if (packindex == nullptr)
 				return false;
 
-			if (!packindex->LoadFile(szPackIndex.c_str()))
+			if (!packindex->LoadFile((const char*)_bstr_t(szPackIndex.c_str())))
 			{
 				return false;
 			}
@@ -35,14 +35,14 @@ namespace vrv
 
 			m_iIndexCount = 0;
 			m_publishers = std::make_shared<PublishersMap>();
-			std::string szPackName = pack->GetName();
+			std::tstring szPackName = (const TCHAR*)_bstr_t(pack->GetName());
 			int count = pack->GetCount();
 			for (int index = 0; index < count; index++)
 			{
 				IPackCompany* pCompany = pack->GetItem(index);
 				if (pCompany)
 				{
-					std::string szCompany = pCompany->GetName();
+					std::tstring szCompany = (const TCHAR*)_bstr_t(pCompany->GetName());
 					PublishersMap::_iterator iter = m_publishers->Publishers.find(szCompany);
 					if (iter == m_publishers->Publishers.end())
 					{
@@ -67,9 +67,9 @@ namespace vrv
 					IPACKAGE *pPackage = pPackCompany->GetItem(loop);
 					if (pPackage)
 					{
-						std::string szPackage = pPackage->GetName();
+						std::tstring szPackage = (const TCHAR*)_bstr_t(pPackage->GetName());
 						FamiliesMap::_iterator iter;
-						if (_stricmp(szPackage.c_str(), "Languages") == 0)
+						if (_tcsicmp(szPackage.c_str(), _T("Languages")) == 0)
 						{
 							iter = family->LanguagesFamily.find(szPackage);
 							if (iter == family->LanguagesFamily.end())
@@ -106,7 +106,7 @@ namespace vrv
 					IProductPack *pProduct = pPackage->GetItem(loop);
 					if (pProduct)
 					{
-						std::string szProduct = pProduct->GetName();
+						std::tstring szProduct = (const TCHAR*)_bstr_t(pProduct->GetName());
 						ProductsMap::_iterator iter = products->Products.find(szProduct);
 						if (iter == products->Products.end())
 						{
@@ -130,9 +130,9 @@ namespace vrv
 					m_iIndexCount++;
 					PatchIndexPtr packinfo = std::make_shared<CPatchIndex>();
 					IPackFile *pPackFile = pProductPack->GetItem(loop);
-					packinfo->m_szIndexName = pPackFile->GetName();
-					packinfo->m_szIndexPath = pPackFile->GetPath();
-					packinfo->m_szSubIndexPath = pPackFile->GetSubPath();
+					packinfo->m_szIndexName = (const TCHAR*)_bstr_t(pPackFile->GetName());
+					packinfo->m_szIndexPath = (const TCHAR*)_bstr_t(pPackFile->GetPath());
+					packinfo->m_szSubIndexPath = (const TCHAR*)_bstr_t(pPackFile->GetSubPath());
 					packinfo->dwIndexCrc = pPackFile->GetCrc();
 					packinfo->dwSubIndexCrc = pPackFile->GetSubCrc();
 					packinfo->m_bExist = pPackFile->IsExist();
@@ -147,22 +147,22 @@ namespace vrv
 		}
 
 
-		PatchIndexVectorPtr CPatchBus::FindPatchIndexVecByProductName(std::string szProduct)
+		PatchIndexVectorPtr CPatchBus::FindPatchIndexVecByProductName(std::tstring szProduct)
 		{
 			vrv::patch::PublishersMap::_iterator iter = m_publishers->Publishers.begin();
 			for (; iter != m_publishers->Publishers.end(); ++iter)
 			{
-				std::string szPublisher = iter->first;
+				std::tstring szPublisher = iter->first;
 				vrv::patch::FamiliesMapPtr families = iter->second;
 				vrv::patch::FamiliesMap::_iterator _iter = families->ProductsFamily.begin();
 				for (; _iter != families->ProductsFamily.end(); ++_iter)
 				{
-					std::string szFamily = _iter->first;
+					std::tstring szFamily = _iter->first;
 					vrv::patch::ProductsMapPtr products = _iter->second;
 					vrv::patch::ProductsMap::_iterator _iter_ = products->Products.begin();
 					for (; _iter_ != products->Products.end(); ++_iter_)
 					{
-						std::string szProductName = _iter_->first;
+						std::tstring szProductName = _iter_->first;
 						if (szProductName == szProduct)
 							return _iter_->second;
 					}
@@ -177,17 +177,17 @@ namespace vrv
 			vrv::patch::PublishersMap::_iterator iter = m_publishers->Publishers.begin();
 			for (; iter != m_publishers->Publishers.end(); ++iter)
 			{
-				std::string szPublisher = iter->first;
+				std::tstring szPublisher = iter->first;
 				vrv::patch::FamiliesMapPtr families = iter->second;
 				vrv::patch::FamiliesMap::_iterator _iter = families->LanguagesFamily.begin();
 				for (; _iter != families->LanguagesFamily.end(); ++_iter)
 				{
-					std::string szFamily = _iter->first;
+					std::tstring szFamily = _iter->first;
 					vrv::patch::ProductsMapPtr products = _iter->second;
 					vrv::patch::ProductsMap::_iterator _iter_ = products->Products.begin();
 					for (; _iter_ != products->Products.end(); ++_iter_)
 					{
-						std::string szProductName = _iter_->first;
+						std::tstring szProductName = _iter_->first;
 						PatchIndexVectorPtr tmp = _iter_->second;
 						PatchIndexes->patchindexes.insert(PatchIndexes->patchindexes.end(),
 							tmp->patchindexes.begin(), tmp->patchindexes.end());
@@ -200,17 +200,17 @@ namespace vrv
 		vrv::patch::PatchInfoPtr CPatchBus::GetPatchInfo(IPatchItem* pPatch)
 		{
 			vrv::patch::PatchInfoPtr patch = std::make_shared<vrv::patch::PatchInfo>();
-			patch->szPatchName = pPatch->GetFileName();
-			patch->szKbId = pPatch->GetPatchKBID();
-			patch->szMs = pPatch->GetBulletins();
-			patch->szDescrip = pPatch->GetLeakDescription();
-			patch->szPatchSize = pPatch->GetPatchSize();
-			patch->szDatePublish = pPatch->GetPublishTime();
-			patch->szRank = pPatch->GetPatchLevel();
-			patch->szUpdateId = pPatch->GetUpdateID();
-			patch->szMd5 = pPatch->GetPatchMD5();
-			patch->szLans = pPatch->GetLanguages();
-			patch->szUrl = pPatch->GetUrl();
+			patch->szPatchName = _bstr_t(pPatch->GetFileName());
+			patch->szKbId = _bstr_t(pPatch->GetPatchKBID());
+			patch->szMs = _bstr_t(pPatch->GetBulletins());
+			patch->szDescrip = _bstr_t(pPatch->GetLeakDescription());
+			patch->szPatchSize = _bstr_t(pPatch->GetPatchSize());
+			patch->szDatePublish = _bstr_t(pPatch->GetPublishTime());
+			patch->szRank = _bstr_t(pPatch->GetPatchLevel());
+			patch->szUpdateId = _bstr_t(pPatch->GetUpdateID());
+			patch->szMd5 = _bstr_t(pPatch->GetPatchMD5());
+			patch->szLans = _bstr_t(pPatch->GetLanguages());
+			patch->szUrl = _bstr_t(pPatch->GetUrl());
 			return patch;
 		}
 
@@ -225,17 +225,17 @@ namespace vrv
 				{
 					for (; iter != m_publishers->Publishers.end(); ++iter)
 					{
-						std::string szPublisher = iter->first;
+						std::tstring szPublisher = iter->first;
 						vrv::patch::FamiliesMapPtr families = iter->second;
 						vrv::patch::FamiliesMap::_iterator _iter = families->ProductsFamily.begin();
 						for (; _iter != families->ProductsFamily.end(); ++_iter)
 						{
-							std::string szFamily = _iter->first;
+							std::tstring szFamily = _iter->first;
 							vrv::patch::ProductsMapPtr products = _iter->second;
 							vrv::patch::ProductsMap::_iterator _iter_ = products->Products.begin();
 							for (; _iter_ != products->Products.end(); ++_iter_)
 							{
-								std::string szProductName = _iter_->first;
+								std::tstring szProductName = _iter_->first;
 								PatchIndexVectorPtr tmp = _iter_->second;
 								PatchIndexes->patchindexes.insert(PatchIndexes->patchindexes.end(),
 									tmp->patchindexes.begin(), tmp->patchindexes.end());
@@ -245,12 +245,12 @@ namespace vrv
 						_iter = families->LanguagesFamily.begin();
 						for (; _iter != families->LanguagesFamily.end(); ++_iter)
 						{
-							std::string szFamily = _iter->first;
+							std::tstring szFamily = _iter->first;
 							vrv::patch::ProductsMapPtr products = _iter->second;
 							vrv::patch::ProductsMap::_iterator _iter_ = products->Products.begin();
 							for (; _iter_ != products->Products.end(); ++_iter_)
 							{
-								std::string szProductName = _iter_->first;
+								std::tstring szProductName = _iter_->first;
 								PatchIndexVectorPtr tmp = _iter_->second;
 								PatchIndexes->patchindexes.insert(PatchIndexes->patchindexes.end(),
 									tmp->patchindexes.begin(), tmp->patchindexes.end());

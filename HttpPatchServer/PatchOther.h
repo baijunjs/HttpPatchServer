@@ -30,5 +30,6 @@ public:
 	void EnableControl();
 	LRESULT OnCheckBoxChanged(WPARAM, LPARAM);
 	BOOL InitSknPath();
+	void InitControlLang();
 
 };

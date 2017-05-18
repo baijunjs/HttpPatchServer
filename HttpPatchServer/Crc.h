@@ -8,6 +8,6 @@ DWORD CRC32 (DWORD dwCRC,
 			 DWORD dwSize,
 			 DWORD *lpCRC);
 
-DWORD GetFileCrc(const char * pszFilePath);
+DWORD GetFileCrc(const TCHAR* pszFilePath);
 
 #endif

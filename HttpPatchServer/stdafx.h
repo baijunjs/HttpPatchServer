@@ -34,7 +34,9 @@
 #include <afxcontrolbars.h>     // 功能区和控件条的 MFC 支持
 
 #include "DUIDialog.h"
-
+#include <sstream>
+#include <string>
+#include <regex>
 #include <thread>
 #include "curl.h"
 #include "EDPPatchBase.h"
@@ -43,6 +45,11 @@
 #include "log.hpp"
 #include "crc.h"
 #include <RCF/RCF.hpp>
+#include "Language.h"
+
+#pragma warning(disable:4244)
+#pragma warning(disable:4091)
+
 
 enum  CUSTOM_MESSAGE
 {
@@ -55,22 +62,35 @@ enum  CUSTOM_MESSAGE
 	UM_DOWNVIEW_PATCHITEM,
 	UM_DOWNVIEW_CLEANITEMS,
 	UM_DOWNVIEW_REFRESH,
+	UM_DOWNVIEW_SETTEXT,
 	UM_ERRORVIEW_INDEXITEM,
 	UM_ERRORVIEW_PATCHITEM,
 	UM_ERRORVIEW_CLEANITEMS,
 	UM_STATICVIEW_CLEANITEMS,
 	UM_STATICVIEW_INDEXITEM,
 	UM_STATICVIEW_PATCHITEM,
+	UM_STATICVIEW_SETTEXT,
 };
 
+#ifdef _UNICODE
+#define tregex				wregex
+#define tsmatch				wsmatch
+#define tstring				wstring
+#define tstringstream		wstringstream
+#else
+#define tregex				regex
+#define tsmatch				smatch
+#define tstring				string
+#define tstringstream		stringstream
+#endif
 
 #import "msado15.dll" no_namespace rename("EOF", "adoEOF") 
 
-BOOL IsTimeValid(std::string &sztime);
-BOOL IsIpValid(std::string &szIp);
-BOOL GetFileSHA1(std::string szFile, OUT std::string &szSha);
-void GetIntervalTime(std::string &szTime, std::string &szBegin, std::string &szEnd);
-void GetTime(std::string& szTime, std::string &szHour, std::string &szMin, std::string &szSec);
+BOOL IsTimeValid(std::tstring &sztime);
+BOOL IsIpValid(std::tstring &szIp);
+BOOL GetFileSHA1(std::tstring szFile, OUT std::tstring &szSha);
+void GetIntervalTime(std::tstring &szTime, std::tstring &szBegin, std::tstring &szEnd);
+void GetTime(std::tstring& szTime, std::tstring &szHour, std::tstring &szMin, std::tstring &szSec);
 
 #ifdef _UNICODE
 #if defined _M_IX86

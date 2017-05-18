@@ -21,7 +21,7 @@ public:
 
 public:
 
-	void SetProxy(std::string&, std::string&, std::string&, std::string&);
+	void SetProxy(std::string, std::string, std::string, std::string);
 
 	void SetUploadSpeed(long ulrate);
 
@@ -35,7 +35,7 @@ public:
 
 	long GetFileSize(size_t &size);
 
-	void SetProgressCallback(_TyProgressCallback progressfun, void* param, void* phwnd);
+	void SetProgressCallback(_TyProgressCallback progressfun, HWND hWnd, WPARAM wparam, LPARAM lparam);
 
 	void SetWriteCallback(_TyWrittenCallback writefun, void* param);
 
@@ -61,7 +61,9 @@ private:
 
 public:
 	std::streamoff m_curLength;
-	void *m_pProgressCtrl;
+	HWND m_hWnd;
+	WPARAM m_wparam;
+	LPARAM m_lparam;
 	size_t m_filesize;
 
 };

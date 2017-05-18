@@ -66,9 +66,6 @@
     <ClInclude Include="curl\curl.h">
       <Filter>curl</Filter>
     </ClInclude>
-    <ClInclude Include="FileTransforRequest.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="PatchFile.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -159,6 +156,9 @@
     <ClInclude Include="ExceptionHandle.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Language.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HttpPatchServer.cpp">
@@ -180,9 +180,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Clibcurl.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="PatchFile.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="PatchView.cpp">
@@ -231,6 +228,9 @@
       <Filter>DUI</Filter>
     </ClCompile>
     <ClCompile Include="ExceptionHandle.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Language.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

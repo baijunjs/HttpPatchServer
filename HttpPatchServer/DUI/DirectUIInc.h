@@ -17,7 +17,7 @@ typedef void  (CALLBACK *pfnSetUseMultiLanguage)(BOOL bEnable);
 
 inline void* CALLBACK GetCtrlBase(void* hDataBlock)
 {
-	static pfnGetCtrlBase pfGetCtrlBase = (pfnGetCtrlBase)GetProcAddress(GetModuleHandle("KDUI32.DLL"), "_GetCtrlBase@4");
+	static pfnGetCtrlBase pfGetCtrlBase = (pfnGetCtrlBase)GetProcAddress(GetModuleHandleA("KDUI32.DLL"), "_GetCtrlBase@4");
 	if (pfGetCtrlBase)
 		return pfGetCtrlBase(hDataBlock);
 	return NULL;
@@ -26,7 +26,7 @@ inline void* CALLBACK GetCtrlBase(void* hDataBlock)
 
 inline void* CALLBACK GetDUIControlFromDataBlock(void* hDataBlock)
 {
-	static pfnGetDUIControlFromDataBlock pfGetDUIControlFromDataBlock = (pfnGetDUIControlFromDataBlock)GetProcAddress(GetModuleHandle("KDUI32.DLL"), "_GetDUIControlFromDataBlock@4");
+	static pfnGetDUIControlFromDataBlock pfGetDUIControlFromDataBlock = (pfnGetDUIControlFromDataBlock)GetProcAddress(GetModuleHandleA("KDUI32.DLL"), "_GetDUIControlFromDataBlock@4");
 	if (pfGetDUIControlFromDataBlock) 
 		pfGetDUIControlFromDataBlock(hDataBlock);
 	return NULL;
@@ -35,7 +35,7 @@ inline void* CALLBACK GetDUIControlFromDataBlock(void* hDataBlock)
 
 inline void  CALLBACK SetUseMultiLanguage(BOOL bEnable)
 {
-	static pfnSetUseMultiLanguage pfSetUseMultiLanguage = (pfnSetUseMultiLanguage)GetProcAddress(GetModuleHandle("KDUI32.DLL"), "_SetUseMultiLanguage@4");
+	static pfnSetUseMultiLanguage pfSetUseMultiLanguage = (pfnSetUseMultiLanguage)GetProcAddress(GetModuleHandleA("KDUI32.DLL"), "_SetUseMultiLanguage@4");
 	if (pfSetUseMultiLanguage) 
 		pfSetUseMultiLanguage(bEnable);
 	return;

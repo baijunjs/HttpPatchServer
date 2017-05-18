@@ -14,9 +14,9 @@ namespace vrv
 
 		struct IndexInfo
 		{
-			std::string szIndexName;
+			std::tstring szIndexName;
 			unsigned long dwCrc = 0;
-			size_t size = 0;
+			std::streamoff size = 0;
 			void serialize(SF::Archive &ar)
 			{
 				try
@@ -44,31 +44,31 @@ namespace vrv
 		typedef std::vector<IndexInfoPtr> IndexInfoVec;
 		struct PatchInfo
 		{
-			std::string szPatchName;
-			std::string szKbId;
-			std::string szMs;
-			std::string szDescrip;
-			std::string szPatchSize="0";
-			std::string szDatePublish;
-			std::string szRank;
-			std::string szUpdateId;
-			std::string szMd5;
-			std::string szLans;
-			std::string szUrl;
-			std::string MakeToolTipText()
+			std::tstring szPatchName;
+			std::tstring szKbId;
+			std::tstring szMs;
+			std::tstring szDescrip;
+			std::tstring szPatchSize=_T("0");
+			std::tstring szDatePublish;
+			std::tstring szRank;
+			std::tstring szUpdateId;
+			std::tstring szMd5;
+			std::tstring szLans;
+			std::tstring szUrl;
+			std::tstring MakeToolTipText()
 			{
-				std::stringstream ss;
-				ss << "补丁名称:" << szPatchName << std::endl
-					<< "KB:" << szKbId << std::endl
-					<< "MS:" << szMs << std::endl
-					<< "描述:" << szDescrip << std::endl
-					<< "大小:" << szPatchSize << std::endl
-					<< "日期:" << szDatePublish << std::endl
-					<< "等级:" << szRank << std::endl
-					<< "UpdateID:" << szUpdateId << std::endl
-					<< "MD5:" << szMd5 << std::endl
-					<< "语言:" << szLans << std::endl
-					<< "URL:" << szUrl << std::endl;
+				std::tstringstream ss;
+				ss << g_lang.GetText(10073) << szPatchName << std::endl
+					<< _T("KB:") << szKbId << std::endl
+					<< _T("MS:") << szMs << std::endl
+					<< g_lang.GetText(10074) << szDescrip << std::endl
+					<< g_lang.GetText(10075) << szPatchSize << std::endl
+					<< g_lang.GetText(10076) << szDatePublish << std::endl
+					<< g_lang.GetText(10077) << szRank << std::endl
+					<< _T("UpdateID:") << szUpdateId << std::endl
+					<< _T("MD5:") << szMd5 << std::endl
+					<< g_lang.GetText(10078) << szLans << std::endl
+					<< _T("URL:") << szUrl << std::endl;
 				return ss.str();
 			}
 
@@ -141,24 +141,24 @@ namespace vrv
 
 		struct ProductsMap
 		{
-			std::map<std::string, PatchIndexVectorPtr> Products;
-			typedef std::map<std::string, PatchIndexVectorPtr>::iterator _iterator;
+			std::map<std::tstring, PatchIndexVectorPtr> Products;
+			typedef std::map<std::tstring, PatchIndexVectorPtr>::iterator _iterator;
 		};
 		typedef std::shared_ptr<ProductsMap> ProductsMapPtr;
 
 		struct FamiliesMap
 		{
-			std::map<std::string, ProductsMapPtr> ProductsFamily;
-			std::map<std::string, ProductsMapPtr> LanguagesFamily;
-			typedef std::map<std::string, ProductsMapPtr> _Myt;
-			typedef std::map<std::string, ProductsMapPtr>::iterator _iterator;
+			std::map<std::tstring, ProductsMapPtr> ProductsFamily;
+			std::map<std::tstring, ProductsMapPtr> LanguagesFamily;
+			typedef std::map<std::tstring, ProductsMapPtr> _Myt;
+			typedef std::map<std::tstring, ProductsMapPtr>::iterator _iterator;
 		};
 		typedef std::shared_ptr<FamiliesMap> FamiliesMapPtr;
 
 		struct PublishersMap
 		{
-			std::map<std::string, FamiliesMapPtr> Publishers;
-			typedef std::map<std::string, FamiliesMapPtr>::iterator _iterator;
+			std::map<std::tstring, FamiliesMapPtr> Publishers;
+			typedef std::map<std::tstring, FamiliesMapPtr>::iterator _iterator;
 		};
 		typedef std::shared_ptr<PublishersMap> PublishersMapPtr;
 
@@ -168,28 +168,28 @@ namespace vrv
 			CPatchBus();
 			~CPatchBus();
 			int CalcIndexCount();
-			bool analyze_main_index(IPackIndex *, std::string packindexPath);
+			bool analyze_main_index(IPackIndex *, std::tstring packindexPath);
 			PublishersMapPtr GetPatchIndexMap()
 			{
 				return m_publishers;
 			}
 
-			void SetPackSha1(std::string &szpacksha)
+			void SetPackSha1(std::tstring &szpacksha)
 			{
 				m_szPackSha1 = szpacksha;
 			}
 
-			std::string GetPackSha1()
+			std::tstring GetPackSha1()
 			{
 				return m_szPackSha1;
 			}
 			bool AnalyzeIndex1xml(std::string &szIndex1xml, std::vector<PatchInfoPtr>& patches)
 			{
 				using namespace rapidxml;
-				xml_document<> doc;
+				xml_document<TCHAR> doc;
 				try
 				{
-					file<> fp(szIndex1xml.c_str());
+					file<TCHAR> fp(szIndex1xml.c_str());
 					doc.parse<0>(fp.data());
 					auto root = doc.first_node();
 					if (root)
@@ -197,16 +197,16 @@ namespace vrv
 						auto child = root->first_node();
 						while (child)
 						{
-							if (_stricmp(child->name(), "PATCHFILE") == 0)
+							if (_tcsicmp(child->name(), _T("PATCHFILE")) == 0)
 							{
 								PatchInfoPtr patchptr = std::make_shared<PatchInfo>();
-								auto subNode = child->first_node("updateID");
+								auto subNode = child->first_node(_T("updateID"));
 								if (subNode) patchptr->szUpdateId = subNode->value();
 
 								//subNode = child->first_node("CRC");
 								//if (subNode) patchptr->szMd5 = subNode->value();
 
-								subNode = child->first_node("PatchPath");
+								subNode = child->first_node(_T("PatchPath"));
 								if (subNode) patchptr->szPatchName = subNode->value();
 
 								patches.push_back(patchptr);
@@ -219,7 +219,7 @@ namespace vrv
 						throw parse_error("Root Node is nullptr", NULL);
 					}
 				}
-				catch (parse_error & e)
+				catch (parse_error &)
 				{
 					return false;
 				}
@@ -230,7 +230,7 @@ namespace vrv
 
 			vrv::patch::PatchInfoPtr GetPatchInfo(IPatchItem* pPatch);
 			PatchIndexVectorPtr FindLanguageIndexVec();
-			PatchIndexVectorPtr FindPatchIndexVecByProductName(std::string szProduct);
+			PatchIndexVectorPtr FindPatchIndexVecByProductName(std::tstring szProduct);
 			PatchIndexVectorPtr GetAllPatchIndexes();
 		private:
 			void getPackages(IPackCompany *, FamiliesMapPtr);
@@ -239,7 +239,7 @@ namespace vrv
 		private:
 			PublishersMapPtr m_publishers;
 			int m_iIndexCount;
-			std::string m_szPackSha1;
+			std::tstring m_szPackSha1;
 		public:
 			IndexInfoVec m_taskErrorIndex;
 			PatchInfoVec m_taskErrorPatch;

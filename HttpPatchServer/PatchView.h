@@ -25,7 +25,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	//bool InitPatchViewDui();
 	BOOL InitSknPath();
 
 	CWnd* GetStaticView()
@@ -44,10 +43,6 @@ public:
 	}
 
 private:
-	//ISkinObjResBase *m_pDuiPatchView;
-	//IDUITabCtrl	*m_pDuiTabView;
-	//IDUIHwndObj *m_pDuiListOwner;
-
 	CPatchViewStatics	m_hPatchStatics;			//统计界面
 	CPatchDownView		m_hPatchDown;				//下载界面
 	CPatchViewError		m_hPatchError;				//错误界面	
@@ -57,4 +52,5 @@ public:
 	afx_msg LRESULT OnTabPageChanged(WPARAM, LPARAM);
 	virtual void OnCancel();
 	afx_msg void OnClose();
+	void InitControlLang();
 };

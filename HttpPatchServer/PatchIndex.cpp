@@ -19,11 +19,11 @@ namespace vrv
 		{
 			if (loadindex)
 			{
-				std::string szindexpath = appconfig.m_http_cfg.m_szPatchPath + "\\Tools\\";
-				loadindex->SetProductPack((szindexpath + m_szIndexPath).c_str());
+				std::tstring szindexpath = appconfig.m_http_cfg.m_szPatchPath + _T("\\Tools\\");
+				loadindex->SetProductPack((const char*)_bstr_t((szindexpath + m_szIndexPath).c_str()));
 				if (!m_szSubIndexPath.empty())
 				{
-					loadindex->SetProductPack((szindexpath + m_szSubIndexPath).c_str());
+					loadindex->SetProductPack((const char*)_bstr_t((szindexpath + m_szSubIndexPath).c_str()));
 				}
 				return true;
 			}
@@ -34,8 +34,8 @@ namespace vrv
 		{
 			if (loadindex)
 			{
-				std::string szindexpath = appconfig.m_http_cfg.m_szPatchPath + "\\Tools\\";
-				loadindex->SetLanguagePack((szindexpath + m_szIndexPath).c_str());
+				std::tstring szindexpath = appconfig.m_http_cfg.m_szPatchPath + _T("\\Tools\\");
+				loadindex->SetLanguagePack((const char*)_bstr_t((szindexpath + m_szIndexPath).c_str()));
 				return true;
 			}
 			return false;

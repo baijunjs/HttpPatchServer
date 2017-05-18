@@ -64,26 +64,13 @@ BOOL CPatchView::InitSknPath()
 	return TRUE;
 }
 
-//bool CPatchView::InitPatchViewDui()
-//{
-//	m_pDuiPatchView = (ISkinObjResBase*)AfxGetDuiRes()->CreateDirectUI("DUIDownView", HandleToLong(m_hWnd));
-//	ASSERT(m_pDuiPatchView);
-//
-//	m_pDuiTabView = (IDUITabCtrl*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "DownTabCtrl", m_pDuiPatchView, TRUE);
-//	ASSERT(m_pDuiTabView);
-//
-//	m_pDuiListOwner = (IDUIHwndObj*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "HwndSubObj", m_pDuiPatchView, TRUE);
-//	ASSERT(m_pDuiListOwner);
-//
-//	return true;
-//}
-
 
 BOOL CPatchView::OnInitDialog()
 {
 	CDUIDialog::OnInitDialog();
 
 	// TODO:  在此添加额外的初始化
+	InitControlLang();
 	DHwnd(HwndSubObj)->Attach((OLE_HANDLE)HandleToLong(m_hPatchStatics.GetSafeHwnd()));
 	DHwnd(HwndSubObj)->Attach((OLE_HANDLE)HandleToLong(m_hPatchDown.GetSafeHwnd()));
 	DHwnd(HwndSubObj)->Attach((OLE_HANDLE)HandleToLong(m_hPatchError.GetSafeHwnd()));
@@ -138,4 +125,16 @@ void CPatchView::OnClose()
 		m_hPatchStatics.OnCasStop();
 
 	CDUIDialog::OnClose();
+}
+
+
+void CPatchView::InitControlLang()
+{
+	DStatic(Static_Tree)->SetText(g_lang.GetText(10001));
+	IDUITabCtrlItem *pItem1 = DTab(DownTabCtrl)->GetItemByIndex(0);
+	IDUITabCtrlItem *pItem2 = DTab(DownTabCtrl)->GetItemByIndex(1);
+	IDUITabCtrlItem *pItem3 = DTab(DownTabCtrl)->GetItemByIndex(2);
+	pItem1->SetText(g_lang.GetText(10002));
+	pItem2->SetText(g_lang.GetText(10003));
+	pItem3->SetText(g_lang.GetText(10004));
 }

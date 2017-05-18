@@ -30,7 +30,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141_xp</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -38,7 +38,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141_xp</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -207,9 +207,9 @@
     <ClInclude Include="DUI\OfficeAll.h" />
     <ClInclude Include="EDPPatchBase.h" />
     <ClInclude Include="ExceptionHandle.h" />
-    <ClInclude Include="FileTransforRequest.h" />
     <ClInclude Include="HttpPatchServer.h" />
     <ClInclude Include="HttpPatchServerDlg.h" />
+    <ClInclude Include="Language.h" />
     <ClInclude Include="MessageBox.h" />
     <ClInclude Include="PackInterface.h" />
     <ClInclude Include="PatchBus.h" />
@@ -246,11 +246,11 @@
     <ClCompile Include="ExceptionHandle.cpp" />
     <ClCompile Include="HttpPatchServer.cpp" />
     <ClCompile Include="HttpPatchServerDlg.cpp" />
+    <ClCompile Include="Language.cpp" />
     <ClCompile Include="MessageBox.cpp" />
     <ClCompile Include="PackInterface.cpp" />
     <ClCompile Include="PatchBus.cpp" />
     <ClCompile Include="PatchCascade.cpp" />
-    <ClCompile Include="PatchFile.cpp" />
     <ClCompile Include="PatchIndex.cpp" />
     <ClCompile Include="PatchMode.cpp" />
     <ClCompile Include="PatchNetSetting.cpp" />

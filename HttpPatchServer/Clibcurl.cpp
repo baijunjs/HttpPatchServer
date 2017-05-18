@@ -29,7 +29,9 @@ Curl::Curl() noexcept(false)
 	m_ldownspeed = 0;
 	m_filesize = 0;
 	m_curLength = 0;
-	m_pProgressCtrl = nullptr;
+	m_hWnd = 0;
+	m_wparam = 0;
+	m_lparam = 0;
 	m_status = DOWNLOAD_STARTED;
 }
 
@@ -40,11 +42,13 @@ Curl::~Curl()
 }
 
 
-void Curl::SetProgressCallback(_TyProgressCallback progressfun, void* param, void* phwnd)
+void Curl::SetProgressCallback(_TyProgressCallback progressfun, HWND hWnd, WPARAM wparam, LPARAM lparam)
 {
 	m_pProgress = progressfun;
-	m_pProgressParam = param;
-	m_pProgressCtrl = phwnd;
+	m_pProgressParam = this;
+	m_hWnd = hWnd;
+	m_wparam = wparam;
+	m_lparam = lparam;
 }
 
 void Curl::SetWriteCallback(_TyWrittenCallback writtenfun, void* param)
@@ -53,7 +57,7 @@ void Curl::SetWriteCallback(_TyWrittenCallback writtenfun, void* param)
 	m_pWrittenParam = param;
 }
 
-void Curl::SetProxy(std::string& szip, std::string& szport, std::string& szuser, std::string& szpwd)
+void Curl::SetProxy(std::string szip, std::string szport, std::string szuser, std::string szpwd)
 {
 
 	m_szProxyip = szip;

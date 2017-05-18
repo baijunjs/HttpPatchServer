@@ -27,38 +27,38 @@ struct patch_option
 
 struct net_option
 {
-	std::string m_szIndexUrl;		//主索引URL
-	std::string m_szPatchPath;		//补丁路径
-	std::string m_szPackName;		//主索引名称
-	std::string m_szProducts;		//产品列表
-	std::string m_szLans;			//语言列表
+	std::tstring m_szIndexUrl;		//主索引URL
+	std::tstring m_szPatchPath;		//补丁路径
+	std::tstring m_szPackName;		//主索引名称
+	std::tstring m_szProducts;		//产品列表
+	std::tstring m_szLans;			//语言列表
 
 	timemode mode;
-	std::string sznettime;
+	std::tstring sznettime;
 	bool flux;
 	int fluxspeed;
 	bool proxy;
-	std::string szip;
-	std::string szport;
-	std::string szuser;
-	std::string szpwd;
+	std::tstring szip;
+	std::tstring szport;
+	std::tstring szuser;
+	std::tstring szpwd;
 };
 
 
 struct cascade_option
 {
-	std::string szdbip;
-	std::string szdbsrc;
-	std::string szdbuser;
-	std::string szdbpwd;
+	std::tstring szdbip;
+	std::tstring szdbsrc;
+	std::tstring szdbuser;
+	std::tstring szdbpwd;
 	bool cascade;
-	std::string szupserverip;
-	std::string szupserverport;
+	std::tstring szupserverip;
+	std::tstring szupserverport;
 	timemode mode;
-	std::string sznettime;
+	std::tstring sznettime;
 	bool flux;
 	int fluxspeed;
-	std::string szPatchPath;
+	std::tstring szPatchPath;
 	int localserverport;
 	bool index1;
 };
@@ -83,9 +83,9 @@ struct other_config
 
 struct app_config
 {
-	std::string m_szConfigFile;		//配置文件路径
-	std::string m_szAppPath;		//应用程序路径
-	std::string m_szLogPath;		//日志路径
+	std::tstring m_szConfigFile;		//配置文件路径
+	std::tstring m_szAppPath;		//应用程序路径
+	std::tstring m_szLogPath;		//日志路径
 	net_option		m_http_cfg;		//Http配置
 	cascade_option	m_cascade_cfg;	//级联配置
 	swicth_mode		m_mode_cfg;		//模式切换

@@ -18,10 +18,6 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
-	//bool InitDui();
-
-	//ISkinObjResBase		*m_pDuiError;
-	//IDUIListView		*m_pErrorView;
 	BOOL InitSknPath();
 
 	DECLARE_MESSAGE_MAP()

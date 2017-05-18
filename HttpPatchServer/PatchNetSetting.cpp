@@ -39,7 +39,6 @@ BEGIN_MESSAGE_MAP(CPatchNetSetting, CDUIDialog)
 	ON_MESSAGE(DUI_EDIT_PRERETURN, &CPatchNetSetting::OnPreReturn)
 	ON_MESSAGE(DUISM_RADIOCHANGE, &CPatchNetSetting::OnRadioChange)
 	ON_MESSAGE(DUISM_VALUECHANGED, &CPatchNetSetting::OnCheckBoxChanged)
-	ON_MESSAGE(DUISM_LBUTTONUP, &CPatchNetSetting::OnButtonDispatcher)
 	ON_MESSAGE(DUITREE_CHECKITEM, &CPatchNetSetting::OnTreeCheckItem)
 END_MESSAGE_MAP()
 
@@ -66,10 +65,10 @@ int CPatchNetSetting::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
-void GetTime(std::string& szTime, std::string &szHour, std::string &szMin, std::string &szSec)
+void GetTime(std::tstring& szTime, std::tstring &szHour, std::tstring &szMin, std::tstring &szSec)
 {
-	std::regex rgx("(\\d{1,2}):(\\d{0,2}):(\\d{0,2})");
-	std::smatch sm;
+	std::tregex rgx(_T("(\\d{1,2}):(\\d{0,2}):(\\d{0,2})"));
+	std::tsmatch sm;
 	if (std::regex_match(szTime, sm, rgx))
 	{
 		if (sm.size() >= 4)
@@ -80,9 +79,9 @@ void GetTime(std::string& szTime, std::string &szHour, std::string &szMin, std::
 		}
 	}
 
-	if (szHour.empty()) szHour = "00";
-	if (szMin.empty()) szMin = "00";
-	if (szSec.empty()) szSec = "00";
+	if (szHour.empty()) szHour = _T("00");
+	if (szMin.empty()) szMin = _T("00");
+	if (szSec.empty()) szSec = _T("00");
 }
 
 CWnd * CPatchNetSetting::GetParent()
@@ -110,8 +109,8 @@ void CPatchNetSetting::InitControlData()
 	case interval_mode:
 		DRadio(RadioBox_Interval)->SetValue(DUIRADIOBOX_CHECKED, TRUE);
 		{
-			std::string szbegin, szend;
-			//std::string szbegH, szbegM, szbegS, szendH, szendM, szendS;
+			std::tstring szbegin, szend;
+			//std::tstring szbegH, szbegM, szbegS, szendH, szendM, szendS;
 			GetIntervalTime(appconfig.m_http_cfg.sznettime, szbegin, szend);
 			//szbegin = szbegH + ":" + szbegM;
 			//szend = szendH + ":" + szendM;
@@ -127,7 +126,7 @@ void CPatchNetSetting::InitControlData()
 	}
 
 	DCheck(ChkBox-Flux)->SetValue(appconfig.m_http_cfg.flux ? DUICHECKBOX_CHECKED : DUICHECKBOX_UNCHECKED);
-	std::stringstream ss;
+	std::tstringstream ss;
 	ss << appconfig.m_http_cfg.fluxspeed;
 	DEdit(EditSpeed)->SetText(ss.str());
 
@@ -183,32 +182,29 @@ BOOL CPatchNetSetting::OnInitDialog()
 {
 	CDUIDialog::OnInitDialog();
 
-
 	// TODO:  在此添加额外的初始化
-	
+	InitControlLang();
 	InitControlData();
-
 	EnbaleControl();
-
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
 
-BOOL IsTimeValid(std::string &sztime)
+BOOL IsTimeValid(std::tstring &sztime)
 {
-	std::regex rgx("(\\d{1,2}):(\\d{0,2}):(\\d{0,2})");
-	std::smatch sm;
+	std::tregex rgx(_T("(\\d{1,2}):(\\d{0,2}):(\\d{0,2})"));
+	std::tsmatch sm;
 	if (std::regex_match(sztime, sm, rgx))
 	{
 		if (sm.size() >= 3)
 		{
-			std::string szHour = sm[1];
-			std::string szMin = sm[2];
-			std::string szSec = sm[3];
+			std::tstring szHour = sm[1];
+			std::tstring szMin = sm[2];
+			std::tstring szSec = sm[3];
 
-			int iHour = atoi(szHour.c_str());
-			int iMin = atoi(szMin.c_str());
-			int iSec = atoi(szMin.c_str());
+			int iHour = _ttoi(szHour.c_str());
+			int iMin = _ttoi(szMin.c_str());
+			int iSec = _ttoi(szMin.c_str());
 			if ((iHour >= 0 && iHour < 24)
 				&& (iMin >= 0 && iMin <= 59)
 				&& (iSec >= 0 && iSec <= 59))
@@ -221,22 +217,22 @@ BOOL IsTimeValid(std::string &sztime)
 	return FALSE;
 }
 
-BOOL IsIpValid(std::string &szIp)
+BOOL IsIpValid(std::tstring &szIp)
 {
-	std::regex rgx("(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})");
-	std::smatch sm;
+	std::tregex rgx(_T("(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})"));
+	std::tsmatch sm;
 	if (std::regex_match(szIp, sm, rgx))
 	{
 		if (sm.size() >= 5)
 		{
-			std::string f1 = sm[1];
-			std::string f2 = sm[2];
-			std::string f3 = sm[3];
-			std::string f4 = sm[4];
-			int s1 = atoi(f1.c_str());
-			int s2 = atoi(f2.c_str());
-			int s3 = atoi(f3.c_str());
-			int s4 = atoi(f4.c_str());
+			std::tstring f1 = sm[1];
+			std::tstring f2 = sm[2];
+			std::tstring f3 = sm[3];
+			std::tstring f4 = sm[4];
+			int s1 = _ttoi(f1.c_str());
+			int s2 = _ttoi(f2.c_str());
+			int s3 = _ttoi(f3.c_str());
+			int s4 = _ttoi(f4.c_str());
 			if ((s1 > 0 && s1 <= 255) && (s2 >= 0 && s2 <= 255)
 				&& (s3 >= 0 && s3 <= 255) && (s4 >= 0 && s4 <= 255))
 			{
@@ -252,10 +248,10 @@ BOOL IsIpValid(std::string &szIp)
 BOOL CPatchNetSetting::OnApply()
 {
 	timemode mode = default_mode;
-	std::string sztime = "0";
+	std::tstring sztime = _T("0");
 	bool flux = false, proxy = false;
-	std::string szfluxspeed;
-	std::string szip, szport, szuser, szpwd;
+	std::tstring szfluxspeed;
+	std::tstring szip, szport, szuser, szpwd;
 
 	if (DUIRADIOBOX_CHECKED == DRadio(RadioBox_AllTime)->GetValue())
 		mode = default_mode;
@@ -264,11 +260,11 @@ BOOL CPatchNetSetting::OnApply()
 	{
 		mode = period_mode;
 		sztime = DEdit(EditPerid)->GetText();
-		int itime = atoi(sztime.c_str());
+		int itime = _ttoi(sztime.c_str());
 		if (itime <= 0)
 		{
 			CMessageBox msg;
-			msg.ShowMessage("\"按周期下载\"指定时间值无效(value>0)");
+			msg.ShowMessage(g_lang.GetText(10070));
 			return FALSE;
 		}
 	}
@@ -276,31 +272,31 @@ BOOL CPatchNetSetting::OnApply()
 	else if (DUIRADIOBOX_CHECKED == DRadio(RadioBox_Interval)->GetValue())
 	{
 		mode = interval_mode;
-		std::string szbegin = DEdit(EditBegin)->GetText();
-		std::string szend = DEdit(EditEnd)->GetText();
+		std::tstring szbegin = DEdit(EditBegin)->GetText();
+		std::tstring szend = DEdit(EditEnd)->GetText();
 		if (!IsTimeValid(szbegin))
 		{
 			CMessageBox msg;
-			msg.ShowMessage("\"按时间下载\"指定开始时间范围无效(00:00:00~23:59:00)");
+			msg.ShowMessage(g_lang.GetText(10069));
 			return FALSE;
 		}
 		if (!IsTimeValid(szend))
 		{
 			CMessageBox msg;
-			msg.ShowMessage("\"按时间下载\"指定结束时间范围无效(00:00:00~23:59:00)");
+			msg.ShowMessage(g_lang.GetText(10068));
 			return FALSE;
 		}
-		sztime = szbegin + "-" + szend;
+		sztime = szbegin + _T("-") + szend;
 	}
 
 	if (DUICHECKBOX_CHECKED == DCheck(ChkBox-Flux)->GetValue())
 	{
 		flux = true;
 		szfluxspeed = DEdit(EditSpeed)->GetText();
-		if (atoi(szfluxspeed.c_str()) < 0)
+		if (_ttoi(szfluxspeed.c_str()) < 0)
 		{
 			CMessageBox msg;
-			msg.ShowMessage("\"流量限制\"指定流量值无效(value>=0)");
+			msg.ShowMessage(g_lang.GetText(10065));
 			return FALSE;
 		}
 	}
@@ -315,31 +311,31 @@ BOOL CPatchNetSetting::OnApply()
 		if (!IsIpValid(szip))
 		{
 			CMessageBox msg;
-			msg.ShowMessage("\"代理\"指定IP无效(1.1.1.1~255.255.255.255)");
+			msg.ShowMessage(g_lang.GetText(10067));
 			return FALSE;
 		}
-		int iport = atoi(szport.c_str());
+		int iport = _ttoi(szport.c_str());
 		if (iport <= 0 || iport > 65535)
 		{
 			CMessageBox msg;
-			msg.ShowMessage("\"代理\"指定端口无效(1~65535)");
+			msg.ShowMessage(g_lang.GetText(10066));
 			return FALSE;
 		}
 	}
 
-	std::string szlastProducts = appconfig.m_http_cfg.m_szProducts, szlastlans = appconfig.m_http_cfg.m_szLans;
-	std::string &szurl = appconfig.m_http_cfg.m_szIndexUrl = DEdit(EditUrl)->GetText();
-	std::string &szpath = appconfig.m_http_cfg.m_szPatchPath = DEdit(EditPath)->GetText();
-	std::string &szproducts = appconfig.m_http_cfg.m_szProducts = GetCheckedItemString(DTree(ProductTree));
-	std::string &szlans = appconfig.m_http_cfg.m_szLans = GetCheckedItemString(DTree(LanTree));
-	std::string &szcfgpath = appconfig.m_szConfigFile;
+	std::tstring szlastProducts = appconfig.m_http_cfg.m_szProducts, szlastlans = appconfig.m_http_cfg.m_szLans;
+	std::tstring &szurl = appconfig.m_http_cfg.m_szIndexUrl = DEdit(EditUrl)->GetText();
+	std::tstring &szpath = appconfig.m_http_cfg.m_szPatchPath = DEdit(EditPath)->GetText();
+	std::tstring &szproducts = appconfig.m_http_cfg.m_szProducts = GetCheckedItemString(DTree(ProductTree));
+	std::tstring &szlans = appconfig.m_http_cfg.m_szLans = GetCheckedItemString(DTree(LanTree));
+	std::tstring &szcfgpath = appconfig.m_szConfigFile;
 
-	std::string szPackName;
+	std::tstring szPackName;
 	size_t pos = szurl.find_last_of('/');
-	if (pos != std::string::npos)
+	if (pos != std::tstring::npos)
 		appconfig.m_http_cfg.m_szPackName = szurl.substr(pos + 1);
-	std::string szPackPath = szpath + "\\Tools\\" + appconfig.m_http_cfg.m_szPackName;
-	std::string szPackSha;
+	std::tstring szPackPath = szpath + _T("\\Tools\\") + appconfig.m_http_cfg.m_szPackName;
+	std::tstring szPackSha;
 
 	CPatchMode *pMode = (CPatchMode*)GetParent();
 	CPatchView *pPatchView = (CPatchView *)pMode->GetPatchView();
@@ -359,16 +355,16 @@ BOOL CPatchNetSetting::OnApply()
 	//}
 
 
-	std::string &szcfgfile = appconfig.m_szConfigFile;
+	std::tstring &szcfgfile = appconfig.m_szConfigFile;
 	timemode &_mode = appconfig.m_http_cfg.mode = mode;
-	std::string &_time = appconfig.m_http_cfg.sznettime = sztime;
+	std::tstring &_time = appconfig.m_http_cfg.sznettime = sztime;
 	bool &_flux = appconfig.m_http_cfg.flux = flux;
-	int  &_fluxspeed = appconfig.m_http_cfg.fluxspeed = atoi(szfluxspeed.c_str());
+	int  &_fluxspeed = appconfig.m_http_cfg.fluxspeed = _ttoi(szfluxspeed.c_str());
 	bool &_proxy = appconfig.m_http_cfg.proxy = proxy;
-	std::string &_ip = appconfig.m_http_cfg.szip = szip;
-	std::string &_port = appconfig.m_http_cfg.szport = szport;
-	std::string &_user = appconfig.m_http_cfg.szuser = szuser;
-	std::string &_pwd = appconfig.m_http_cfg.szpwd = szpwd;
+	std::tstring &_ip = appconfig.m_http_cfg.szip = szip;
+	std::tstring &_port = appconfig.m_http_cfg.szport = szport;
+	std::tstring &_user = appconfig.m_http_cfg.szuser = szuser;
+	std::tstring &_pwd = appconfig.m_http_cfg.szpwd = szpwd;
 
 	if (_flux)
 	{
@@ -389,25 +385,25 @@ BOOL CPatchNetSetting::OnApply()
 		}
 	}
 
-	std::string szMode;
-	std::stringstream ss;
+	std::tstring szMode;
+	std::tstringstream ss;
 	ss << (int)_mode;
 	ss >> szMode;
 
-	WritePrivateProfileStringA("PATCH", "URL", szurl.c_str(), szcfgpath.c_str());
-	WritePrivateProfileStringA("PATCH", "PATH", szpath.c_str(), szcfgpath.c_str());
-	WritePrivateProfileStringA("PATCH", "PRODUCTS", szproducts.c_str(), szcfgpath.c_str());
-	WritePrivateProfileStringA("PATCH", "LAN", szlans.c_str(), szcfgpath.c_str());
+	WritePrivateProfileString(_T("PATCH"), _T("URL"), szurl.c_str(), szcfgpath.c_str());
+	WritePrivateProfileString(_T("PATCH"), _T("PATH"), szpath.c_str(), szcfgpath.c_str());
+	WritePrivateProfileString(_T("PATCH"), _T("PRODUCTS"), szproducts.c_str(), szcfgpath.c_str());
+	WritePrivateProfileString(_T("PATCH"), _T("LAN"), szlans.c_str(), szcfgpath.c_str());
 
-	WritePrivateProfileStringA("NET", "TIMEMODE", szMode.c_str(), szcfgfile.c_str());
-	WritePrivateProfileStringA("NET", "NETTIME", _time.c_str(), szcfgfile.c_str());
-	WritePrivateProfileStringA("NET", "FLUX", _flux ? "1" : "0", szcfgfile.c_str());
-	WritePrivateProfileStringA("NET", "FLUXSPEED", szfluxspeed.c_str(), szcfgfile.c_str());
-	WritePrivateProfileStringA("NET", "PROXY", _proxy ? "1" : "0", szcfgfile.c_str());
-	WritePrivateProfileStringA("NET", "PROXYIP", _ip.c_str(), szcfgfile.c_str());
-	WritePrivateProfileStringA("NET", "PROXYPORT", _port.c_str(), szcfgfile.c_str());
-	WritePrivateProfileStringA("NET", "PROXYUSER", _user.c_str(), szcfgfile.c_str());
-	WritePrivateProfileStringA("NET", "PROXYPWD", _pwd.c_str(), szcfgfile.c_str());
+	WritePrivateProfileString(_T("NET"), _T("TIMEMODE"), szMode.c_str(), szcfgfile.c_str());
+	WritePrivateProfileString(_T("NET"), _T("NETTIME"), _time.c_str(), szcfgfile.c_str());
+	WritePrivateProfileString(_T("NET"), _T("FLUX"), _flux ? _T("1") : _T("0"), szcfgfile.c_str());
+	WritePrivateProfileString(_T("NET"), _T("FLUXSPEED"), szfluxspeed.c_str(), szcfgfile.c_str());
+	WritePrivateProfileString(_T("NET"), _T("PROXY"), _proxy ? _T("1") : _T("0"), szcfgfile.c_str());
+	WritePrivateProfileString(_T("NET"), _T("PROXYIP"), _ip.c_str(), szcfgfile.c_str());
+	WritePrivateProfileString(_T("NET"), _T("PROXYPORT"), _port.c_str(), szcfgfile.c_str());
+	WritePrivateProfileString(_T("NET"), _T("PROXYUSER"), _user.c_str(), szcfgfile.c_str());
+	WritePrivateProfileString(_T("NET"), _T("PROXYPWD"), _pwd.c_str(), szcfgfile.c_str());
 
 	return TRUE;
 }
@@ -427,11 +423,11 @@ LRESULT CPatchNetSetting::OnKillFocus(WPARAM wparam, LPARAM lparam)
 {
 	if (DEdit(EditPerid) == (IDUIEditCtrl*)wparam)
 	{
-		std::string sztime = DEdit(EditPerid)->GetText();
-		int itime = atoi(sztime.c_str());
+		std::tstring sztime = DEdit(EditPerid)->GetText();
+		int itime = _ttoi(sztime.c_str());
 		if (itime <= 0)
 		{
-			DEdit(EditPerid)->DUISetToolTip("\"按周期下载\"指定时间值无效(value>0)");
+			DEdit(EditPerid)->DUISetToolTip(g_lang.GetText(10070));
 		}
 		else
 		{
@@ -440,10 +436,10 @@ LRESULT CPatchNetSetting::OnKillFocus(WPARAM wparam, LPARAM lparam)
 	}
 	else if (DEdit(EditBegin) == (IDUIEditCtrl*)wparam)
 	{
-		std::string szbegin = DEdit(EditBegin)->GetText();
+		std::tstring szbegin = DEdit(EditBegin)->GetText();
 		if (!IsTimeValid(szbegin))
 		{
-			DEdit(EditBegin)->DUISetToolTip("\"按时间下载\"指定开始时间范围无效(00:00~23:59)");
+			DEdit(EditBegin)->DUISetToolTip(g_lang.GetText(10069));
 		}
 		else
 		{
@@ -452,10 +448,10 @@ LRESULT CPatchNetSetting::OnKillFocus(WPARAM wparam, LPARAM lparam)
 	}
 	else if (DEdit(EditEnd) == (IDUIEditCtrl*)wparam)
 	{
-		std::string szend = DEdit(EditEnd)->GetText();
+		std::tstring szend = DEdit(EditEnd)->GetText();
 		if (!IsTimeValid(szend))
 		{
-			DEdit(EditEnd)->DUISetToolTip("\"按时间下载\"指定结束时间范围无效(00:00~23:59)");
+			DEdit(EditEnd)->DUISetToolTip(g_lang.GetText(10068));
 		}
 		else
 		{
@@ -464,10 +460,10 @@ LRESULT CPatchNetSetting::OnKillFocus(WPARAM wparam, LPARAM lparam)
 	}
 	else if (DEdit(EditIp) == (IDUIEditCtrl*)wparam)
 	{
-		std::string szip = DEdit(EditIp)->GetText();
+		std::tstring szip = DEdit(EditIp)->GetText();
 		if (!IsIpValid(szip))
 		{
-			DEdit(EditIp)->DUISetToolTip("\"代理\"指定IP无效(1.1.1.1~255.255.255.255)");
+			DEdit(EditIp)->DUISetToolTip(g_lang.GetText(10067));
 		}
 		else
 		{
@@ -476,11 +472,11 @@ LRESULT CPatchNetSetting::OnKillFocus(WPARAM wparam, LPARAM lparam)
 	}
 	else if (DEdit(EditPort) == (IDUIEditCtrl*)wparam)
 	{
-		std::string szport = DEdit(EditPort)->GetText();
-		int iport = atoi(szport.c_str());
+		std::tstring szport = DEdit(EditPort)->GetText();
+		int iport = _ttoi(szport.c_str());
 		if (iport <= 0 || iport > 65535)
 		{
-			DEdit(EditPort)->DUISetToolTip("\"代理\"指定端口无效(1~65535)");
+			DEdit(EditPort)->DUISetToolTip(g_lang.GetText(10066));
 		}
 		else
 		{
@@ -489,10 +485,10 @@ LRESULT CPatchNetSetting::OnKillFocus(WPARAM wparam, LPARAM lparam)
 	}
 	else if (DEdit(EditSpeed) == (IDUIEditCtrl*)wparam)
 	{
-		int fluxspeed = atoi(DEdit(EditSpeed)->GetText().c_str());
+		int fluxspeed = _ttoi(DEdit(EditSpeed)->GetText().c_str());
 		if (fluxspeed < 0)
 		{
-			DEdit(EditSpeed)->DUISetToolTip("\"流量限制\"指定流量值无效(value>=0)");
+			DEdit(EditSpeed)->DUISetToolTip(g_lang.GetText(10065));
 		}
 		else
 		{
@@ -571,18 +567,18 @@ BOOL CPatchNetSetting::PreTranslateMessage(MSG* pMsg)
 void CPatchNetSetting::RedrawSimpleTree()
 {
 
-	std::string szpackindex = DEdit(EditPath)->GetText() + "\\Tools\\PackIndex.dat";
-	if (PathFileExistsA(szpackindex.c_str()))
+	std::tstring szpackindex = DEdit(EditPath)->GetText() + _T("\\Tools\\PackIndex.dat");
+	if (PathFileExists(szpackindex.c_str()))
 	{
 		if (!CPackInterface::init())
 			return;
 
 		IPackIndex *packindex = CPackInterface::getPackIndexObject();
 		if (!bus.analyze_main_index(packindex, szpackindex))
-			vrvlog::SPD_LOG_ERROR("{0} 解析失败", szpackindex.c_str());
+			vrvlog::SPD_LOG_ERROR("{0}parse failed", (const char*)_bstr_t(szpackindex.c_str()));
 
 		else
-			vrvlog::SPD_LOG_INFO("{0} 解析成功", szpackindex.c_str());
+			vrvlog::SPD_LOG_INFO("{0} parse succeed", (const char*)_bstr_t(szpackindex.c_str()));
 		CPackInterface::FreePackIndexObject(packindex);
 	}
 
@@ -613,7 +609,7 @@ void CPatchNetSetting::RedrawTreeImpl(tree whichtree)
 	vrv::patch::PublishersMap::_iterator iter = publishers->Publishers.begin();
 	for (; iter != publishers->Publishers.end(); ++iter)
 	{
-		std::string szPublisher = iter->first;
+		std::tstring szPublisher = iter->first;
 		OLE_HANDLE hpublisher = pTree->AppendChild(hroot, szPublisher, FALSE);
 		vrv::patch::FamiliesMapPtr families = iter->second;
 		if (pTree == DTree(ProductTree))
@@ -621,13 +617,13 @@ void CPatchNetSetting::RedrawTreeImpl(tree whichtree)
 			vrv::patch::FamiliesMap::_iterator _iter = families->ProductsFamily.begin();
 			for (; _iter != families->ProductsFamily.end(); ++_iter)
 			{
-				std::string szFamily = _iter->first;
+				std::tstring szFamily = _iter->first;
 				OLE_HANDLE hfamily = pTree->AppendChild(hpublisher, szFamily, FALSE);
 				vrv::patch::ProductsMapPtr products = _iter->second;
 				vrv::patch::ProductsMap::_iterator _iter_ = products->Products.begin();
 				for (; _iter_ != products->Products.end(); ++_iter_)
 				{
-					std::string szProduct = _iter_->first;
+					std::tstring szProduct = _iter_->first;
 					OLE_HANDLE hproduct = pTree->AppendChild(hfamily, szProduct, FALSE);
 					pTree->SetItemData(hproduct, (OLE_HANDLE)&_iter_->second);
 				}
@@ -639,13 +635,13 @@ void CPatchNetSetting::RedrawTreeImpl(tree whichtree)
 			vrv::patch::FamiliesMap::_iterator _iter = families->LanguagesFamily.begin();
 			for (; _iter != families->LanguagesFamily.end(); ++_iter)
 			{
-				std::string szFamily = _iter->first;
+				std::tstring szFamily = _iter->first;
 				OLE_HANDLE hfamily = pTree->AppendChild(hpublisher, szFamily, FALSE);
 				vrv::patch::ProductsMapPtr products = _iter->second;
 				vrv::patch::ProductsMap::_iterator _iter_ = products->Products.begin();
 				for (; _iter_ != products->Products.end(); ++_iter_)
 				{
-					std::string szProduct = _iter_->first;
+					std::tstring szProduct = _iter_->first;
 					OLE_HANDLE hproduct = pTree->AppendChild(hfamily, szProduct, FALSE);
 					pTree->SetItemData(hproduct, (OLE_HANDLE)&_iter_->second);
 				}
@@ -658,7 +654,7 @@ void CPatchNetSetting::RedrawTreeImpl(tree whichtree)
 }
 
 
-LRESULT CPatchNetSetting::OnButtonDispatcher(WPARAM wparam, LPARAM lparam)
+LRESULT CPatchNetSetting::OnSMLButtonUp(WPARAM wparam, LPARAM lparam)
 {
 	if (DBtn(BtnTest) == (ICmdButton*)wparam)
 	{
@@ -695,58 +691,59 @@ void CPatchNetSetting::CheckChildItem(IDUISimpleTree *tree, OLE_HANDLE hParent)
 
 LRESULT CPatchNetSetting::OnButtonTest(WPARAM wparam, LPARAM lparam)
 {
-	std::string szurl = DEdit(EditUrl)->GetText();
-	std::string szpatchpath = DEdit(EditPath)->GetText();
-	std::regex rgx("^[A-Za-z]:[\\\\\\w]*");
-	std::smatch sm;
+	std::tstring szurl = DEdit(EditUrl)->GetText();
+	std::tstring szpatchpath = DEdit(EditPath)->GetText();
+	std::tregex rgx(_T("^[A-Za-z]:[\\\\\\w]*"));
+	std::tsmatch sm;
 	if (!std::regex_match(szpatchpath, sm, rgx))
 	{
 		CMessageBox msgbox;
-		msgbox.ShowMessage("请选择有效的\"本地补丁路径\"");
+		msgbox.ShowMessage(g_lang.GetText(10064));
 		return 0;
 	}
 
-	std::string szPackName;
+	std::tstring szPackName;
 	size_t pos = szurl.find_last_of('/');
-	if (pos != std::string::npos)
+	if (pos != std::tstring::npos)
 	{
 		szPackName = szurl.substr(pos + 1);
 	}
 
-	std::string sztoolpath = szpatchpath + "\\Tools\\";
+	std::tstring sztoolpath = szpatchpath + _T("\\Tools\\");
 	if (!PathFileExists(sztoolpath.c_str()))
-		CreateDirectoryA(sztoolpath.c_str(), NULL);
+		MakeSureDirectoryExist(sztoolpath.c_str(), FALSE);
 
-	std::string szpackindex = sztoolpath + szPackName;
-	std::string sztmppackindex = szpackindex + "~";
+	std::tstring szpackindex = sztoolpath + szPackName;
+	std::tstring sztmppackindex = szpackindex + _T("~");
 	std::shared_ptr<Curl> m_curlptr = std::make_shared<Curl>();
 
 	if (appconfig.m_http_cfg.flux)
 		m_curlptr->SetDownloadSpeed(appconfig.m_http_cfg.fluxspeed);
 
 	if (appconfig.m_http_cfg.proxy)
-		m_curlptr->SetProxy(
-			appconfig.m_http_cfg.szip,
-			appconfig.m_http_cfg.szport,
-			appconfig.m_http_cfg.szuser,
-			appconfig.m_http_cfg.szpwd);
+		theApp.m_curlptr->SetProxy(
+		(const char*)_bstr_t(appconfig.m_http_cfg.szip.c_str()),
+			(const char*)_bstr_t(appconfig.m_http_cfg.szport.c_str()),
+			(const char*)_bstr_t(appconfig.m_http_cfg.szuser.c_str()),
+			(const char*)_bstr_t(appconfig.m_http_cfg.szpwd.c_str()));
 
-	m_curlptr->SetUrlFile(szurl, sztmppackindex);
+	m_curlptr->SetUrlFile((const char*)_bstr_t(szurl.c_str()),
+		(const char*)_bstr_t(sztmppackindex.c_str()));
 
 	long code = 0l;
 	if (0 == (code = m_curlptr->StartDownload()))
 	{
-		MoveFileExA(sztmppackindex.c_str(), szpackindex.c_str(), MOVEFILE_REPLACE_EXISTING);
-		vrvlog::SPD_LOG_INFO("{0} 下载成功", szpackindex.c_str());
+		MoveFileEx(sztmppackindex.c_str(), szpackindex.c_str(), MOVEFILE_REPLACE_EXISTING);
+		vrvlog::SPD_LOG_INFO("{0} download succeed", (const char*)_bstr_t(szpackindex.c_str()));
 		RedrawSimpleTree();
 		RestoreTreeCheckItems(producttree);
 		RestoreTreeCheckItems(languagetree);
 	}
 	else
 	{
-		vrvlog::SPD_LOG_ERROR("{0} 下载失败", szpackindex.c_str());
+		vrvlog::SPD_LOG_ERROR("{0} download failed", (const char*)_bstr_t(szpackindex.c_str()));
 		CMessageBox msg;
-		msg.ShowMessage("测试连接失败,请检查网络或者URL配置");
+		msg.ShowMessage(g_lang.GetText(10063));
 	}
 
 	return 0;
@@ -755,24 +752,24 @@ LRESULT CPatchNetSetting::OnButtonTest(WPARAM wparam, LPARAM lparam)
 
 LRESULT CPatchNetSetting::OnButtonBrowser(WPARAM wparam, LPARAM lparam)
 {
-	CHAR szPath[MAX_PATH] = { 0 };
-	BROWSEINFOA bi;
+	TCHAR szPath[MAX_PATH] = { 0 };
+	BROWSEINFO bi;
 	bi.hwndOwner = m_hWnd;
 	bi.pidlRoot = NULL;
 	bi.pszDisplayName = szPath;
-	bi.lpszTitle = _T("请选择补丁文件存放路径");
+	bi.lpszTitle = g_lang.GetText(10062).c_str();
 	bi.ulFlags = CSIDL_DRIVES;
 	bi.lpfn = NULL;
 	bi.iImage = IDR_MAINFRAME;
 
-	LPITEMIDLIST lpIDList = SHBrowseForFolderA(&bi);
+	LPITEMIDLIST lpIDList = SHBrowseForFolder(&bi);
 	if (NULL != lpIDList)
 	{
-		SHGetPathFromIDListA(lpIDList, szPath);
+		SHGetPathFromIDList(lpIDList, szPath);
 		DEdit(EditPath)->SetText(szPath);
-		CreateDirectoryA(szPath, NULL);
-		strcat_s(szPath, MAX_PATH, "\\Tools");
-		CreateDirectoryA(szPath, NULL);
+		CreateDirectory(szPath, NULL);
+		_tcscat_s(szPath, MAX_PATH, _T("\\Tools"));
+		CreateDirectory(szPath, NULL);
 		CoTaskMemFree(lpIDList);
 	}
 
@@ -780,9 +777,9 @@ LRESULT CPatchNetSetting::OnButtonBrowser(WPARAM wparam, LPARAM lparam)
 }
 
 
-std::string CPatchNetSetting::GetCheckedItemString(IDUISimpleTree* pTree)
+std::tstring CPatchNetSetting::GetCheckedItemString(IDUISimpleTree* pTree)
 {
-	std::string szChecked = ";";
+	std::tstring szChecked = _T(";");
 	short schecked = pTree->GetCheckItemCount();
 
 	IDUITreeItem *item = pTree->GetFirstCheckItem();
@@ -791,9 +788,9 @@ std::string CPatchNetSetting::GetCheckedItemString(IDUISimpleTree* pTree)
 		OLE_HANDLE hData = pTree->GetItemData(item->GetTreeNode());
 		if (hData)
 		{
-			std::string szItemText = pTree->GetItemText(item->GetTreeNode());
+			std::tstring szItemText = pTree->GetItemText(item->GetTreeNode());
 			szChecked.append(szItemText);
-			szChecked.append(";");
+			szChecked.append(_T(";"));
 		}
 		item = pTree->GetNextCheckItem(item);
 	}
@@ -805,7 +802,7 @@ std::string CPatchNetSetting::GetCheckedItemString(IDUISimpleTree* pTree)
 void CPatchNetSetting::RestoreTreeCheckItems(tree whichtree)
 {
 	IDUISimpleTree *pTree = NULL;
-	std::string szXX;
+	std::tstring szXX;
 	if (producttree == whichtree)
 	{
 		pTree = DTree(ProductTree);
@@ -824,7 +821,7 @@ void CPatchNetSetting::RestoreTreeCheckItems(tree whichtree)
 	OLE_HANDLE hroot = pTree->GetRootItem(NULL);
 	OLE_HANDLE hchild = pTree->GetChildItem(hroot);
 	//pTree->CheckItem(hchild, FALSE);
-	if (szXX.empty() || szXX == ";")
+	if (szXX.empty() || szXX == _T(";"))
 	{
 		pTree->CheckItem(hchild, TRUE);
 		return;
@@ -837,11 +834,11 @@ void CPatchNetSetting::RestoreTreeCheckItems(tree whichtree)
 	pTree->RedrawWindow(TRUE);
 }
 
-void CPatchNetSetting::TravelTree(IDUISimpleTree* pTree, OLE_HANDLE hParent, std::string& szChecked)
+void CPatchNetSetting::TravelTree(IDUISimpleTree* pTree, OLE_HANDLE hParent, std::tstring& szChecked)
 {
-	std::string szItemText = pTree->GetItemText(hParent);
-	szItemText.append(";").insert(0, ";");
-	if (szChecked.find(szItemText) != std::string::npos)
+	std::tstring szItemText = pTree->GetItemText(hParent);
+	szItemText.append(_T(";")).insert(0, _T(";"));
+	if (szChecked.find(szItemText) != std::tstring::npos)
 	{
 		pTree->CheckItem(hParent, TRUE);
 	}
@@ -855,4 +852,26 @@ void CPatchNetSetting::TravelTree(IDUISimpleTree* pTree, OLE_HANDLE hParent, std
 		TravelTree(pTree, hchild, szChecked);
 		hchild = pTree->GetNextSiblingItem(hchild);
 	}
+}
+
+void CPatchNetSetting::InitControlLang()
+{
+	DStatic(Static29)->SetText(g_lang.GetText(10010));
+	DStatic(Static26)->SetText(g_lang.GetText(10011));
+	DStatic(Sta_Products)->SetText(g_lang.GetText(10014));
+	DStatic(Sta_Language)->SetText(g_lang.GetText(10015));
+	DRadio(RadioBox_AllTime)->SetText(g_lang.GetText(10016), TRUE);
+	DRadio(RadioBox_Period)->SetText(g_lang.GetText(10017), TRUE);
+	DRadio(RadioBox_Interval)->SetText(g_lang.GetText(10018), TRUE);
+	DStatic(StaticMin)->SetText(g_lang.GetText(10019));
+	DCheck(ChkBox-Flux)->SetText(g_lang.GetText(10020));
+	DStatic(Static51_Unit)->SetText(g_lang.GetText(10021));
+	DCheck(ChkBox-NetProxy)->SetText(g_lang.GetText(10022));
+	DStatic(Static_Ip)->SetText(g_lang.GetText(10023));
+	DStatic(Static_Port)->SetText(g_lang.GetText(10024));
+	DStatic(Static_User)->SetText(g_lang.GetText(10025));
+	DStatic(Static_Pwd)->SetText(g_lang.GetText(10026));
+	DBtn(BtnTest)->SetText(g_lang.GetText(10012));
+	DBtn(BtnBrowser)->SetText(g_lang.GetText(10013));
+
 }

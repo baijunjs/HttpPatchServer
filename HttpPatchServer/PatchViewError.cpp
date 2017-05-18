@@ -40,16 +40,6 @@ END_MESSAGE_MAP()
 
 // CPatchViewError 消息处理程序
 
-//bool CPatchViewError::InitDui()
-//{
-//	m_pDuiError = (ISkinObjResBase*)AfxGetDuiRes()->CreateDirectUI("DUITaskError", HandleToLong(m_hWnd));
-//	ASSERT(m_pDuiError);
-//
-//	m_pErrorView = (IDUIListView*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "ListViewError", m_pDuiError, TRUE);
-//	ASSERT(m_pErrorView);
-//
-//	return true;
-//}
 LRESULT CPatchViewError::InsertIndexItem(WPARAM wparam, LPARAM lparam)
 {
 	if (0 == wparam)
@@ -60,9 +50,9 @@ LRESULT CPatchViewError::InsertIndexItem(WPARAM wparam, LPARAM lparam)
 		return 0;
 
 	bus.m_taskErrorIndex.push_back(indexptr);
-	std::string szIndexName;
-	size_t pos = indexptr->szIndexName.find_last_of("\\");
-	if (pos == std::string::npos)
+	std::tstring szIndexName;
+	size_t pos = indexptr->szIndexName.find_last_of(_T("\\"));
+	if (pos == std::tstring::npos)
 		szIndexName = indexptr->szIndexName;
 	else
 		szIndexName = indexptr->szIndexName.substr(pos + 1);
@@ -89,9 +79,9 @@ LRESULT CPatchViewError::InsertPatchItem(WPARAM wparam, LPARAM lparam)
 	if (patchptr == nullptr)
 		return 0;
 
-	std::string szPatchName;
-	size_t pos = patchptr->szPatchName.find_last_of("\\");
-	if (pos == std::string::npos)
+	std::tstring szPatchName;
+	size_t pos = patchptr->szPatchName.find_last_of(_T("\\"));
+	if (pos == std::tstring::npos)
 		szPatchName = patchptr->szPatchName;
 	else
 		szPatchName = patchptr->szPatchName.substr(pos + 1);

@@ -43,7 +43,7 @@
     Borland C Builder (thanks to Rex Bloom and Tim Gallagher for the
     patch).
   - Breaking change: ReportHash writes the final hash to the start
-    of the buffer, i.e. it's not appending it to the string anymore.
+    of the buffer, i.e. it's not appending it to the tstring anymore.
   - Made some function parameters const.
   - Added Visual Studio 2005 project files to demo project.
 
@@ -71,7 +71,7 @@
     one time.
 
   Version 1.2 - 2002-11-16
-  - Borlands C++ compiler seems to have problems with string addition
+  - Borlands C++ compiler seems to have problems with tstring addition
     using sprintf. Fixed the bug which caused the digest report function
     not to work properly. CSHA1 is now Borland compatible.
 

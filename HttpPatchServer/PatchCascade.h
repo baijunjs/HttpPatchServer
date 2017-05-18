@@ -35,4 +35,5 @@ public:
 
 	BOOL OnApply();
 	void OnRestore();
+	void InitControlLang();
 };

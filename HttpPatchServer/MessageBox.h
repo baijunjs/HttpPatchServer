@@ -31,8 +31,10 @@ public:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 
 	UINT m_uflag;
-	std::string m_szMessage;
-	int ShowMessage(LPCSTR, UINT flag = MB_OK);
+	std::tstring m_szMessage;
+	int ShowMessage(std::tstring &, UINT flag = MB_OK);
 	virtual BOOL OnInitDialog();
 	LRESULT OnButtonDispatcher(WPARAM, LPARAM);
+	void InitControlLang();
+
 };

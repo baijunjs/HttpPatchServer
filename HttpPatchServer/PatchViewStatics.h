@@ -16,7 +16,6 @@ public:
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_DIALOG_STATICS };
 #endif
-	//bool InitDui();
 	BOOL InitSknPath();
 private:
 
@@ -39,5 +38,7 @@ public:
 	void OnCasStop();
 	CWnd* GetParent();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	void InitControlLang();
+	LRESULT OnSetText(WPARAM, LPARAM);
 
 };

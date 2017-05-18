@@ -38,24 +38,6 @@ END_MESSAGE_MAP()
 
 // CPatchMode 消息处理程序
 
-
-//bool CPatchMode::InitDui()
-//{
-//	m_pDuiMode = (ISkinObjResBase*)AfxGetDuiRes()->CreateDirectUI("DUIMode", HandleToLong(m_hWnd));
-//	ASSERT(m_pDuiMode);
-//
-//	m_pRadioHttp = (IRadioBox*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "RadioBox_Http", m_pDuiMode, TRUE);
-//	ASSERT(m_pRadioHttp);
-//
-//	m_pRadioCas = (IRadioBox*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "RadioBox_Cascade", m_pDuiMode, TRUE);
-//	ASSERT(m_pRadioCas);
-//
-//	m_pHwndOwner = (IDUIHwndObj*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "HwndObj18", m_pDuiMode, TRUE);
-//	ASSERT(m_pHwndOwner);
-//	return true;
-//}
-
-
 BOOL CPatchMode::InitSknPath()
 {
 	CDUIDialog::InitSknPath();
@@ -100,9 +82,9 @@ BOOL CPatchMode::OnInitDialog()
 	// TODO:  在此添加额外的初始化
 
 	DHwnd(HwndObj18)->Attach(HandleToLong(m_patchNetSetting.GetSafeHwnd()));
-
 	DHwnd(HwndObj18)->Attach(HandleToLong(m_patchCascade.GetSafeHwnd()));
 
+	InitControlLang();
 	InitControlData();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -144,8 +126,8 @@ BOOL CPatchMode::OnApply()
 		m_patchCascade.OnApply();
 	}
 	appconfig.m_mode_cfg.mode = mode;
-	std::string &szconfig = appconfig.m_szConfigFile;
-	WritePrivateProfileStringA("SWITCHMODE", "MODE", mode == http_mode ? "0" : "1", szconfig.c_str());
+	std::tstring &szconfig = appconfig.m_szConfigFile;
+	WritePrivateProfileString(_T("SWITCHMODE"), _T("MODE"), mode == http_mode ? _T("0") : _T("1"), szconfig.c_str());
 	return TRUE;
 }
 
@@ -189,4 +171,11 @@ void CPatchMode::SetPatchView(CWnd* pView)
 CWnd* CPatchMode::GetPatchView()
 {
 	return m_pPatchView;
+}
+
+void CPatchMode::InitControlLang()
+{
+	DStatic(StaticMode)->SetText(g_lang.GetText(10006));
+	DRadio(RadioBox_Http)->SetText(g_lang.GetText(10008), TRUE);
+	DRadio(RadioBox_Cascade)->SetText(g_lang.GetText(10009), TRUE);
 }

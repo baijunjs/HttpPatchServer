@@ -35,26 +35,6 @@ END_MESSAGE_MAP()
 
 // CPatchOther 消息处理程序
 
-//bool CPatchOther::InitDui()
-//{
-//	m_pDuiOther = (ISkinObjResBase *)AfxGetDuiRes()->CreateDirectUI("DUIOther", HandleToLong(m_hWnd));
-//	ASSERT(m_pDuiOther);
-//
-//	m_pChkLog = (IDUICheckBox*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "ChkBox-Debug", m_pDuiOther, TRUE);
-//	ASSERT(m_pChkLog);
-//
-//	m_pLogLevel = (IDUIComboBox*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "LogLevel", m_pDuiOther, TRUE);
-//	ASSERT(m_pLogLevel);
-//
-//	m_pLansLabel = (IDUIStatic*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "Static-Lans", m_pDuiOther, TRUE);
-//	ASSERT(m_pLansLabel);
-//
-//	m_pComboLans = (IDUIComboBox*)AfxGetDuiRes()->GetResObject(DUIOBJTYPE_PLUGIN, "Launages", m_pDuiOther, TRUE);
-//	ASSERT(m_pComboLans);
-//
-//	return true;
-//}
-
 int CPatchOther::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CDUIDialog::OnCreate(lpCreateStruct) == -1)
@@ -84,11 +64,9 @@ BOOL CPatchOther::OnInitDialog()
 	CDUIDialog::OnInitDialog();
 
 	// TODO:  在此添加额外的初始化
-
+	InitControlLang();
 	InitControlData();
-
 	EnableControl();
-
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
@@ -119,21 +97,21 @@ BOOL CPatchOther::OnApply()
 {
 	appconfig.m_other_cfg.enable = DCheck(ChkBox-Debug)->GetValue() == DUICHECKBOX_CHECKED ? true : false;
 	appconfig.m_other_cfg.level = DCombo(LogLevel)->GetCurSel();
-	std::string &szconfig = appconfig.m_szConfigFile;
-	std::string  szlan = DCombo(Launages)->GetCurSel() == 0 ? "ZHCN" : "EN";
+	std::tstring &szconfig = appconfig.m_szConfigFile;
+	std::tstring  szlan = DCombo(Launages)->GetCurSel() == 0 ? _T("ZHCN") : _T("EN");
 	appconfig.m_other_cfg.lang = (LANS)DCombo(Launages)->GetCurSel();
-	std::stringstream ss;
-	std::string szlevel;
+	std::tstringstream ss;
+	std::tstring szlevel;
 	ss << appconfig.m_other_cfg.level;
 	ss >> szlevel;
-	WritePrivateProfileStringA("DEBUG", "LOG", appconfig.m_other_cfg.enable ? "1":"0", szconfig.c_str());
-	WritePrivateProfileStringA("DEBUG", "LEVEL", szlevel.c_str(), szconfig.c_str());
-	WritePrivateProfileStringA("LANGUAGE", "DEFAULT", szlan.c_str(), szconfig.c_str());
+	WritePrivateProfileString(_T("DEBUG"), _T("LOG"), appconfig.m_other_cfg.enable ? _T("1"):_T("0"), szconfig.c_str());
+	WritePrivateProfileString(_T("DEBUG"), _T("LEVEL"), szlevel.c_str(), szconfig.c_str());
+	WritePrivateProfileString(_T("LANGUAGE"), _T("DEFAULT"), szlan.c_str(), szconfig.c_str());
 
 	if (appconfig.m_other_cfg.enable)
 	{
 		if (!vrvlog::log::get().get_log())
-			vrvlog::log::get().init(appconfig.m_szLogPath);
+			vrvlog::log::get().init((const char*)_bstr_t(appconfig.m_szLogPath.c_str()));
 
 		if (vrvlog::log::get().get_log())
 		{
@@ -185,4 +163,22 @@ BOOL CPatchOther::InitSknPath()
 	m_strDUIFile = m_strSkinDir + _T("\\Skin\\PatchDown.dui");
 	m_strSknFile = m_strSkinDir + _T("\\Skin\\PatchDown.skn");
 	return TRUE;
+}
+
+
+void CPatchOther::InitControlLang()
+{
+	DStatic(StaticTitle)->SetText(g_lang.GetText(10007));
+	DCheck(ChkBox-Debug)->SetText(g_lang.GetText(10037));
+	DStatic(StaticLevel)->SetText(g_lang.GetText(10038));
+	DCombo(LogLevel)->SetItemText(0, g_lang.GetText(10039));
+	DCombo(LogLevel)->SetItemText(1, g_lang.GetText(10040));
+	DCombo(LogLevel)->SetItemText(2, g_lang.GetText(10041));
+	DCombo(LogLevel)->SetItemText(3, g_lang.GetText(10042));
+	DCombo(LogLevel)->SetItemText(4, g_lang.GetText(10043));
+	DCombo(LogLevel)->SetItemText(5, g_lang.GetText(10044));
+	DCombo(LogLevel)->SetItemText(6, g_lang.GetText(10045));
+	DStatic(Static-Lans)->SetText(g_lang.GetText(10046));
+	DCombo(Launages)->SetItemText(0, g_lang.GetText(10047));
+	DCombo(Launages)->SetItemText(1, g_lang.GetText(10048));
 }

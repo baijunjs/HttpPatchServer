@@ -21,13 +21,7 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV Ö§³Ö
-	//bool InitDui();
 	BOOL InitSknPath();
-
-	//ISkinObjResBase		*m_pDuiMode;
-	//IRadioBox			*m_pRadioHttp;
-	//IRadioBox			*m_pRadioCas;
-	//IDUIHwndObj			*m_pHwndOwner;
 
 	CPatchNetSetting		m_patchNetSetting;
 	CPatchCascade			m_patchCascade;
@@ -45,4 +39,5 @@ public:
 	void SetPatchView(CWnd*);
 	CWnd* GetPatchView();
 	CWnd* m_pPatchView;
+	void InitControlLang();
 };

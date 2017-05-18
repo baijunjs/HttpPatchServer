@@ -78,6 +78,7 @@ BOOL CPatchCascade::OnInitDialog()
 	CDUIDialog::OnInitDialog();
 
 	// TODO:  在此添加额外的初始化
+	InitControlLang();
 	InitControlData();
 	EnableControl();
 
@@ -86,10 +87,10 @@ BOOL CPatchCascade::OnInitDialog()
 }
 
 
-void GetIntervalTime(std::string &szTime, std::string &szBegin, std::string &szEnd)
+void GetIntervalTime(std::tstring &szTime, std::tstring &szBegin, std::tstring &szEnd)
 {
-	std::smatch sm;
-	std::regex rgx("(\\d{1,2}:\\d{1,2}:\\d{1,2})-(\\d{1,2}:\\d{1,2}:\\d{1,2})");
+	std::tsmatch sm;
+	std::tregex rgx(_T("(\\d{1,2}:\\d{1,2}:\\d{1,2})-(\\d{1,2}:\\d{1,2}:\\d{1,2})"));
 	if (std::regex_match(szTime, sm, rgx))
 	{
 		if (sm.size() >= 3)
@@ -103,7 +104,7 @@ void GetIntervalTime(std::string &szTime, std::string &szBegin, std::string &szE
 
 void CPatchCascade::InitControlData()
 {
-	std::stringstream ss;
+	std::tstringstream ss;
 	DEdit(EditDbIp)->SetText(appconfig.m_cascade_cfg.szdbip);
 	DEdit(EditDbSrc)->SetText(appconfig.m_cascade_cfg.szdbsrc);
 	DEdit(EditDbUser)->SetText(appconfig.m_cascade_cfg.szdbuser);
@@ -120,7 +121,7 @@ void CPatchCascade::InitControlData()
 	case interval_mode:
 		DRadio(RadioBox_Interval)->SetValue(DUIRADIOBOX_CHECKED, TRUE);
 		{
-			std::string szBegin, szEnd;
+			std::tstring szBegin, szEnd;
 			GetIntervalTime(appconfig.m_cascade_cfg.sznettime, szBegin, szEnd);
 			DEdit(EditBegin)->SetText(szBegin);
 			DEdit(EditEnd)->SetText(szEnd);
@@ -166,34 +167,37 @@ LRESULT CPatchCascade::OnButtonUp(WPARAM wparam, LPARAM lparam)
 
 void CPatchCascade::GetCascadeConfig()
 {
-	std::string szDbip = DEdit(EditDbIp)->GetText();
-	std::string szDbName = DEdit(EditDbSrc)->GetText();
-	std::string szDbuser = DEdit(EditDbUser)->GetText();
-	std::string szDbpwd = DEdit(EditDbPwd)->GetText();
+	std::tstring szDbip = DEdit(EditDbIp)->GetText();
+	std::tstring szDbName = DEdit(EditDbSrc)->GetText();
+	std::tstring szDbuser = DEdit(EditDbUser)->GetText();
+	std::tstring szDbpwd = DEdit(EditDbPwd)->GetText();
 	if (!IsIpValid(szDbip))
 	{
 		CMessageBox msg;
-		msg.ShowMessage("\"数据库IP无效(1.1.1.1~255.255.255.255)\"");
+		msg.ShowMessage(g_lang.GetText(10071));
 		return;
 	}
 	CSqlConfig sql;
-	if (!sql.InitDBValue(szDbip.c_str(), szDbName.c_str(), szDbuser.c_str(), szDbpwd.c_str()))
+	if (!sql.InitDBValue((const char*)_bstr_t(szDbip.c_str()),
+		(const char*)_bstr_t(szDbName.c_str()),
+		(const char*)_bstr_t(szDbuser.c_str()),
+		(const char*)_bstr_t(szDbpwd.c_str())))
 	{
 		CMessageBox msg;
-		msg.ShowMessage("数据库连接失败，请检查网络或者数据库配置");
+		msg.ShowMessage(g_lang.GetText(10072));
 		return;
 	}
 
-	std::string szPatchPath = sql.GetPatchPath();
+	std::tstring szPatchPath = sql.GetPatchPath();
 	DEdit(EditPath)->SetText(szPatchPath);
 
 	BOOL bEnable = sql.EnableUplink();
 	DCheck(ChkBox-Cascade)->SetValue(bEnable ? DUICHECKBOX_CHECKED : DUICHECKBOX_UNCHECKED);
 
-	std::string szIp = sql.UplinkIp();
+	std::tstring szIp = sql.UplinkIp();
 	DEdit(EditUpIp)->SetText(szIp);
 
-	std::string szport = sql.UplinkPort();
+	std::tstring szport = sql.UplinkPort();
 	DEdit(EditUpPort)->SetText(szport);
 
 	switch (sql.CycleType())
@@ -205,7 +209,7 @@ void CPatchCascade::GetCascadeConfig()
 	case interval_mode:
 		DRadio(RadioBox_Interval)->SetValue(DUIRADIOBOX_CHECKED, TRUE);
 		{
-			std::string szBegin, szEnd;
+			std::tstring szBegin, szEnd;
 			GetIntervalTime(appconfig.m_cascade_cfg.sznettime, szBegin, szEnd);
 			DEdit(EditBegin)->SetText(szBegin);
 			DEdit(EditEnd)->SetText(szEnd);
@@ -216,11 +220,11 @@ void CPatchCascade::GetCascadeConfig()
 		break;
 	}
 
-	std::string szPeriod = sql.GetPeriod();
+	std::tstring szPeriod = sql.GetPeriod();
 	DEdit(EditPerid)->SetText(szPeriod);
 
-	std::string szbegin, szend;
-	std::string szTime = sql.GetTime();
+	std::tstring szbegin, szend;
+	std::tstring szTime = sql.GetTime();
 	GetIntervalTime(szTime, szbegin, szend);
 	DEdit(EditBegin)->SetText(szbegin);
 	DEdit(EditEnd)->SetText(szend);
@@ -228,7 +232,7 @@ void CPatchCascade::GetCascadeConfig()
 	BOOL bFlux = sql.EnableFluxCtrl();
 	DCheck(ChkBox-Flux)->SetValue(bFlux ? DUICHECKBOX_CHECKED : DUICHECKBOX_UNCHECKED);
 
-	std::string szFluxSpeed = sql.GetFluxValue();
+	std::tstring szFluxSpeed = sql.GetFluxValue();
 	DEdit(EditSpeed)->SetText(szFluxSpeed);
 }
 
@@ -237,20 +241,20 @@ BOOL CPatchCascade::OnApply()
 	if (!IsIpValid(DEdit(EditDbIp)->GetText()))
 	{
 		CMessageBox msg;
-		msg.ShowMessage("\"数据库IP无效(1.1.1.1~255.255.255.255)\"");
+		msg.ShowMessage(g_lang.GetText(10071));
 		return FALSE;
 	}
 
-	std::string &szDbip = appconfig.m_cascade_cfg.szdbip = DEdit(EditDbIp)->GetText();
-	std::string &szDbName = appconfig.m_cascade_cfg.szdbsrc = DEdit(EditDbSrc)->GetText();
-	std::string &szDbuser = appconfig.m_cascade_cfg.szdbuser = DEdit(EditDbUser)->GetText();
-	std::string &szDbpwd = appconfig.m_cascade_cfg.szdbpwd = DEdit(EditDbPwd)->GetText();
+	std::tstring &szDbip = appconfig.m_cascade_cfg.szdbip = DEdit(EditDbIp)->GetText();
+	std::tstring &szDbName = appconfig.m_cascade_cfg.szdbsrc = DEdit(EditDbSrc)->GetText();
+	std::tstring &szDbuser = appconfig.m_cascade_cfg.szdbuser = DEdit(EditDbUser)->GetText();
+	std::tstring &szDbpwd = appconfig.m_cascade_cfg.szdbpwd = DEdit(EditDbPwd)->GetText();
 
 	bool &bCas = appconfig.m_cascade_cfg.cascade = DCheck(ChkBox-Cascade)->GetValue() == DUICHECKBOX_CHECKED ? true : false;
-	std::string &szUpServerIp = appconfig.m_cascade_cfg.szupserverip = DEdit(EditUpIp)->GetText();
-	std::string &szUpServerPort = appconfig.m_cascade_cfg.szupserverport = DEdit(EditUpPort)->GetText();
+	std::tstring &szUpServerIp = appconfig.m_cascade_cfg.szupserverip = DEdit(EditUpIp)->GetText();
+	std::tstring &szUpServerPort = appconfig.m_cascade_cfg.szupserverport = DEdit(EditUpPort)->GetText();
 
-	std::string sztime;
+	std::tstring sztime;
 	timemode mode;
 	IDUIRadioGroup *pGroup = DRadio(RadioBox_AllTime)->GetGroup();
 	IDUIControlBase *pCtrl = pGroup->GetRadio();
@@ -266,35 +270,35 @@ BOOL CPatchCascade::OnApply()
 	else if (DRadio(RadioBox_Interval) == pCtrl)
 	{
 		mode = appconfig.m_cascade_cfg.mode = interval_mode;
-		std::string szbegin = DEdit(EditBegin)->GetText();
-		std::string szend = DEdit(EditEnd)->GetText();
-		sztime = appconfig.m_cascade_cfg.sznettime = szbegin + "-" + szend;
+		std::tstring szbegin = DEdit(EditBegin)->GetText();
+		std::tstring szend = DEdit(EditEnd)->GetText();
+		sztime = appconfig.m_cascade_cfg.sznettime = szbegin + _T("-") + szend;
 	}
 
 	bool &bFlux = appconfig.m_cascade_cfg.flux = DCheck(ChkBox-Flux)->GetValue() == DUICHECKBOX_CHECKED ? true : false;
-	std::string szFluxSpeed = DEdit(EditSpeed)->GetText();
-	appconfig.m_cascade_cfg.fluxspeed = atoi(szFluxSpeed.c_str());
-	std::string &szPath = appconfig.m_cascade_cfg.szPatchPath = DEdit(EditPath)->GetText();
+	std::tstring szFluxSpeed = DEdit(EditSpeed)->GetText();
+	appconfig.m_cascade_cfg.fluxspeed = _ttoi(szFluxSpeed.c_str());
+	std::tstring &szPath = appconfig.m_cascade_cfg.szPatchPath = DEdit(EditPath)->GetText();
 
-	std::string &szconfig = appconfig.m_szConfigFile;
+	std::tstring &szconfig = appconfig.m_szConfigFile;
 
-	std::string szMode;
-	std::stringstream ss;
+	std::tstring szMode;
+	std::tstringstream ss;
 	ss << mode;
 	ss >> szMode;
 
-	WritePrivateProfileStringA("CASCADE", "DBIP", szDbip.c_str(), szconfig.c_str());
-	WritePrivateProfileStringA("CASCADE", "DBSRC", szDbName.c_str(), szconfig.c_str());
-	WritePrivateProfileStringA("CASCADE", "DBUSER", szDbuser.c_str(), szconfig.c_str());
-	WritePrivateProfileStringA("CASCADE", "DBPWD", szDbpwd.c_str(), szconfig.c_str());
-	WritePrivateProfileStringA("CASCADE", "CASCADE", bCas ? "1" : "0", szconfig.c_str());
-	WritePrivateProfileStringA("CASCADE", "UPSERVERIP", szUpServerIp.c_str(), szconfig.c_str());
-	WritePrivateProfileStringA("CASCADE", "UPSERVERPORT", szUpServerPort.c_str(), szconfig.c_str());
-	WritePrivateProfileStringA("CASCADE", "TIMEMODE", szMode.c_str(), szconfig.c_str());
-	WritePrivateProfileStringA("CASCADE", "NETTIME", sztime.c_str(), szconfig.c_str());
-	WritePrivateProfileStringA("CASCADE", "FLUX", bFlux ? "1" : "0", szconfig.c_str());
-	WritePrivateProfileStringA("CASCADE", "FLUXSPEED", szFluxSpeed.c_str(), szconfig.c_str());
-	WritePrivateProfileStringA("CASCADE", "PATH", szPath.c_str(), szconfig.c_str());
+	WritePrivateProfileString(_T("CASCADE"), _T("DBIP"), szDbip.c_str(), szconfig.c_str());
+	WritePrivateProfileString(_T("CASCADE"), _T("DBSRC"), szDbName.c_str(), szconfig.c_str());
+	WritePrivateProfileString(_T("CASCADE"), _T("DBUSER"), szDbuser.c_str(), szconfig.c_str());
+	WritePrivateProfileString(_T("CASCADE"), _T("DBPWD"), szDbpwd.c_str(), szconfig.c_str());
+	WritePrivateProfileString(_T("CASCADE"), _T("CASCADE"), bCas ? _T("1") : _T("0"), szconfig.c_str());
+	WritePrivateProfileString(_T("CASCADE"), _T("UPSERVERIP"), szUpServerIp.c_str(), szconfig.c_str());
+	WritePrivateProfileString(_T("CASCADE"), _T("UPSERVERPORT"), szUpServerPort.c_str(), szconfig.c_str());
+	WritePrivateProfileString(_T("CASCADE"), _T("TIMEMODE"), szMode.c_str(), szconfig.c_str());
+	WritePrivateProfileString(_T("CASCADE"), _T("NETTIME"), sztime.c_str(), szconfig.c_str());
+	WritePrivateProfileString(_T("CASCADE"), _T("FLUX"), bFlux ? _T("1") : _T("0"), szconfig.c_str());
+	WritePrivateProfileString(_T("CASCADE"), _T("FLUXSPEED"), szFluxSpeed.c_str(), szconfig.c_str());
+	WritePrivateProfileString(_T("CASCADE"), _T("PATH"), szPath.c_str(), szconfig.c_str());
 
 	return TRUE;
 }
@@ -303,4 +307,23 @@ BOOL CPatchCascade::OnApply()
 void CPatchCascade::OnRestore()
 {
 	InitControlData();
+}
+
+void CPatchCascade::InitControlLang()
+{
+	DStatic(Static_DbIp)->SetText(g_lang.GetText(10027));
+	DStatic(Static_DbSrc)->SetText(g_lang.GetText(10028));
+	DStatic(Static_DbUser)->SetText(g_lang.GetText(10025));
+	DStatic(Static_DbPwd)->SetText(g_lang.GetText(10026));
+	DCheck(ChkBox-Cascade)->SetText(g_lang.GetText(10029));
+	DCheck(ChkBox-Flux)->SetText(g_lang.GetText(10020));
+	DStatic(Static_Ip)->SetText(g_lang.GetText(10030));
+	DStatic(Static_Port)->SetText(g_lang.GetText(10031));
+	DRadio(RadioBox_AllTime)->SetText(g_lang.GetText(10016), TRUE);
+	DRadio(RadioBox_Period)->SetText(g_lang.GetText(10017), TRUE);
+	DRadio(RadioBox_Interval)->SetText(g_lang.GetText(10018), TRUE);
+	DStatic(Static_Min)->SetText(g_lang.GetText(10019));
+	DStatic(Static_Unit)->SetText(g_lang.GetText(10021));
+	DStatic(StaticPath)->SetText(g_lang.GetText(10032));
+	DBtn(BtnTest)->SetText(g_lang.GetText(10034));
 }
