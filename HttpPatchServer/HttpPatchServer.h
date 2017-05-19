@@ -28,7 +28,7 @@ public:
 	void DownloadIndexFile(std::tstring& szFile, RCF::FileDownload &fileDownload);
 	void DownloadPatchFile(std::tstring& szFile, RCF::FileDownload &fileDownload);
 	void DownloadIndex1xml(RCF::FileDownload &fileDownload);
-
+	BOOL ReportToServer(std::tstring& szUpdateId, std::tstring &szPatchName);
 private:
 	void TravelIndexPath(std::tstring &szPath, std::vector<vrv::patch::IndexInfo> &indexes);
 	void GetIndexInfo(std::tstring &szFile, vrv::patch::IndexInfo& indexinfo);
@@ -72,10 +72,17 @@ public:
 	std::shared_ptr<Curl> m_curlptr;
 	CPatchServiceImpl myservice;
 
+	BOOL ReportToManager(std::string &szlog);
 public:
 	//IDUIRes *m_pDuiRes;
 
 	DECLARE_MESSAGE_MAP()
+
+private:
+	AcquireContext m_pAcquireContext;
+	SendCmdAndData m_pSendCmdAndData;
+	RecvEcho m_pRecvEcho;
+	CloseContext m_pCloseContext;
 
 };
 

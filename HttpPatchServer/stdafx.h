@@ -86,6 +86,12 @@ enum  CUSTOM_MESSAGE
 
 #import "msado15.dll" no_namespace rename("EOF", "adoEOF") 
 
+
+typedef HANDLE(__stdcall * AcquireContext)(LPCSTR f_Address, int f_Port, ULONG f_ConnTimeout, ULONG f_RecvTimeout);
+typedef BOOL(__stdcall * SendCmdAndData)(HANDLE f_Context, USHORT f_Type, USHORT f_What, BOOL f_ExtHead, PVOID f_Data, ULONG f_Size, BOOL f_Encrypt);
+typedef BOOL(__stdcall * RecvEcho)(HANDLE f_Context, USHORT f_Type, USHORT f_What, BOOL f_ExtHead, PULONG f_Size, PULONG f_Chksum);
+typedef void(__stdcall * CloseContext)(HANDLE f_Context);
+
 BOOL IsTimeValid(std::tstring &sztime);
 BOOL IsIpValid(std::tstring &szIp);
 BOOL GetFileSHA1(std::tstring szFile, OUT std::tstring &szSha);

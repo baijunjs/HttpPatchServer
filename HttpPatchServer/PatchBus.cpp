@@ -149,51 +149,59 @@ namespace vrv
 
 		PatchIndexVectorPtr CPatchBus::FindPatchIndexVecByProductName(std::tstring szProduct)
 		{
-			vrv::patch::PublishersMap::_iterator iter = m_publishers->Publishers.begin();
-			for (; iter != m_publishers->Publishers.end(); ++iter)
+			if (m_publishers)
 			{
-				std::tstring szPublisher = iter->first;
-				vrv::patch::FamiliesMapPtr families = iter->second;
-				vrv::patch::FamiliesMap::_iterator _iter = families->ProductsFamily.begin();
-				for (; _iter != families->ProductsFamily.end(); ++_iter)
+				vrv::patch::PublishersMap::_iterator iter = m_publishers->Publishers.begin();
+				for (; iter != m_publishers->Publishers.end(); ++iter)
 				{
-					std::tstring szFamily = _iter->first;
-					vrv::patch::ProductsMapPtr products = _iter->second;
-					vrv::patch::ProductsMap::_iterator _iter_ = products->Products.begin();
-					for (; _iter_ != products->Products.end(); ++_iter_)
+					std::tstring szPublisher = iter->first;
+					vrv::patch::FamiliesMapPtr families = iter->second;
+					vrv::patch::FamiliesMap::_iterator _iter = families->ProductsFamily.begin();
+					for (; _iter != families->ProductsFamily.end(); ++_iter)
 					{
-						std::tstring szProductName = _iter_->first;
-						if (szProductName == szProduct)
-							return _iter_->second;
+						std::tstring szFamily = _iter->first;
+						vrv::patch::ProductsMapPtr products = _iter->second;
+						vrv::patch::ProductsMap::_iterator _iter_ = products->Products.begin();
+						for (; _iter_ != products->Products.end(); ++_iter_)
+						{
+							std::tstring szProductName = _iter_->first;
+							if (szProductName == szProduct)
+								return _iter_->second;
+						}
 					}
 				}
 			}
+			
 			return std::make_shared<PatchIndexVector>();
 		}
 
 		PatchIndexVectorPtr CPatchBus::FindLanguageIndexVec()
 		{
 			PatchIndexVectorPtr PatchIndexes = std::make_shared<PatchIndexVector>();
-			vrv::patch::PublishersMap::_iterator iter = m_publishers->Publishers.begin();
-			for (; iter != m_publishers->Publishers.end(); ++iter)
+			if (m_publishers)
 			{
-				std::tstring szPublisher = iter->first;
-				vrv::patch::FamiliesMapPtr families = iter->second;
-				vrv::patch::FamiliesMap::_iterator _iter = families->LanguagesFamily.begin();
-				for (; _iter != families->LanguagesFamily.end(); ++_iter)
+				vrv::patch::PublishersMap::_iterator iter = m_publishers->Publishers.begin();
+				for (; iter != m_publishers->Publishers.end(); ++iter)
 				{
-					std::tstring szFamily = _iter->first;
-					vrv::patch::ProductsMapPtr products = _iter->second;
-					vrv::patch::ProductsMap::_iterator _iter_ = products->Products.begin();
-					for (; _iter_ != products->Products.end(); ++_iter_)
+					std::tstring szPublisher = iter->first;
+					vrv::patch::FamiliesMapPtr families = iter->second;
+					vrv::patch::FamiliesMap::_iterator _iter = families->LanguagesFamily.begin();
+					for (; _iter != families->LanguagesFamily.end(); ++_iter)
 					{
-						std::tstring szProductName = _iter_->first;
-						PatchIndexVectorPtr tmp = _iter_->second;
-						PatchIndexes->patchindexes.insert(PatchIndexes->patchindexes.end(),
-							tmp->patchindexes.begin(), tmp->patchindexes.end());
+						std::tstring szFamily = _iter->first;
+						vrv::patch::ProductsMapPtr products = _iter->second;
+						vrv::patch::ProductsMap::_iterator _iter_ = products->Products.begin();
+						for (; _iter_ != products->Products.end(); ++_iter_)
+						{
+							std::tstring szProductName = _iter_->first;
+							PatchIndexVectorPtr tmp = _iter_->second;
+							PatchIndexes->patchindexes.insert(PatchIndexes->patchindexes.end(),
+								tmp->patchindexes.begin(), tmp->patchindexes.end());
+						}
 					}
 				}
 			}
+			
 			return PatchIndexes;
 		}
 

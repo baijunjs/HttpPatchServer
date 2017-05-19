@@ -785,6 +785,10 @@ bool CPatchDownView::DownloadPatchesByRcf(HWND topHwnd, int topIndex)
 
 				theApp.fileDownload->setDownloadToPath((const char*)_bstr_t(szPath.c_str()));
 				theApp.client->DownloadPatchFile(patchptr->szPatchName, *theApp.fileDownload);
+
+				//把结果上报给服务端
+				theApp.client->ReportToServer(patchptr->szUpdateId, patchptr->szPatchName);
+
 				std::string szLocalpath = theApp.fileDownload->getLocalPath();
 				++taskdone;
 			}
@@ -911,6 +915,10 @@ bool CPatchDownView::DownloadIndex1xmlByRcf(HWND topHwnd, int topIndex)
 					theApp.fileDownload->setDownloadToPath((const char*)_bstr_t(szPath.c_str()));
 
 					theApp.client->DownloadPatchFile(patchptr->szPatchName, *theApp.fileDownload);
+
+					//把结果上报给服务端
+					theApp.client->ReportToServer(patchptr->szUpdateId, patchptr->szPatchName);
+
 					std::string szLocalpath = theApp.fileDownload->getLocalPath();
 					++taskdone;
 				}

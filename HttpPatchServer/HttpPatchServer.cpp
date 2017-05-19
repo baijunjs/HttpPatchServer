@@ -320,6 +320,44 @@ void CHttpPatchServerApp::InitLanguage()
 	g_lang.ReadProfile(szLangPro, lang);
 }
 
+#define SYNSVR_RPT_DOWN_PATCH	196
+
+BOOL CHttpPatchServerApp::ReportToManager(std::string &szlog)
+{
+	static HMODULE h_log = LoadLibrary(_T("EdpCMCore.dll"));
+	if (h_log)
+	{
+		static AcquireContext m_pAcquireContext = (AcquireContext)GetProcAddress(h_log, "AcquireContext");
+		static SendCmdAndData m_pSendCmdAndData = (SendCmdAndData)GetProcAddress(h_log, "SendCmdAndData");
+		static RecvEcho m_pRecvEcho = (RecvEcho)GetProcAddress(h_log, "RecvEcho");
+		static CloseContext m_pCloseContext = (CloseContext)GetProcAddress(h_log, "CloseContext");
+
+		if (!m_pAcquireContext || !m_pSendCmdAndData || !m_pRecvEcho || !m_pCloseContext)
+			return FALSE;
+
+		HANDLE hctx = NULL;
+		do
+		{
+			hctx = m_pAcquireContext("127.0.0.1", 88, 3000, 3000);
+			if (hctx == NULL)
+				break;
+
+			if (!m_pSendCmdAndData(hctx, SYNSVR_RPT_DOWN_PATCH, 0, TRUE, (LPVOID)szlog.c_str(), szlog.length(), TRUE))
+				break;
+
+			if (!m_pRecvEcho(hctx, 0, 0, TRUE, NULL, NULL))
+				break;
+
+			m_pCloseContext(hctx);
+
+			return TRUE;
+		} while (false);
+
+		if (hctx)
+			m_pCloseContext(hctx);
+	}
+	return FALSE;
+}
 
 BOOL CHttpPatchServerApp::InitInstance()
 {
@@ -660,4 +698,27 @@ void  CPatchServiceImpl::GetPatchInfo(std::tstring &szFile, vrv::patch::PatchInf
 	}
 
 	GetFileSHA1(patchInfo.szPatchName, patchInfo.szMd5);
+}
+
+
+BOOL CPatchServiceImpl::ReportToServer(std::tstring& szUpdateId, std::tstring &szPatchName)
+{
+	std::tstring szPath;
+	if (appconfig.m_mode_cfg.mode == http_mode)
+		szPath = appconfig.m_http_cfg.m_szPatchPath;
+
+	else if (appconfig.m_mode_cfg.mode == cascade_mode)
+		szPath = appconfig.m_cascade_cfg.szPatchPath;
+
+	RCF::RcfSession &session = RCF::getCurrentRcfSession();
+	std::string szIpAddress = session.getClientAddress().string();
+	std::string::size_type pos = szIpAddress.find(":");
+	if (pos != std::string::npos)
+		szIpAddress = szIpAddress.substr(0, pos);
+	std::tstringstream ss;
+	ss << _T("IP=") << (const TCHAR*)_bstr_t(szIpAddress.c_str()) 
+		<< _T("\r\nUpdateId=") << szUpdateId 
+		<< _T("\r\nPatchName=") << szPath + _T("\\") + szPatchName << _T("\r\n");
+
+	return theApp.ReportToManager(std::string((const char*)_bstr_t(ss.str().c_str())));
 }
