@@ -83,7 +83,8 @@ struct other_config
 
 struct app_config
 {
-	std::tstring m_szConfigFile;		//配置文件路径
+	std::tstring m_szLogo;			//LOGO路径	
+	std::tstring m_szConfigFile;	//配置文件路径
 	std::tstring m_szAppPath;		//应用程序路径
 	std::tstring m_szLogPath;		//日志路径
 	net_option		m_http_cfg;		//Http配置

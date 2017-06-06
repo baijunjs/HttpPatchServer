@@ -127,7 +127,7 @@ bool CHttpPatchServerApp::InitPatchClient()
 	ss >> port;
 	std::tstring &szip = appconfig.m_cascade_cfg.szupserverip;
 	client = std::make_shared<RcfClient<MyService>>(RCF::TcpEndpoint((const char*)_bstr_t(szip.c_str()), port));
-	client->getClientStub().setRemoteCallTimeoutMs(120000);
+	client->getClientStub().setRemoteCallTimeoutMs(600000);
 	client->getClientStub().setConnectTimeoutMs(20000);
 	client->getClientStub().setTransferWindowS(1);
 	fileDownload = std::make_shared<RCF::FileDownload>();
@@ -163,18 +163,18 @@ BOOL CHttpPatchServerApp::GetAppRootPath()
 
 BOOL CHttpPatchServerApp::InitAppConfig()
 {
-	TCHAR szPath[MAX_PATH] = { 0 };
-	if (!SHGetSpecialFolderPath(NULL, szPath, CSIDL_APPDATA, TRUE))
-		return FALSE;
+	//TCHAR szPath[MAX_PATH] = { 0 };
+	//if (!SHGetSpecialFolderPath(NULL, szPath, CSIDL_APPDATA, TRUE))
+	//	return FALSE;
 
-	std::tstring szTempPath = szPath;
-	szTempPath.append(_T("\\PatchServer"));
-	if (!PathFileExists(szTempPath.c_str()))
-	{
-		CreateDirectory(szTempPath.c_str(), NULL);
-	}
+	//std::tstring szTempPath = szPath;
+	//szTempPath.append(_T("\\PatchServer"));
+	//if (!PathFileExists(szTempPath.c_str()))
+	//{
+	//	CreateDirectory(szTempPath.c_str(), NULL);
+	//}
 
-	appconfig.m_szConfigFile = szTempPath + _T("\\setup.ini");
+	appconfig.m_szConfigFile = appconfig.m_szAppPath + _T("\\setup.ini");
 	if (!PathFileExists(appconfig.m_szConfigFile.c_str()))
 	{
 		std::tstring &szconfig = appconfig.m_szConfigFile;
@@ -214,10 +214,11 @@ BOOL CHttpPatchServerApp::InitAppConfig()
 		WritePrivateProfileString(_T("DEBUG"), _T("LOG"), _T("1"), szconfig.c_str());
 		WritePrivateProfileString(_T("DEBUG"), _T("LEVEL"), _T("4"), szconfig.c_str());
 		WritePrivateProfileString(_T("LANGUAGE"), _T("DEFAULT"), _T("EN"), szconfig.c_str());
+		WritePrivateProfileString(_T("LOGO"), _T("FILE"), _T(""), szconfig.c_str());
 
 	}
 
-	appconfig.m_szLogPath = szTempPath + _T("\\log");
+	appconfig.m_szLogPath = appconfig.m_szAppPath + _T("\\log");
 
 	return TRUE;
 }
@@ -310,7 +311,9 @@ void  CHttpPatchServerApp::ReadConfig()
 		appconfig.m_other_cfg.lang = ZHCN;
 	else
 		appconfig.m_other_cfg.lang = EN;
+	GetPrivateProfileString(_T("LOGO"), _T("FILE"), _T(""), szBuff, MAX_LEN, szconfig.c_str());
 
+	appconfig.m_szLogo = szBuff;
 }
 
 void CHttpPatchServerApp::InitLanguage()
@@ -404,6 +407,8 @@ BOOL CHttpPatchServerApp::InitInstance()
 	InitPatchServer();
 
 	InitLanguage();
+
+	myservice.InitPatchPath();
 
 	if (!CPackInterface::init())
 		return FALSE;
@@ -500,37 +505,63 @@ BOOL MakeSureDirectoryExist(const TCHAR *pszPath, BOOL bFilePath)
 }
 
 
-
-int CPatchServiceImpl::add(int a, int b)
+bool CPatchServiceImpl::InitPatchPath()
 {
-	return a + b;
-}
-
-void  CPatchServiceImpl::RequestPatchInfo(std::vector<vrv::patch::PatchInfo> &patches)
-{
-	std::lock_guard<std::mutex> locker(mtxforpatch);
-
+	ACE_Thread_WriteLock<> Guard(m_locker);
 	if (appconfig.m_mode_cfg.mode == http_mode)
 		szPatchpath = appconfig.m_http_cfg.m_szPatchPath;
 
 	else if (appconfig.m_mode_cfg.mode == cascade_mode)
 		szPatchpath = appconfig.m_cascade_cfg.szPatchPath;
 
-	TravelPatchPath(szPatchpath + _T("\\chinese"), patches);
-	TravelPatchPath(szPatchpath + _T("\\english"), patches);
+	szToolpath = szPatchpath + _T("\\Tools");
+	return TRUE;
 }
 
 
+
+int CPatchServiceImpl::add(int a, int b)
+{
+	RCF::RcfSession &sess = RCF::getCurrentRcfSession();
+	vrvlog::SPD_LOG_INFO("{0} call add OK", sess.getClientAddress().string().c_str());
+	return a + b;
+}
+
+bool  CPatchServiceImpl::RequestPatchInfo(std::vector<vrv::patch::PatchInfo> &patches)
+{
+	// Capture current remote call context.
+	RCF::RcfSession &sess = RCF::getCurrentRcfSession();
+	vrvlog::SPD_LOG_INFO("recv {0} RequestPatchInfo", sess.getClientAddress().string().c_str());
+
+	//ACE_Thread_ReadLock<> Guard(m_locker);
+	//TravelPatchPath(szPatchpath + _T("\\chinese"), patches);
+	//TravelPatchPath(szPatchpath + _T("\\english"), patches);
+	PatchContext ctx(RCF::getCurrentRcfSession());
+
+	// Create a new thread to dispatch the remote call.
+	RCF::ThreadPtr threadPtr(new RCF::Thread(boost::bind(
+		&CPatchServiceImpl::ThreadFunc,
+		this,
+		ctx)));
+
+	return true;
+}
+
+
+void CPatchServiceImpl::ThreadFunc(PatchContext ctx)
+{
+	ACE_Thread_ReadLock<> Guard(m_locker);
+	std::vector<vrv::patch::PatchInfo> & patches = ctx.parameters().a1.get();
+	TravelPatchPath(szPatchpath + _T("\\chinese"), patches);
+	TravelPatchPath(szPatchpath + _T("\\english"), patches);
+	ctx.parameters().r.set(true);
+	ctx.commit();
+}
+
 void CPatchServiceImpl::RequestPatchInfo(vrv::patch::PatchInfo &patch)
 {
-	std::tstring szPath;
-	if (appconfig.m_mode_cfg.mode == http_mode)
-		szPath = appconfig.m_http_cfg.m_szPatchPath;
 
-	else if (appconfig.m_mode_cfg.mode == cascade_mode)
-		szPath = appconfig.m_cascade_cfg.szPatchPath;
-
-	std::tstring szPatchFile = szPath + _T("\\") + patch.szPatchName;
+	std::tstring szPatchFile = szPatchpath + _T("\\") + patch.szPatchName;
 	std::tstringstream ss;
 	std::ifstream ifs(szPatchFile);
 	if (ifs.is_open())
@@ -546,14 +577,7 @@ void CPatchServiceImpl::RequestPatchInfo(vrv::patch::PatchInfo &patch)
 
 void CPatchServiceImpl::RequestIndexInfo(std::vector<vrv::patch::IndexInfo> &indexes)
 {
-	std::lock_guard<std::mutex> locker(mtxforindex);
-
-	if (appconfig.m_mode_cfg.mode == http_mode)
-		szToolpath = appconfig.m_http_cfg.m_szPatchPath + _T("\\Tools");
-
-	else if (appconfig.m_mode_cfg.mode == cascade_mode)
-		szToolpath = appconfig.m_cascade_cfg.szPatchPath + _T("\\Tools");
-
+	ACE_Thread_ReadLock<> Guard(m_locker);
 	TravelIndexPath(szToolpath, indexes);
 }
 
@@ -564,41 +588,25 @@ void  CPatchServiceImpl::DownloadFiles(std::tstring& szFile, RCF::FileDownload &
 
 void  CPatchServiceImpl::DownloadIndexFile(std::tstring& szFile, RCF::FileDownload &fileDownload)
 {
-	std::tstring szPath;
-	if (appconfig.m_mode_cfg.mode == http_mode)
-		szPath = appconfig.m_http_cfg.m_szPatchPath + _T("\\Tools");
 
-	else if (appconfig.m_mode_cfg.mode == cascade_mode)
-		szPath = appconfig.m_cascade_cfg.szPatchPath + _T("\\Tools");
-
-	std::tstring szIndexFile = szPath + _T("\\") + szFile;
+	ACE_Thread_ReadLock<> Guard(m_locker);
+	std::tstring szIndexFile = szToolpath + _T("\\") + szFile;
 	fileDownload = RCF::FileDownload((const char*)_bstr_t(szIndexFile.c_str()));
 }
 
 void  CPatchServiceImpl::DownloadPatchFile(std::tstring& szFile, RCF::FileDownload &fileDownload)
 {
-	std::tstring szPath;
-	if (appconfig.m_mode_cfg.mode == http_mode)
-		szPath = appconfig.m_http_cfg.m_szPatchPath;
-
-	else if (appconfig.m_mode_cfg.mode == cascade_mode)
-		szPath = appconfig.m_cascade_cfg.szPatchPath;
-
-	std::tstring szPatchFile = szPath + _T("\\") + szFile;
+	ACE_Thread_ReadLock<> Guard(m_locker);
+	std::tstring szPatchFile = szPatchpath + _T("\\") + szFile;
 	fileDownload = RCF::FileDownload((const char*)_bstr_t(szPatchFile.c_str()));
 }
 
 void  CPatchServiceImpl::DownloadIndex1xml(RCF::FileDownload &fileDownload)
 {
-	std::tstring szPath;
-	if (appconfig.m_mode_cfg.mode == http_mode)
-		szPath = appconfig.m_http_cfg.m_szPatchPath;
+	ACE_Thread_ReadLock<> Guard(m_locker);
 
-	else if (appconfig.m_mode_cfg.mode == cascade_mode)
-		szPath = appconfig.m_cascade_cfg.szPatchPath;
-
-	std::tstring szIndex1Xml = szPath + _T("\\index1.xml");
-	std::tstring szIndex1Zip = szPath + _T("\\index1.zip");
+	std::tstring szIndex1Xml = szPatchpath + _T("\\index1.xml");
+	std::tstring szIndex1Zip = szPatchpath + _T("\\index1.zip");
 	if (PathFileExists(szIndex1Zip.c_str()))
 		fileDownload = RCF::FileDownload((const char*)_bstr_t(szIndex1Xml.c_str()));
 	else
@@ -607,7 +615,7 @@ void  CPatchServiceImpl::DownloadIndex1xml(RCF::FileDownload &fileDownload)
 
 void  CPatchServiceImpl::TravelIndexPath(std::tstring &szPath, std::vector<vrv::patch::IndexInfo> &indexes)
 {
-	std::tstring szFindPath = szPath + _T("\\*.*");
+	std::tstring szFindPath = szPath + _T("\\*.dat");
 	_tfinddata32_t data = { 0 };
 	intptr_t handle = _tfindfirst32(szFindPath.c_str(), &data);
 	if (handle == -1)
@@ -674,7 +682,8 @@ void  CPatchServiceImpl::TravelPatchPath(std::tstring &szPath, std::vector<vrv::
 				vrv::patch::PatchInfo patchInfo;
 				patchInfo.szPatchSize = ss.str();
 				patchInfo.szPatchName = szPath + _T("\\") + data.name;
-				GetFileSHA1(patchInfo.szPatchName, patchInfo.szMd5);
+				//取消MD5校验，否则会很慢
+				//GetFileSHA1(patchInfo.szPatchName, patchInfo.szMd5);
 				patchInfo.szPatchName = patchInfo.szPatchName.substr(szPatchpath.length() + 1);
 				patches.push_back(patchInfo);
 			}
@@ -703,13 +712,7 @@ void  CPatchServiceImpl::GetPatchInfo(std::tstring &szFile, vrv::patch::PatchInf
 
 BOOL CPatchServiceImpl::ReportToServer(std::tstring& szUpdateId, std::tstring &szPatchName)
 {
-	std::tstring szPath;
-	if (appconfig.m_mode_cfg.mode == http_mode)
-		szPath = appconfig.m_http_cfg.m_szPatchPath;
-
-	else if (appconfig.m_mode_cfg.mode == cascade_mode)
-		szPath = appconfig.m_cascade_cfg.szPatchPath;
-
+	ACE_Thread_ReadLock<> Guard(m_locker);
 	RCF::RcfSession &session = RCF::getCurrentRcfSession();
 	std::string szIpAddress = session.getClientAddress().string();
 	std::string::size_type pos = szIpAddress.find(":");
@@ -718,7 +721,7 @@ BOOL CPatchServiceImpl::ReportToServer(std::tstring& szUpdateId, std::tstring &s
 	std::tstringstream ss;
 	ss << _T("IP=") << (const TCHAR*)_bstr_t(szIpAddress.c_str()) 
 		<< _T("\r\nUpdateId=") << szUpdateId 
-		<< _T("\r\nPatchName=") << szPath + _T("\\") + szPatchName << _T("\r\n");
+		<< _T("\r\nPatchName=") << szPatchpath + _T("\\") + szPatchName << _T("\r\n");
 
 	return theApp.ReportToManager(std::string((const char*)_bstr_t(ss.str().c_str())));
 }

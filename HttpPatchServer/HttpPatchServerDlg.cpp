@@ -107,6 +107,29 @@ BOOL CHttpPatchServerDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// 设置大图标
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
+	if (!appconfig.m_szLogo.empty())
+	{
+		std::tstring szLogoPath = appconfig.m_szAppPath + _T("\\Skin\\Logo\\") + appconfig.m_szLogo;
+		IDUIImageBase* pImgBase = GetImageBaseFromFile(szLogoPath.c_str());
+		if (pImgBase)
+		{
+			
+			IDUIRect* prc = DLogo(LogoWeb)->GetRect();
+			SkinRect rc = pImgBase->get_rect();
+			long left = prc->get_left();
+			long right = left + rc.right;
+			long top = prc->get_top() - 15;
+			long bottom = top + rc.bottom;
+			
+			prc->put_left(left);
+			prc->put_right(right);
+			prc->put_top(top);
+			prc->put_bottom(bottom);
+			DLogo(LogoWeb)->SetRect(prc);
+			DLogo(LogoWeb)->SetBackImage(pImgBase, TRUE);
+
+		}
+	}
 	// TODO: 在此添加额外的初始化代码
 	DHwnd(HwndObj14)->Attach((OLE_HANDLE)HandleToLong(m_patchview.GetSafeHwnd()));
 	DHwnd(HwndObj14)->Attach((OLE_HANDLE)HandleToLong(m_patchsetting.GetSafeHwnd()));

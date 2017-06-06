@@ -10,7 +10,7 @@
 
 #include "resource.h"		// 主符号
 #include "PatchService.h"
-
+#include "OSBase.h"
 
 // CHttpPatchServerApp: 
 // 有关此类的实现，请参阅 HttpPatchServer.cpp
@@ -19,27 +19,30 @@
 class CPatchServiceImpl
 {
 public:
-
-	int add(int a, int b);
-	void RequestPatchInfo(std::vector<vrv::patch::PatchInfo> &patches);
-	void RequestPatchInfo(vrv::patch::PatchInfo &patch);
-	void RequestIndexInfo(std::vector<vrv::patch::IndexInfo> &indexes);
-	void DownloadFiles(std::tstring& szFile, RCF::FileDownload &fileDownload);
-	void DownloadIndexFile(std::tstring& szFile, RCF::FileDownload &fileDownload);
-	void DownloadPatchFile(std::tstring& szFile, RCF::FileDownload &fileDownload);
-	void DownloadIndex1xml(RCF::FileDownload &fileDownload);
-	BOOL ReportToServer(std::tstring& szUpdateId, std::tstring &szPatchName);
+	typedef RCF::RemoteCallContext<bool, std::vector<vrv::patch::PatchInfo> &> PatchContext;
+	bool RequestPatchInfo(std::vector<vrv::patch::PatchInfo>&);
+	void RequestPatchInfo(vrv::patch::PatchInfo&);
+	void RequestIndexInfo(std::vector<vrv::patch::IndexInfo>&);
+	void DownloadFiles(std::tstring&, RCF::FileDownload&);
+	void DownloadIndexFile(std::tstring&, RCF::FileDownload&);
+	void DownloadPatchFile(std::tstring&, RCF::FileDownload&);
+	void DownloadIndex1xml(RCF::FileDownload&);
+	int add(int, int);
+	BOOL ReportToServer(std::tstring&, std::tstring &);
 private:
+	bool InitPatchPath();
 	void TravelIndexPath(std::tstring &szPath, std::vector<vrv::patch::IndexInfo> &indexes);
 	void GetIndexInfo(std::tstring &szFile, vrv::patch::IndexInfo& indexinfo);
 	void TravelPatchPath(std::tstring &szPath, std::vector<vrv::patch::PatchInfo> &patches);
 	void GetPatchInfo(std::tstring &szFile, vrv::patch::PatchInfo& patchInfo);
+	void ThreadFunc(PatchContext ctx);
 
 private:
 	std::tstring szPatchpath;
 	std::tstring szToolpath;
 	std::mutex mtxforindex;
 	std::mutex mtxforpatch;
+	ACE_Thread_RWLock m_locker;
 };
 
 

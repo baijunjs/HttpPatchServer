@@ -11,6 +11,7 @@
 #include <iostream>
 #include <iomanip>
 #include "PatchView.h"
+#include "clock_t.h"
 // CPathDownloadListView ¶Ô»°¿ò
 
 
@@ -716,13 +717,34 @@ bool CPatchDownView::DownloadIndexesByRcf(HWND topHwnd, int topIndex)
 	return true;
 }
 
+void onCallCompleted(std::shared_ptr<RcfClient<MyService>> client, RCF::Future<bool> fRet)
+{
+	std::auto_ptr<RCF::Exception> ePtr = fRet.getAsyncException();
+	if (ePtr.get())
+	{
+		// Deal with any exception.
+		// ...
+		vrvlog::SPD_LOG_ERROR("onCallCompleted falied ({0})", ePtr->getErrorId());
+	}
+	else
+	{
+		//int charsPrinted = *fRet;
+		// ...
+	}
+}
 
 bool CPatchDownView::DownloadPatchesByRcf(HWND topHwnd, int topIndex)
 {
 	std::vector<vrv::patch::PatchInfo> patches;
 	try
 	{
-		theApp.client->RequestPatchInfo(patches);
+		cclock_t clock;
+		DWORD dwbegin = clock.now_ms();
+		vrvlog::SPD_LOG_INFO("Scan Server Patches infomation, may be take a long time...");
+		RCF::Future<bool> fRet = theApp.client->RequestPatchInfo(/*RCF::AsyncOneway(boost::bind(&onCallCompleted, theApp.client, fRet)),*/ patches);
+		fRet.wait();
+		DWORD dwend = clock.now_ms();
+		vrvlog::SPD_LOG_INFO("Scan Server Patches complete, Time:({0} Seconds)", (dwend - dwbegin) / 1000);
 	}
 	catch (const RCF::Exception& e)
 	{
@@ -835,12 +857,12 @@ bool CPatchDownView::DownloadIndex1xmlByRcf(HWND topHwnd, int topIndex)
 		theApp.client->getClientStub().setFileProgressCallback(&onFileTransferProgress);
 		if (appconfig.m_cascade_cfg.flux)
 			theApp.fileDownload->setTransferRateBps(appconfig.m_cascade_cfg.fluxspeed * 1024);
-		theApp.fileDownload->setDownloadToPath((const char*)_bstr_t(szPatchPath.c_str()));
+		theApp.fileDownload->setDownloadToPath((const char*)_bstr_t((szPatchPath + _T("\\Tools")).c_str()));
 		theApp.client->DownloadIndex1xml(*theApp.fileDownload);
-		if (!bus.AnalyzeIndex1xml(std::string((const char*)_bstr_t(szPatchPath.c_str())) + "\\index1.xml", patches))
+		if (!bus.AnalyzeIndex1xml(std::string((const char*)_bstr_t(szPatchPath.c_str())) + "\\Tools\\index1.xml", patches))
 		{
 			vrvlog::SPD_LOG_CRITICAL("Analyze index1.xml failed");
-			DeleteFile((szPatchPath + _T("\\index1.xml")).c_str());
+			DeleteFile((szPatchPath + _T("\\Tools\\index1.xml")).c_str());
 		}
 		else
 			break;

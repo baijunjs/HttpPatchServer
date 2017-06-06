@@ -159,6 +159,15 @@
     <ClInclude Include="Language.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="clock_t.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="OSBase.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HttpPatchServer.cpp">
@@ -231,6 +240,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Language.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="clock_t.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

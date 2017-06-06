@@ -128,6 +128,12 @@ BOOL CPatchMode::OnApply()
 	appconfig.m_mode_cfg.mode = mode;
 	std::tstring &szconfig = appconfig.m_szConfigFile;
 	WritePrivateProfileString(_T("SWITCHMODE"), _T("MODE"), mode == http_mode ? _T("0") : _T("1"), szconfig.c_str());
+
+	std::thread thread([]()->void {
+		theApp.myservice.InitPatchPath();
+	});
+
+	thread.detach();
 	return TRUE;
 }
 

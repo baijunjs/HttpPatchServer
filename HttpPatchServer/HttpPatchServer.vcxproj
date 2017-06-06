@@ -194,6 +194,8 @@
     <ClInclude Include="AppConfig.h" />
     <ClInclude Include="Base64.h" />
     <ClInclude Include="Clibcurl.h" />
+    <ClInclude Include="clock_t.h" />
+    <ClInclude Include="config.h" />
     <ClInclude Include="Crc.h" />
     <ClInclude Include="CSHA1-2.1-Source\SHA1.h" />
     <ClInclude Include="curl\curl.h" />
@@ -211,6 +213,7 @@
     <ClInclude Include="HttpPatchServerDlg.h" />
     <ClInclude Include="Language.h" />
     <ClInclude Include="MessageBox.h" />
+    <ClInclude Include="OSBase.h" />
     <ClInclude Include="PackInterface.h" />
     <ClInclude Include="PatchBus.h" />
     <ClInclude Include="PatchCascade.h" />
@@ -237,6 +240,7 @@
   <ItemGroup>
     <ClCompile Include="Base64.cpp" />
     <ClCompile Include="Clibcurl.cpp" />
+    <ClCompile Include="clock_t.cpp" />
     <ClCompile Include="Crc.cpp" />
     <ClCompile Include="CSHA1-2.1-Source\SHA1.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>

@@ -180,6 +180,13 @@ public:
 	/*/
 	HBITMAP GetImageHandle ( LPCTSTR lpszImageFile ) ;
 
+
+	/*
+	/* 函数功能：DUI库加载一张图片
+	/*/
+	IDUIImageBase* GetImageBaseFromFile(LPCTSTR path);
+
+
 	static BOOL ChangeSkin(std::tstring szSknFile);
 
 	static int     GetLangId () ;

@@ -430,6 +430,8 @@ inline int CDUIDialog::IsUseSkinCtrl()
 {
 	return GetPrivateProfileInt ( _T("DIRECTUI"), _T("SKINCTRL"), 0, m_strDUIIniFile ) ;
 }
+
+
 HBITMAP CDUIDialog::GetImageHandle ( LPCTSTR lpszImageFile  )
 {
 	if ( NULL == lpszImageFile )
@@ -502,4 +504,27 @@ BOOL CDUIDialog::ChangeSkin(std::tstring szSknFile)
 		m_pDUIRes->ChangeSkn(szSknFile, &bret);
 	}
 	return bret;
+}
+
+IDUIImageBase* CDUIDialog::GetImageBaseFromFile(LPCTSTR path)
+{
+	if (m_pDUIRes)
+	{
+		IDUIImageBase* pImage = m_pDUIRes->GetImageBaseFromFile(path);
+		//ÐÞÕýÍ¼Æ¬µÄ³ß´ç
+		CImage image;
+		if (S_OK == image.Load(path))
+		{
+			SkinRect rect;
+			rect.left = rect.top = 0;
+			rect.right = image.GetWidth();
+			rect.bottom = image.GetHeight();
+			pImage->put_rect(&rect);
+			pImage->put_rcBorder(rect);
+			image.Destroy();
+		}
+
+		return pImage;
+	}
+	return NULL;
 }
